@@ -1,0 +1,15 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.7",
+  "package": "org.polyfrost.polyparticles.mixin",
+  "refmap": "mixins.polyparticles.refmap.json",
+  "injectors": {
+    "maxShiftBy": 5
+  },
+  "verbose": true,
+  "mixins": [
+    "ModCardMixin",
+    "ModsPageAccessor",
+    "ModsPageMixin"
+  ]
+}
