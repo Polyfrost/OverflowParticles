@@ -24,6 +24,11 @@ open class ParticleConfig(name: String, @Exclude var id: Int) : Config(Mod(name,
     @Slider(name = "Multiplier", min = 1f, max = 10f)
     var multiplier = 1
 
+    @Button(name = "", text = "Reset")
+    var reset = Runnable {
+        loadFrom(ParticleEntry())
+    }
+
     init {
         initialize()
     }
@@ -44,6 +49,10 @@ open class ParticleConfig(name: String, @Exclude var id: Int) : Config(Mod(name,
     override fun load() {
         val entry = ModConfig.entries[PolyParticles.names[id]] ?: return
         enabled = entry.active
+        loadFrom(entry)
+    }
+
+    fun loadFrom(entry: ParticleEntry) {
         color = entry.color
         size = entry.size
         customColor = entry.customColor

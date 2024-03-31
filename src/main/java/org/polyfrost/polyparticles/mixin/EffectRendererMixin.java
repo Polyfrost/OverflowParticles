@@ -1,11 +1,8 @@
 package org.polyfrost.polyparticles.mixin;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.World;
 import org.polyfrost.polyparticles.PolyParticles;
 import org.polyfrost.polyparticles.config.*;
 import org.spongepowered.asm.mixin.*;
@@ -19,9 +16,6 @@ import java.util.List;
 public abstract class EffectRendererMixin {
 
     @Shadow private List<EntityFX>[][] fxLayers;
-    @Shadow protected World worldObj;
-
-    @Shadow public abstract void addEffect(EntityFX effect);
 
     @Unique private int ID;
 
@@ -76,6 +70,11 @@ public abstract class EffectRendererMixin {
         int i = effect.getFXLayer();
         int j = effect.getAlpha() != 1.0F ? 0 : 1;
         remove(this.fxLayers[i][j].get(0));
+    }
+
+    @ModifyConstant(method = "addEffect", constant = @Constant(intValue = 4000))
+    private int patcher$changeMaxParticleLimit(int original) {
+        return MainConfig.INSTANCE.getMaxParticleLimit();
     }
 
     @Unique

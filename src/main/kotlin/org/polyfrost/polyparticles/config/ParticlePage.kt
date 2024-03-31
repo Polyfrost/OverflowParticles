@@ -3,7 +3,7 @@ package org.polyfrost.polyparticles.config
 import cc.polyfrost.oneconfig.gui.OneConfigGui
 import cc.polyfrost.oneconfig.gui.pages.ModsPage
 import cc.polyfrost.oneconfig.utils.*
-import org.polyfrost.polyparticles.mixin.ModsPageAccessor
+import org.polyfrost.polyparticles.mixin.oneconfig.ModsPageAccessor
 import java.util.*
 
 class ParticlePage: ModsPage() {

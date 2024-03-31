@@ -1,4 +1,4 @@
-package org.polyfrost.polyparticles.mixin;
+package org.polyfrost.polyparticles.mixin.oneconfig;
 
 import cc.polyfrost.oneconfig.gui.elements.ModCard;
 import cc.polyfrost.oneconfig.gui.pages.ModsPage;

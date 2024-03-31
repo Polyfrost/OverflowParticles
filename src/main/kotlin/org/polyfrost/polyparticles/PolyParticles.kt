@@ -20,7 +20,7 @@ object PolyParticles {
 
     var mods: ArrayList<cc.polyfrost.oneconfig.config.data.Mod> = ArrayList()
 
-    val names = listOf("Explosion", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Suspended", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Spell", "Instant Spell", "Mob Spell", "Ambient Mob Spell", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Town Aura", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Block Break", "Block Dust", "Water Drop", "Item Pickup", "Mob Appearance")
+    val names = listOf("Explosion", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Suspended", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Spell", "Instant Spell", "Potion", "Ambient Mob Spell", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Town Aura", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Block Break", "Block Dust", "Water Drop", "Item Pickup", "Mob Appearance")
 
     var particles = HashMap<Int, Int>()
 
@@ -32,7 +32,7 @@ object PolyParticles {
             if (ignores.contains(i)) continue
             configs[i] = ParticleConfig(names[i], i)
         }
-        Miscellaneous.initialize()
+        MainConfig.initialize()
         ModConfig.initialize()
     }
 

@@ -17,6 +17,12 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
 
     var checkInvulnerable = false
 
+    var cleanView = false
+
+    var maxParticleLimit = 4000
+
+    var staticParticleColor = false
+
     @Exclude
     var page: ModsPage? = null
 
@@ -26,16 +32,27 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
         return PolyParticles.configs[id]
     }
 
+    override fun initialize() {
+        super.initialize()
+        val remove = HashMap<String, ParticleEntry>()
+        for (i in entries) {
+            if (!PolyParticles.names.contains(i.key)) remove[i.key] = i.value
+        }
+        for (i in remove) {
+            entries.remove(i.key, i.value)
+        }
+    }
+
     override fun load() {
         super.load()
-        Miscellaneous.load()
+        MainConfig.load()
         for (i in PolyParticles.configs) {
             i.value.load()
         }
     }
 
     override fun save() {
-        Miscellaneous.save()
+        MainConfig.save()
         for (i in 0..41) {
             if (PolyParticles.ignores.contains(i)) continue
             entries[PolyParticles.names[i]] ?: entries.put(PolyParticles.names[i], ParticleEntry())

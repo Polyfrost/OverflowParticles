@@ -1,15 +1,19 @@
 package org.polyfrost.polyparticles.config
 
 import cc.polyfrost.oneconfig.config.Config
+import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
-import cc.polyfrost.oneconfig.config.data.*
+import cc.polyfrost.oneconfig.config.data.Mod
+import cc.polyfrost.oneconfig.config.data.ModType
 import cc.polyfrost.oneconfig.events.EventManager
 import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.*
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.EnumCreatureAttribute
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.network.play.server.S19PacketEntityStatus
 import net.minecraft.potion.Potion
@@ -19,23 +23,48 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.polyparticles.PolyParticles
 
-object Miscellaneous : Config(Mod("Miscellaneous", ModType.UTIL_QOL), "") {
+object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
 
     private var attacker: EntityPlayer? = null
     private var targetId = -1
 
     @Switch(
-        name = "Always Show Critical"
+        name = "Clean View",
+        description = "Stop rendering your potion effect particles.",
+        subcategory = "Miscellaneous"
+    )
+    var cleanView = false
+
+    @Switch(
+        name = "Static Particle Color",
+        description = "Disable particle lighting checks each frame.",
+        subcategory = "Miscellaneous"
+    )
+    var staticParticleColor = false
+
+    @Slider(
+        name = "Max Particle Limit",
+        description = "Stop additional particles from appearing when there are too many at once.",
+        subcategory = "Miscellaneous",
+        min = 1f, max = 10000f
+    )
+    var maxParticleLimit = 4000
+
+    @Switch(
+        name = "Always Show Critical",
+        subcategory = "Hit Particle"
     )
     var alwaysCritical = false
 
     @Switch(
-        name = "Always Show Sharpness"
+        name = "Always Show Sharpness",
+        subcategory = "Hit Particle"
     )
     var alwaysSharp = false
 
     @Switch(
-        name = "Check Invulnerability"
+        name = "Check Invulnerability",
+        subcategory = "Hit Particle"
     )
     var checkInvulnerable = false
 
@@ -114,15 +143,21 @@ object Miscellaneous : Config(Mod("Miscellaneous", ModType.UTIL_QOL), "") {
     }
 
     override fun load() {
-        checkInvulnerable = ModConfig.checkInvulnerable
         alwaysCritical = ModConfig.alwaysCritical
         alwaysSharp = ModConfig.alwaysSharp
+        checkInvulnerable = ModConfig.checkInvulnerable
+        cleanView = ModConfig.cleanView
+        maxParticleLimit = ModConfig.maxParticleLimit
+        staticParticleColor = ModConfig.staticParticleColor
     }
 
     override fun save() {
         ModConfig.alwaysCritical = alwaysCritical
         ModConfig.alwaysSharp = alwaysSharp
         ModConfig.checkInvulnerable = checkInvulnerable
+        ModConfig.cleanView = cleanView
+        ModConfig.maxParticleLimit = maxParticleLimit
+        ModConfig.staticParticleColor = staticParticleColor
     }
 
 }
