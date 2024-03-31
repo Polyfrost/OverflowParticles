@@ -8,7 +8,11 @@ class ParticleEntry {
 
     var color : OneColor = OneColor(255, 255, 255, 255)
 
-    var overrideColor = false
+    var colorMode = false
+
+    var customColor = false
+
+    var multiplier = 1
 
     var size = 1.0f
 

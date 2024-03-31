@@ -10,6 +10,17 @@
   "mixins": [
     "ModCardMixin",
     "ModsPageAccessor",
-    "ModsPageMixin"
+    "ModsPageMixin",
+    "WorldMixin"
+  ],
+  "client": [
+    "EffectRendererMixin",
+    "EntityFXMixin",
+    "WorldRendererMixin",
+    "particles.BarrierMixin",
+    "particles.EntityBreakingFXMixin",
+    "particles.EntityDiggingFXMixin",
+    "particles.EntityFootStepFXMixin",
+    "particles.EntityLargeExplodeFXMixin"
   ]
 }

@@ -11,41 +11,38 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
 
     var entries = HashMap<String, ParticleEntry>()
 
+    var alwaysCritical = false
+
+    var alwaysSharp = false
+
+    var checkInvulnerable = false
+
     @Exclude
     var page: ModsPage? = null
 
-    fun getConfig(entity: EntityFX): ParticleConfig? {
-        val index = PolyParticles.particles[entity] ?: return null
-        return PolyParticles.configs[index]
+    fun getConfig(entity: EntityFX?): ParticleConfig? {
+        val id = PolyParticles.particles[entity?.entityId] ?: return null
+        if (id == 2) return PolyParticles.configs[2]
+        return PolyParticles.configs[id]
     }
 
     override fun load() {
         super.load()
-        for (i in 0..41) {
-            val config = PolyParticles.configs[i]
-            val entry = entries[PolyParticles.names[i]] ?: ParticleEntry()
-            config.enabled = entry.active
-            config.color = entry.color
-            config.size = entry.size
-            config.overrideColor = entry.overrideColor
+        Miscellaneous.load()
+        for (i in PolyParticles.configs) {
+            i.value.load()
         }
     }
 
     override fun save() {
+        Miscellaneous.save()
         for (i in 0..41) {
+            if (PolyParticles.ignores.contains(i)) continue
             entries[PolyParticles.names[i]] ?: entries.put(PolyParticles.names[i], ParticleEntry())
-            val config = PolyParticles.configs[i]
-            val entry = entries[PolyParticles.names[i]] ?: break
-            entry.active = config.enabled
-            entry.color = config.color
-            entry.size = config.size
-            entry.overrideColor = config.overrideColor
+            val config = PolyParticles.configs[i] ?: continue
+            config.save()
         }
         super.save()
-    }
-
-    init {
-        initialize()
     }
 
 }
