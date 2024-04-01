@@ -1,7 +1,9 @@
 package org.polyfrost.polyparticles.mixin;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.polyfrost.polyparticles.PolyParticles;
 import org.polyfrost.polyparticles.config.*;
@@ -15,9 +17,14 @@ import java.util.List;
 @Mixin(EffectRenderer.class)
 public abstract class EffectRendererMixin {
 
-    @Shadow private List<EntityFX>[][] fxLayers;
+    @Shadow
+    private List<EntityFX>[][] fxLayers;
 
-    @Unique private int ID;
+    @Unique
+    private int ID;
+
+    @Unique
+    private boolean canceled;
 
     @Redirect(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void a(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
@@ -29,13 +36,42 @@ public abstract class EffectRendererMixin {
         handle(instance, worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
+    @ModifyVariable(method = "renderParticles", at = @At(value = "STORE"), ordinal = 0)
+    private EntityFX capture(EntityFX entityFX) {
+        PolyParticles.INSTANCE.setRenderingEntity(entityFX);
+        return entityFX;
+    }
+
+    @Inject(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WorldRenderer;begin(ILnet/minecraft/client/renderer/vertex/VertexFormat;)V", shift = At.Shift.AFTER))
+    private void begin(Entity entityIn, float partialTicks, CallbackInfo ci) {
+        Tessellator.getInstance().draw();
+    }
+
+    @Inject(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/Tessellator;draw()V"))
+    private void no(Entity entityIn, float partialTicks, CallbackInfo ci) {
+        Tessellator.getInstance().getWorldRenderer().begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+    }
+
+    @Inject(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
+    private void start(Entity entityIn, float partialTicks, CallbackInfo ci) {
+        Tessellator.getInstance().getWorldRenderer().begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+        PolyParticles.INSTANCE.setRendering(true);
+    }
+
+    @Inject(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
+    private void end(Entity entityIn, float partialTicks, CallbackInfo ci) {
+        PolyParticles.INSTANCE.setRendering(false);
+        ParticleConfig config = ModConfig.INSTANCE.getConfig(PolyParticles.INSTANCE.getRenderingEntity());
+        if (config != null && !config.enabled) {
+            Tessellator.getInstance().getWorldRenderer().reset();
+        }
+        Tessellator.getInstance().draw();
+    }
+
     @Unique
     private void handle(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        PolyParticles.INSTANCE.setEntityFX(instance);
-        ParticleConfig config = ModConfig.INSTANCE.getConfig(instance);
-        if (config != null && !config.enabled) return;
+        PolyParticles.INSTANCE.setRenderingEntity(instance);
 
-        PolyParticles.INSTANCE.setRendering(true);
         instance.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         PolyParticles.INSTANCE.setRendering(false);
     }
@@ -74,17 +110,17 @@ public abstract class EffectRendererMixin {
 
     @ModifyConstant(method = "addEffect", constant = @Constant(intValue = 4000))
     private int patcher$changeMaxParticleLimit(int original) {
-        return MainConfig.INSTANCE.getMaxParticleLimit();
+        return MainConfig.INSTANCE.getSettings().getMaxParticleLimit();
     }
 
     @Unique
     private void remove(EntityFX entityFX) {
-        PolyParticles.INSTANCE.getParticles().remove(entityFX.getEntityId());
+        PolyParticles.INSTANCE.getEntitiesCache().remove(entityFX.getEntityId());
     }
 
     @Unique
     private void put(EntityFX entityFX, int id) {
-        PolyParticles.INSTANCE.getParticles().put(entityFX.getEntityId(), id);
+        PolyParticles.INSTANCE.getEntitiesCache().put(entityFX.getEntityId(), id);
     }
 
 }

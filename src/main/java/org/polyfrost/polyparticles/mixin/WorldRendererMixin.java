@@ -17,9 +17,9 @@ public abstract class WorldRendererMixin {
     @Inject(method = "color(FFFF)Lnet/minecraft/client/renderer/WorldRenderer;", at =  @At("HEAD"), cancellable = true)
     private void color(float red, float green, float blue, float alpha, CallbackInfoReturnable<WorldRenderer> cir) {
         if (PolyParticles.INSTANCE.getRendering()) {
-            ParticleConfig config = ModConfig.INSTANCE.getConfig(PolyParticles.INSTANCE.getEntityFX());
+            ParticleConfig config = ModConfig.INSTANCE.getConfig(PolyParticles.INSTANCE.getRenderingEntity());
             if (config != null) {
-                OneColor c = config.getColor();
+                OneColor c = config.getEntry().getColor();
                 cir.setReturnValue(this.color(UtilKt.colorInt(c.getRed(), red, config), UtilKt.colorInt(c.getGreen(), green, config), UtilKt.colorInt(c.getBlue(), blue, config), UtilKt.colorInt(c.getAlpha(), alpha, config)));
             }
         }

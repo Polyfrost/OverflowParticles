@@ -9,25 +9,15 @@ import org.polyfrost.polyparticles.PolyParticles
 
 object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyParticles.MODID}.json") {
 
-    var entries = HashMap<String, ParticleEntry>()
+    var settings = Settings()
 
-    var alwaysCritical = false
-
-    var alwaysSharp = false
-
-    var checkInvulnerable = false
-
-    var cleanView = false
-
-    var maxParticleLimit = 4000
-
-    var staticParticleColor = false
+    var particles = HashMap<String, ParticleEntry>()
 
     @Exclude
     var page: ModsPage? = null
 
     fun getConfig(entity: EntityFX?): ParticleConfig? {
-        val id = PolyParticles.particles[entity?.entityId] ?: return null
+        val id = PolyParticles.entitiesCache[entity?.entityId] ?: return null
         if (id == 2) return PolyParticles.configs[2]
         return PolyParticles.configs[id]
     }
@@ -35,11 +25,11 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
     override fun initialize() {
         super.initialize()
         val remove = HashMap<String, ParticleEntry>()
-        for (i in entries) {
+        for (i in particles) {
             if (!PolyParticles.names.contains(i.key)) remove[i.key] = i.value
         }
         for (i in remove) {
-            entries.remove(i.key, i.value)
+            particles.remove(i.key, i.value)
         }
     }
 
@@ -55,11 +45,15 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
         MainConfig.save()
         for (i in 0..41) {
             if (PolyParticles.ignores.contains(i)) continue
-            entries[PolyParticles.names[i]] ?: entries.put(PolyParticles.names[i], ParticleEntry())
+            particles[PolyParticles.names[i]] ?: particles.put(PolyParticles.names[i], ParticleEntry())
             val config = PolyParticles.configs[i] ?: continue
             config.save()
         }
         super.save()
+    }
+
+    init {
+        initialize()
     }
 
 }

@@ -21,7 +21,7 @@ public class WorldMixin {
     @Inject(method = "spawnParticle(IZDDDDDD[I)V", at = @At("HEAD"), cancellable = true)
     private void multiplier(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xOffset, double yOffset, double zOffset, int[] arguments, CallbackInfo ci) {
         ParticleConfig config = PolyParticles.INSTANCE.getConfigs().get(particleID);
-        if (config == null || config.getMultiplier() == 1) return;
+        if (config == null || config.getEntry().getMultiplier() == 1) return;
         UtilKt.spawn(config, worldAccesses, particleID, ignoreRange, xCoord, yCoord, zCoord, xOffset, yOffset, zOffset, arguments);
         ci.cancel();
     }

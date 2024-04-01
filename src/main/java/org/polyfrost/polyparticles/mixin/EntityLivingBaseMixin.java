@@ -12,7 +12,7 @@ public class EntityLivingBaseMixin {
     @SuppressWarnings({"ConstantConditions"})
     @Inject(method = "updatePotionEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"), cancellable = true)
     private void patcher$cleanView(CallbackInfo ci) {
-        if (MainConfig.INSTANCE.getCleanView() && (Object) this == UMinecraft.getPlayer()) {
+        if (MainConfig.INSTANCE.getSettings().getCleanView() && (Object) this == UMinecraft.getPlayer()) {
             ci.cancel();
         }
     }

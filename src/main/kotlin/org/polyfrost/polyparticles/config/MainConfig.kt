@@ -1,19 +1,15 @@
 package org.polyfrost.polyparticles.config
 
 import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.annotations.Slider
-import cc.polyfrost.oneconfig.config.annotations.Switch
-import cc.polyfrost.oneconfig.config.data.Mod
-import cc.polyfrost.oneconfig.config.data.ModType
+import cc.polyfrost.oneconfig.config.annotations.*
+import cc.polyfrost.oneconfig.config.data.*
 import cc.polyfrost.oneconfig.events.EventManager
 import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.EnumCreatureAttribute
+import net.minecraft.entity.*
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.network.play.server.S19PacketEntityStatus
 import net.minecraft.potion.Potion
@@ -25,52 +21,16 @@ import org.polyfrost.polyparticles.PolyParticles
 
 object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
 
+    @Exclude
     private var attacker: EntityPlayer? = null
+    @Exclude
     private var targetId = -1
 
-    @Switch(
-        name = "Clean View",
-        description = "Stop rendering your potion effect particles.",
-        subcategory = "Miscellaneous"
-    )
-    var cleanView = false
-
-    @Switch(
-        name = "Static Particle Color",
-        description = "Disable particle lighting checks each frame.",
-        subcategory = "Miscellaneous"
-    )
-    var staticParticleColor = false
-
-    @Slider(
-        name = "Max Particle Limit",
-        description = "Stop additional particles from appearing when there are too many at once.",
-        subcategory = "Miscellaneous",
-        min = 1f, max = 10000f
-    )
-    var maxParticleLimit = 4000
-
-    @Switch(
-        name = "Always Show Critical",
-        subcategory = "Hit Particle"
-    )
-    var alwaysCritical = false
-
-    @Switch(
-        name = "Always Show Sharpness",
-        subcategory = "Hit Particle"
-    )
-    var alwaysSharp = false
-
-    @Switch(
-        name = "Check Invulnerability",
-        subcategory = "Hit Particle"
-    )
-    var checkInvulnerable = false
+    var settings = Settings()
 
     @Subscribe
     fun onPacketReceive(event: ReceivePacketEvent) {
-        if (!checkInvulnerable) return
+        if (!settings.checkInvulnerable) return
 
         if (event.packet is S19PacketEntityStatus) {
             val packet = event.packet as S19PacketEntityStatus
@@ -88,7 +48,7 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
 
     @SubscribeEvent
     fun onAttack(event: AttackEntityEvent) {
-        if (checkInvulnerable) {
+        if (settings.checkInvulnerable) {
             if (event.entityPlayer.entityId == mc.thePlayer.entityId) {
                 attacker = event.entityPlayer
                 targetId = event.target.entityId
@@ -100,7 +60,7 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
     }
 
     private fun doCritical(attacker: EntityPlayer, target: Entity) {
-        if (!alwaysCritical)
+        if (!settings.alwaysCritical)
             return
         val criticalHit = attacker.fallDistance > 0.0F
                 && !attacker.onGround
@@ -116,7 +76,7 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
     }
 
     private fun doSharpness(attacker: EntityPlayer, target: Entity) {
-        if (!alwaysSharp)
+        if (!settings.alwaysSharp)
             return
 
         val modifier = if (target is EntityLivingBase) {
@@ -132,7 +92,7 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
 
     override fun initialize() {
         mod.config = this
-        generateOptionList(this, mod.defaultPage, mod, false)
+        generateOptionList(this.settings, mod.defaultPage, mod, false)
         ConfigCore.mods.add(this.mod)
         PolyParticles.mods.add(this.mod)
         MinecraftForge.EVENT_BUS.register(this)
@@ -143,21 +103,15 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
     }
 
     override fun load() {
-        alwaysCritical = ModConfig.alwaysCritical
-        alwaysSharp = ModConfig.alwaysSharp
-        checkInvulnerable = ModConfig.checkInvulnerable
-        cleanView = ModConfig.cleanView
-        maxParticleLimit = ModConfig.maxParticleLimit
-        staticParticleColor = ModConfig.staticParticleColor
+        settings.loadFrom(ModConfig.settings)
     }
 
     override fun save() {
-        ModConfig.alwaysCritical = alwaysCritical
-        ModConfig.alwaysSharp = alwaysSharp
-        ModConfig.checkInvulnerable = checkInvulnerable
-        ModConfig.cleanView = cleanView
-        ModConfig.maxParticleLimit = maxParticleLimit
-        ModConfig.staticParticleColor = staticParticleColor
+        ModConfig.settings = settings
+    }
+
+    init {
+        initialize()
     }
 
 }

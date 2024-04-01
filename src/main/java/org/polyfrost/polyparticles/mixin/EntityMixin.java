@@ -12,7 +12,7 @@ public class EntityMixin {
     @SuppressWarnings({"ConstantConditions"})
     @Inject(method = "getBrightnessForRender", at = @At("HEAD"), cancellable = true)
     private void staticColor(float partialTicks, CallbackInfoReturnable<Integer> cir) {
-        if (MainConfig.INSTANCE.getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
+        if (MainConfig.INSTANCE.getSettings().getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
             cir.setReturnValue(15728880);
         }
     }

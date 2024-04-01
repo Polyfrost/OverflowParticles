@@ -19,7 +19,7 @@ public class EntityFXMixin {
         scale = particleScale;
         ParticleConfig config = ModConfig.INSTANCE.getConfig((EntityFX) (Object) this);
         if (config == null) return;
-        particleScale *= config.getSize();
+        particleScale *= config.getEntry().getSize();
     }
 
     @Inject(method = "renderParticle", at = @At(value = "TAIL"))

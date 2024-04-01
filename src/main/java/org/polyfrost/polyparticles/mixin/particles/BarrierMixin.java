@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.injection.*;
 public class BarrierMixin {
     @ModifyConstant(method = "renderParticle", constant = @Constant(floatValue = 0.5f, ordinal = 0))
     private float scale(float constant) {
-        return constant * PolyParticles.INSTANCE.getConfigs().get(35).getSize();
+        return constant * PolyParticles.INSTANCE.getConfigs().get(35).getEntry().getSize();
     }
 }

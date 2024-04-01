@@ -12,7 +12,7 @@ object PolyParticles {
     const val NAME = "@NAME@"
     const val VERSION = "@VER@"
 
-    var entityFX: EntityFX? = null
+    var renderingEntity: EntityFX? = null
 
     var rendering = false
 
@@ -22,7 +22,7 @@ object PolyParticles {
 
     val names = listOf("Explosion", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Suspended", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Spell", "Instant Spell", "Potion", "Ambient Mob Spell", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Town Aura", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Block Break", "Block Dust", "Water Drop", "Item Pickup", "Mob Appearance")
 
-    var particles = HashMap<Int, Int>()
+    var entitiesCache = HashMap<Int, Int>()
 
     val ignores = listOf(2, 40, 41)
 
@@ -32,8 +32,8 @@ object PolyParticles {
             if (ignores.contains(i)) continue
             configs[i] = ParticleConfig(names[i], i)
         }
-        MainConfig.initialize()
-        ModConfig.initialize()
+        MainConfig
+        ModConfig
     }
 
 
