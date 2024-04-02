@@ -18,38 +18,25 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
 
     fun getConfig(entity: EntityFX?): ParticleConfig? {
         val id = PolyParticles.entitiesCache[entity?.entityId] ?: return null
-        if (id == 2) return PolyParticles.configs[2]
+        if (id == 2) return PolyParticles.configs[3]
         return PolyParticles.configs[id]
     }
 
     override fun initialize() {
         super.initialize()
-        val remove = HashMap<String, ParticleEntry>()
-        for (i in particles) {
-            if (!PolyParticles.names.contains(i.key)) remove[i.key] = i.value
+        for (i in PolyParticles.configs) {
+            i.value.initialize()
         }
-        for (i in remove) {
-            particles.remove(i.key, i.value)
-        }
+        MainConfig
     }
 
     override fun load() {
         super.load()
-        MainConfig.load()
         for (i in PolyParticles.configs) {
-            i.value.load()
+            particles[i.value.name] ?: particles.put(i.value.name, ParticleEntry(i.key))
+            particles[i.value.name]!!.id = i.key
+            i.value.enabled = particles[i.value.name]!!.active
         }
-    }
-
-    override fun save() {
-        MainConfig.save()
-        for (i in 0..41) {
-            if (PolyParticles.ignores.contains(i)) continue
-            particles[PolyParticles.names[i]] ?: particles.put(PolyParticles.names[i], ParticleEntry())
-            val config = PolyParticles.configs[i] ?: continue
-            config.save()
-        }
-        super.save()
     }
 
     init {

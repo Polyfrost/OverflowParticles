@@ -26,13 +26,14 @@ object PolyParticles {
 
     val ignores = listOf(2, 40, 41)
 
+    val unfair = listOf(28, 37)
+
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent?) {
         for (i in 0..<EnumParticleTypes.entries.size) {
             if (ignores.contains(i)) continue
             configs[i] = ParticleConfig(names[i], i)
         }
-        MainConfig
         ModConfig
     }
 

@@ -26,7 +26,8 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
     @Exclude
     private var targetId = -1
 
-    var settings = Settings()
+    val settings
+        get() = ModConfig.settings
 
     @Subscribe
     fun onPacketReceive(event: ReceivePacketEvent) {
@@ -103,11 +104,9 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
     }
 
     override fun load() {
-        settings.loadFrom(ModConfig.settings)
     }
 
     override fun save() {
-        ModConfig.settings = settings
     }
 
     init {
