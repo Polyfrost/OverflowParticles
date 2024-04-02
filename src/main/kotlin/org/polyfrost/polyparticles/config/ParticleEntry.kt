@@ -4,7 +4,7 @@ import cc.polyfrost.oneconfig.config.annotations.*
 import cc.polyfrost.oneconfig.config.core.*
 import org.polyfrost.polyparticles.PolyParticles
 
-class ParticleEntry(@Exclude var id: Int) {
+class ParticleEntry {
 
     var active = true
 
@@ -19,14 +19,23 @@ class ParticleEntry(@Exclude var id: Int) {
 
     @Slider(name = "Size", min = 0.5f, max = 5f)
     var size = 1.0f
-        get() = field.coerceIn(0f, if (PolyParticles.unfair.contains(id)) 1f else 5f)
+        get() = field.coerceIn(0f, 5f)
 
     @Slider(name = "Multiplier", min = 1f, max = 10f)
     var multiplier = 1
 
-    @Button(name = "", text = "Reset")
+    @Button(name = "", text = "Reset", size = 2)
     var reset = Runnable {
-        loadFrom(ParticleEntry(id))
+        loadFrom(ParticleEntry())
+    }
+
+    fun getID(): Int {
+        for (i in 0..<ModConfig.particles.entries.size) {
+            if (ModConfig.particles[PolyParticles.names[i]] == this) {
+                return i
+            }
+        }
+        return 100
     }
 
     fun loadFrom(entry: ParticleEntry) {

@@ -30,12 +30,14 @@ object PolyParticles {
 
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent?) {
+        ModConfig
+    }
+
+    fun fillConfigs() {
+        if (configs.isNotEmpty()) return
         for (i in 0..<EnumParticleTypes.entries.size) {
             if (ignores.contains(i)) continue
             configs[i] = ParticleConfig(names[i], i)
         }
-        ModConfig
     }
-
-
 }

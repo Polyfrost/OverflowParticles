@@ -18,10 +18,10 @@ import java.util.Objects;
 public class ConfigSliderMixin {
 
     @Inject(method = "create", at = @At("HEAD"), cancellable = true)
-    private static void w(Field field, Object parent, CallbackInfoReturnable<ConfigSlider> cir) {
+    private static void cap(Field field, Object parent, CallbackInfoReturnable<ConfigSlider> cir) {
         if (parent instanceof ParticleEntry) {
             ParticleEntry entry = (ParticleEntry) parent;
-            if (PolyParticles.INSTANCE.getUnfair().contains(entry.getId())) {
+            if (PolyParticles.INSTANCE.getUnfair().contains(entry.getID())) {
                 Slider slider = field.getAnnotation(Slider.class);
                 if (Objects.equals(slider.name(), "Size")) {
                     cir.setReturnValue(new ConfigSlider(field, parent, slider.name(), slider.description(), slider.category(), slider.subcategory(), slider.min(), 1f, slider.step(), slider.instant()));

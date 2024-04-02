@@ -24,6 +24,7 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
 
     override fun initialize() {
         super.initialize()
+        PolyParticles.fillConfigs()
         for (i in PolyParticles.configs) {
             i.value.initialize()
         }
@@ -32,9 +33,9 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
 
     override fun load() {
         super.load()
+        PolyParticles.fillConfigs()
         for (i in PolyParticles.configs) {
-            particles[i.value.name] ?: particles.put(i.value.name, ParticleEntry(i.key))
-            particles[i.value.name]!!.id = i.key
+            particles[i.value.name] ?: particles.put(i.value.name, ParticleEntry())
             i.value.enabled = particles[i.value.name]!!.active
         }
     }

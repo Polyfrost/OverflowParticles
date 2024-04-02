@@ -9,7 +9,7 @@ class ParticleConfig(val name: String, val id: Int) : Config(Mod(name, ModType.U
 
     val entry: ParticleEntry
         get() {
-            ModConfig.particles[name] ?: ModConfig.particles.put(name, ParticleEntry(id))
+            ModConfig.particles[name] ?: ModConfig.particles.put(name, ParticleEntry())
             return ModConfig.particles[name]!!
         }
 

@@ -63,7 +63,9 @@ public abstract class EffectRendererMixin {
     @Unique
     private void handle(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         PolyParticles.INSTANCE.setRenderingEntity(instance);
-
+        ParticleConfig config = ModConfig.INSTANCE.getConfig(instance);
+        if (config != null && !config.enabled) return;
+        PolyParticles.INSTANCE.setRendering(true);
         instance.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         PolyParticles.INSTANCE.setRendering(false);
     }
