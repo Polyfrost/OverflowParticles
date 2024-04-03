@@ -30,9 +30,9 @@ class ParticleEntry {
     }
 
     fun getID(): Int {
-        for (i in 0..<ModConfig.particles.entries.size) {
-            if (ModConfig.particles[PolyParticles.names[i]] == this) {
-                return i
+        for (i in ModConfig.particles) {
+            if (i.value == this) {
+                return PolyParticles.names.indexOf(i.key)
             }
         }
         return 100

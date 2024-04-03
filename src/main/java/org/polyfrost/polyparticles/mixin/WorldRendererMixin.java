@@ -18,11 +18,9 @@ public abstract class WorldRendererMixin {
     private void color(float red, float green, float blue, float alpha, CallbackInfoReturnable<WorldRenderer> cir) {
         if (PolyParticles.INSTANCE.getRendering()) {
             ParticleConfig config = ModConfig.INSTANCE.getConfig(PolyParticles.INSTANCE.getRenderingEntity());
-            if (config != null) {
+            if (config != null && config.getId() != 28) {
                 OneColor c = config.getEntry().getColor();
-                int a = UtilKt.colorInt(c.getAlpha(), alpha, config);
-                if (config.getId() == 28) a = Math.min(a, (int) (alpha * 255f));
-                cir.setReturnValue(this.color(UtilKt.colorInt(c.getRed(), red, config), UtilKt.colorInt(c.getGreen(), green, config), UtilKt.colorInt(c.getBlue(), blue, config), a));
+                cir.setReturnValue(this.color(UtilKt.colorInt(c.getRed(), red, config), UtilKt.colorInt(c.getGreen(), green, config), UtilKt.colorInt(c.getBlue(), blue, config), UtilKt.colorInt(c.getAlpha(), alpha, config)));
             }
         }
     }
