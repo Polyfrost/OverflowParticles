@@ -1,10 +1,13 @@
 package org.polyfrost.polyparticles
 
+import cc.polyfrost.oneconfig.events.EventManager
 import net.minecraft.client.particle.EntityFX
 import net.minecraft.util.EnumParticleTypes
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import org.polyfrost.polyparticles.config.*
+import org.polyfrost.polyparticles.utils.IconRenderer
 
 @Mod(modid = PolyParticles.MODID, name = PolyParticles.NAME, version = PolyParticles.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter")
 object PolyParticles {
@@ -24,13 +27,15 @@ object PolyParticles {
 
     var entitiesCache = HashMap<Int, Int>()
 
-    val ignores = listOf(2, 40, 41)
+    val ignores = listOf(2, 38, 40, 41)
 
     val unfair = listOf(28, 37)
 
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent?) {
         ModConfig
+        MinecraftForge.EVENT_BUS.register(IconRenderer)
+        EventManager.INSTANCE.register(IconRenderer)
     }
 
     fun fillConfigs() {
