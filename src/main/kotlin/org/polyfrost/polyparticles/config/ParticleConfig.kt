@@ -21,7 +21,10 @@ class ParticleConfig(val name: String, val id: Int) : Config(Mod(name, ModType.U
         addDependency("color", "customColor")
         addDependency("colorMode", "customColor")
         hideIf("multiplier") { PolyParticles.unfair.contains(id) }
-        hideIf("color") { id == 28 }
+        val colors = listOf("customColor", "colorMode", "color")
+        for (i in colors) {
+            hideIf(i) { id == 28 }
+        }
     }
 
     override fun reInitialize() {

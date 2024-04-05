@@ -19,7 +19,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.polyparticles.PolyParticles
 
-object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL), "") {
+object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL, "/assets/oneconfig/icons/settings-02.svg"), "") {
 
     @Exclude
     private var attacker: EntityPlayer? = null

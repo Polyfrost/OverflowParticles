@@ -20,6 +20,7 @@
   "client": [
     "EffectRendererMixin",
     "EntityFXMixin",
+    "RendererLivingEntityMixin",
     "WorldRendererMixin",
     "particles.BarrierMixin",
     "particles.EntityBreakingFXMixin",

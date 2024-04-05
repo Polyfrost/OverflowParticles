@@ -23,11 +23,11 @@ object PolyParticles {
 
     var mods: ArrayList<cc.polyfrost.oneconfig.config.data.Mod> = ArrayList()
 
-    val names = listOf("Explosion", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Suspended", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Spell", "Instant Spell", "Potion", "Ambient Mob Spell", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Town Aura", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Block Break", "Block Dust", "Water Drop", "Item Pickup", "Mob Appearance")
+    val names = listOf("Entity Death", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Liquid", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Splash Potion", "Instant Potion", "Potion", "Beacon Effect", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Mycelium", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Block Break", "Block Dust", "Rain Drop", "Item Pickup", "Mob Appearance")
 
     var entitiesCache = HashMap<Int, Int>()
 
-    val ignores = listOf(2, 38, 40, 41)
+    val ignores = listOf(2, 32, 38, 40, 41)
 
     val unfair = listOf(28, 37)
 
