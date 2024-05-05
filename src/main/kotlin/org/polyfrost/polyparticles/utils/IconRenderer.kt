@@ -67,8 +67,7 @@ object IconRenderer {
         RenderHelper.enableGUIStandardItemLighting()
         val itemRenderer = mc.renderItem
         if (id == 0) {
-            val handler = InputHandler()
-            drawEntityPointingMouse(DummyWorld.Sheep, x.toInt() - 8, y.toInt() + 6, 56f, handler.mouseX(), handler.mouseY())
+            drawEntityPointingMouse(DummyWorld.Sheep, x.toInt() - 8, y.toInt() + 6)
         } else {
             GL.translate(x, y, 0f)
             val item = ItemStack(when (id) {
@@ -159,27 +158,23 @@ object IconRenderer {
         GL.popMatrix()
     }
 
-    var reverse = false
+    private var reverse = false
 
     private fun drawEntityPointingMouse(
         entity: Entity,
         x: Int,
-        y: Int,
-        scale: Float,
-        mouseX: Float,
-        mouseY: Float,
+        y: Int
     ) {
         GL.enableDepth()
         GL.color(1f, 1f, 1f, 1f)
         GL.enableColorMaterial()
         GL.pushMatrix()
         GL.translate(x.toFloat(), y.toFloat(), 50f)
-        GL.scale(-scale, scale, scale)
+        GL.scale(-56f, 56f, 56f)
         GL.translate(0f, entity.height / 2, 0f)
         GL.rotate(180f, 0f, 0f, 1f)
 
         try {
-            val eyeHeightOffsetY = (entity.eyeHeight - entity.height / 2) * scale
             val dx = 0
             val dy = 0
             val tempData = (entity as? EntityLivingBase)?.let { TempData(it) }
