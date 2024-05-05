@@ -13,9 +13,7 @@
     "WorldMixin",
     "oneconfig.ConfigCoreMixin",
     "oneconfig.ConfigSliderMixin",
-    "oneconfig.ModCardMixin",
-    "oneconfig.ModsPageAccessor",
-    "oneconfig.ModsPageMixin"
+    "oneconfig.ModCardMixin"
   ],
   "client": [
     "EffectRendererMixin",
