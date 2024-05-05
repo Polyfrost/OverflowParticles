@@ -1,20 +1,18 @@
 package org.polyfrost.polyparticles.config
 
 import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.annotations.Exclude
 import cc.polyfrost.oneconfig.config.data.*
-import cc.polyfrost.oneconfig.gui.pages.ModsPage
+import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.polyparticles.PolyParticles
+import java.util.ArrayList
+import java.util.stream.Collectors
 
 object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyParticles.MODID}.json") {
 
     var settings = Settings()
 
     var particles = HashMap<String, ParticleEntry>()
-
-    @Exclude
-    var page: ModsPage? = null
 
     fun getConfig(entity: EntityFX?): ParticleConfig? {
         val id = PolyParticles.entitiesCache[entity?.entityId] ?: return null
@@ -35,10 +33,14 @@ object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyPart
         }
         particles.entries.removeAll(remove.entries)
         PolyParticles.fillConfigs()
+        val subMods = ArrayList<Mod>()
         for (i in PolyParticles.configs) {
             i.value.initialize()
+            subMods.add(i.value.mod)
         }
         MainConfig
+        subMods.add(MainConfig.mod)
+        ConfigCore.subMods[this.mod] = subMods
     }
 
     override fun load() {

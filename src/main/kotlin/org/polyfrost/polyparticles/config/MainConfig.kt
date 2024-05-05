@@ -1,8 +1,7 @@
 package org.polyfrost.polyparticles.config
 
-import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.annotations.*
-import cc.polyfrost.oneconfig.config.data.*
+import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.events.EventManager
 import cc.polyfrost.oneconfig.events.event.ReceivePacketEvent
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
@@ -19,7 +18,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.polyparticles.PolyParticles
 
-object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL, "/assets/oneconfig/icons/settings-02.svg"), "") {
+object MainConfig : SubConfig("Settings", "", "/assets/oneconfig/icons/settings-02.svg") {
 
     @Exclude
     private var attacker: EntityPlayer? = null
@@ -95,7 +94,6 @@ object MainConfig : Config(Mod("Settings", ModType.UTIL_QOL, "/assets/oneconfig/
         mod.config = this
         generateOptionList(this.settings, mod.defaultPage, mod, false)
         ConfigCore.mods.add(this.mod)
-        PolyParticles.mods.add(this.mod)
         MinecraftForge.EVENT_BUS.register(this)
         EventManager.INSTANCE.register(this)
     }

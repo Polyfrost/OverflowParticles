@@ -1,11 +1,10 @@
 package org.polyfrost.polyparticles.config
 
-import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.data.*
+import cc.polyfrost.oneconfig.config.elements.SubConfig
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import org.polyfrost.polyparticles.PolyParticles
 
-class ParticleConfig(val name: String, val id: Int) : Config(Mod(name, ModType.UTIL_QOL), "") {
+class ParticleConfig(val name: String, val id: Int) : SubConfig(name, "") {
 
     val entry: ParticleEntry
         get() {
@@ -17,7 +16,6 @@ class ParticleConfig(val name: String, val id: Int) : Config(Mod(name, ModType.U
         mod.config = this
         generateOptionList(entry, mod.defaultPage, mod, false)
         ConfigCore.mods.add(this.mod)
-        PolyParticles.mods.add(this.mod)
         addDependency("color", "customColor")
         addDependency("colorMode", "customColor")
         hideIf("multiplier") { PolyParticles.unfair.contains(id) }
