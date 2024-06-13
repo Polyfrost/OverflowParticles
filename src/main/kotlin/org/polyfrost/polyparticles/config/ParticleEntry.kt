@@ -27,6 +27,9 @@ class ParticleEntry {
     @Button(name = "", text = "Reset", size = 2)
     var reset = Runnable {
         loadFrom(ParticleEntry())
+        if (getID() == 37) {
+            ModConfig.blockSetting.reset()
+        }
     }
 
     fun getID(): Int {

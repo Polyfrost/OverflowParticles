@@ -4,7 +4,6 @@ import cc.polyfrost.oneconfig.events.event.*
 import cc.polyfrost.oneconfig.gui.OneConfigGui
 import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
 import cc.polyfrost.oneconfig.libs.universal.UResolution
-import cc.polyfrost.oneconfig.utils.InputHandler
 import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.gui.Gui
@@ -152,6 +151,7 @@ object IconRenderer {
             }
         }
         RenderHelper.disableStandardItemLighting()
+        GL.color(1.0f, 1.0f, 1.0f, 1.0f)
         GL.disableBlend()
         GL.disableRescaleNormal()
         GL.enableAlpha()

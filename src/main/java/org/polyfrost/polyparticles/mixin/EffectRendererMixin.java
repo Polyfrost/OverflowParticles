@@ -54,7 +54,7 @@ public abstract class EffectRendererMixin {
     private void end(Entity entityIn, float partialTicks, CallbackInfo ci) {
         PolyParticles.INSTANCE.setRendering(false);
         ParticleConfig config = ModConfig.INSTANCE.getConfig(PolyParticles.INSTANCE.getRenderingEntity());
-        if (config != null && !config.enabled) {
+        if (config != null && !config.enabled && config.getId() != 37) {
             Tessellator.getInstance().getWorldRenderer().reset();
         }
         Tessellator.getInstance().draw();
@@ -64,7 +64,7 @@ public abstract class EffectRendererMixin {
     private void handle(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         PolyParticles.INSTANCE.setRenderingEntity(instance);
         ParticleConfig config = ModConfig.INSTANCE.getConfig(instance);
-        if (config != null && !config.enabled) return;
+        if (config != null && !config.enabled && config.getId() != 37) return;
         PolyParticles.INSTANCE.setRendering(true);
         instance.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         PolyParticles.INSTANCE.setRendering(false);
@@ -115,6 +115,29 @@ public abstract class EffectRendererMixin {
     @Unique
     private void put(EntityFX entityFX, int id) {
         PolyParticles.INSTANCE.getEntitiesCache().put(entityFX.getEntityId(), id);
+    }
+
+    @Inject(
+            method = {
+                    "addBlockHitEffects(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;)V",
+                    "addBlockDestroyEffects"
+            },
+            at = @At("HEAD"), cancellable = true
+    )
+    private void removeBlockBreakingParticles(CallbackInfo ci) {
+        if (!PolyParticles.INSTANCE.getConfigs().get(37).enabled || ModConfig.INSTANCE.getBlockSetting().getHideDigging()) {
+            ci.cancel();
+        }
+    }
+
+    @Inject(
+            method = "addBlockHitEffects(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/MovingObjectPosition;)V",
+            at = @At("HEAD"), cancellable = true, remap = false
+    )
+    private void removeBlockBreakingParticles_Forge(CallbackInfo ci) {
+        if (!PolyParticles.INSTANCE.getConfigs().get(37).enabled || ModConfig.INSTANCE.getBlockSetting().getHideDigging()) {
+            ci.cancel();
+        }
     }
 
 }

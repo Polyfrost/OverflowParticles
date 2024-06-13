@@ -14,10 +14,12 @@ class ParticleConfig(val name: String, val id: Int) : SubConfig(name, "") {
 
     override fun initialize() {
         mod.config = this
+        if (id == 37) generateOptionList(ModConfig.blockSetting, mod.defaultPage, mod, false)
         generateOptionList(entry, mod.defaultPage, mod, false)
         ConfigCore.mods.add(this.mod)
         addDependency("color", "customColor")
         addDependency("colorMode", "customColor")
+        addDependency("hideMode", "hideRunning")
         hideIf("multiplier") { PolyParticles.unfair.contains(id) }
         val colors = listOf("customColor", "colorMode", "color")
         for (i in colors) {

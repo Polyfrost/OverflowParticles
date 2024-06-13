@@ -6,13 +6,14 @@ import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.polyparticles.PolyParticles
 import java.util.ArrayList
-import java.util.stream.Collectors
 
 object ModConfig : Config(Mod(PolyParticles.NAME, ModType.UTIL_QOL), "${PolyParticles.MODID}.json") {
 
     var settings = Settings()
 
     var particles = HashMap<String, ParticleEntry>()
+
+    var blockSetting = BlockParticleEntry()
 
     fun getConfig(entity: EntityFX?): ParticleConfig? {
         val id = PolyParticles.entitiesCache[entity?.entityId] ?: return null

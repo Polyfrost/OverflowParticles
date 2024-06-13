@@ -18,6 +18,7 @@
   "client": [
     "EffectRendererMixin",
     "EntityFXMixin",
+    "NetHandlerPlayClientMixin",
     "RendererLivingEntityMixin",
     "WorldRendererMixin",
     "particles.BarrierMixin",
