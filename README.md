@@ -1,16 +1,16 @@
-# OneConfigExampleMod
+<img align="right" src="src/main/resources/overflowparticles.svg" alt="OverflowParticles Icon"/>
 
-![Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_1.svg)
-![Compact Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_2.svg)
-![Minimal Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_3.svg)
-![Minimal Compact Powered by OneConfig](https://polyfrost.org/media/branding/badges/badge_4.svg)
+# OverflowParticles
 
-Example mod implementing OneConfig.
+![Compact Powered by OneConfig](https://polyfrost.org/img/compact_vector.svg)  ![Dev Workflow Status](https://img.shields.io/github/v/release/Polyfrost/OverflowParticles.svg?style=for-the-badge&color=1452cc&label=release)
 
-## How to use
+Extremely precise and advanced particle mod for 1.8.9.
 
-- Copy the template either by using GitHub's "Use this template" feature or downloading the repo manually.
-- **Remove the license named "LICENSE-TEMPLATE" and choose a new one.**
-- Refactor the template (specifically, the modid, version and name in the gradle.properties and most of the class names)
-  to a different name.
-- Have fun modding! :D
+## Features
+
+- 
+
+## Gallery
+
+![settings-page.png](images/settings-page.png)
+
