@@ -3,6 +3,7 @@ package org.polyfrost.overflowparticles.config
 import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.data.*
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
+import club.sk1er.patcher.config.OldPatcherConfig
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.OverflowParticles
 import java.util.ArrayList
@@ -42,6 +43,15 @@ object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.UTIL_QOL), "${Over
         MainConfig
         subMods.add(MainConfig.mod)
         ConfigCore.subMods[this.mod] = subMods
+
+        if (OverflowParticles.isPolyPatcher && !settings.hasMigratedPatcher) {
+            settings.cleanView = OldPatcherConfig.cleanView
+            settings.staticParticleColor = OldPatcherConfig.staticParticleColor
+            settings.maxParticleLimit = OldPatcherConfig.maxParticleLimit
+
+            settings.hasMigratedPatcher = true
+            save()
+        }
     }
 
     override fun load() {

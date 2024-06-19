@@ -1,21 +1,11 @@
 package org.polyfrost.overflowparticles.config
 
 import cc.polyfrost.oneconfig.config.annotations.Button
-import cc.polyfrost.oneconfig.config.annotations.Info
 import cc.polyfrost.oneconfig.config.annotations.Slider
 import cc.polyfrost.oneconfig.config.annotations.Switch
 import cc.polyfrost.oneconfig.config.core.ConfigUtils
-import cc.polyfrost.oneconfig.config.data.InfoType
 
 class Settings {
-
-    @Info(
-        text = "From Patcher",
-        type = InfoType.INFO,
-        size = 2,
-        subcategory = "Features"
-    )
-    var fp = Runnable {  }
 
     @Switch(
         name = "Clean View",
@@ -38,14 +28,6 @@ class Settings {
         min = 1f, max = 10000f
     )
     var maxParticleLimit = 4000
-
-    @Info(
-        text = "From Overflow Animations",
-        type = InfoType.INFO,
-        size = 2,
-        subcategory = "Features"
-    )
-    var foa = Runnable {  }
 
     @Switch(
         name = "Particles No-Clip",
@@ -76,6 +58,8 @@ class Settings {
     var reset = Runnable {
         loadFrom(Settings())
     }
+
+    var hasMigratedPatcher = false
 
     fun loadFrom(entry: Settings) {
         val newFields = ConfigUtils.getClassFields(entry::class.java)

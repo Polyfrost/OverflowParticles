@@ -103,7 +103,7 @@ public abstract class EffectRendererMixin {
     }
 
     @ModifyConstant(method = "addEffect", constant = @Constant(intValue = 4000))
-    private int patcher$changeMaxParticleLimit(int original) {
+    private int changeMaxParticleLimit(int original) {
         return MainConfig.INSTANCE.getSettings().getMaxParticleLimit();
     }
 
