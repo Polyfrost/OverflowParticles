@@ -8,9 +8,13 @@ Extremely precise and advanced particle mod for 1.8.9.
 
 ## Features
 
-- 
+- Per Particle Settings
+- Size & Amount Multiplier
+- Customizable Color
 
 ## Gallery
 
 ![settings-page.png](images/settings-page.png)
+![settings-page.png](images/settings.png)
+![settings-page.png](images/particle.png)
 
