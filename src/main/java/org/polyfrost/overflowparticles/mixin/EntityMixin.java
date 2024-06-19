@@ -3,6 +3,7 @@ package org.polyfrost.overflowparticles.mixin;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.config.MainConfig;
@@ -24,6 +25,8 @@ public abstract class EntityMixin {
     @Shadow
     protected abstract void resetPositionToBB();
 
+    @Shadow public World worldObj;
+
     @Inject(method = "getBrightnessForRender", at = @At("HEAD"), cancellable = true)
     private void staticColor(float partialTicks, CallbackInfoReturnable<Integer> cir) {
         if (MainConfig.INSTANCE.getSettings().getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
@@ -33,6 +36,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "moveEntity", at = @At("HEAD"), cancellable = true)
     private void enableNoClip(double x, double y, double z, CallbackInfo ci) {
+        if (worldObj != null && !worldObj.isRemote) return;
         if (MainConfig.INSTANCE.getSettings().getParticleNoClip() && ((Entity) (Object) this) instanceof EntityFX) {
             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
             this.resetPositionToBB();
@@ -42,6 +46,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "spawnRunningParticles", at = @At("HEAD"), cancellable = true)
     private void runningParticle(CallbackInfo ci) {
+        if (worldObj != null && !worldObj.isRemote) return;
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
         if (!config.enabled) ci.cancel();
         BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();

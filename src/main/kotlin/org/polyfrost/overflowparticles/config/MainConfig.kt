@@ -47,6 +47,7 @@ object MainConfig : SubConfig("Settings", "", "/assets/oneconfig/icons/settings-
 
     @SubscribeEvent
     fun onAttack(event: AttackEntityEvent) {
+        if (!event.target.worldObj.isRemote) return
         if (settings.checkInvulnerable) {
             if (event.entityPlayer.entityId == mc.thePlayer.entityId) {
                 attacker = event.entityPlayer

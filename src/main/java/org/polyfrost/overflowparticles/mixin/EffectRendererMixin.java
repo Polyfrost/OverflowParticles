@@ -1,17 +1,24 @@
 package org.polyfrost.overflowparticles.mixin;
 
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.polyfrost.overflowparticles.OverflowParticles;
-import org.polyfrost.overflowparticles.config.*;
-import org.spongepowered.asm.mixin.*;
+import org.polyfrost.overflowparticles.config.MainConfig;
+import org.polyfrost.overflowparticles.config.ModConfig;
+import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.*;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Collection;
 import java.util.List;
 
 @Mixin(EffectRenderer.class)
@@ -21,7 +28,7 @@ public abstract class EffectRendererMixin {
     private List<EntityFX>[][] fxLayers;
 
     @Unique
-    private int ID;
+    private int overflowParticles$ID;
 
     @Redirect(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void a(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
@@ -72,20 +79,23 @@ public abstract class EffectRendererMixin {
 
     @Inject(method = "spawnEffectParticle", at = @At("HEAD"))
     private void spawn(int particleId, double xCoord, double yCoord, double zCoord, double xSpeed, double p_178927_10_, double p_178927_12_, int[] p_178927_14_, CallbackInfoReturnable<EntityFX> cir) {
-        ID = particleId;
+        overflowParticles$ID = particleId;
     }
 
-    @ModifyArgs(method = "spawnEffectParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EffectRenderer;addEffect(Lnet/minecraft/client/particle/EntityFX;)V"))
-    private void spawn(Args args) {
-        put(args.get(0), ID);
+    @ModifyArg(method = "spawnEffectParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EffectRenderer;addEffect(Lnet/minecraft/client/particle/EntityFX;)V", ordinal = 0))
+    private EntityFX spawn(EntityFX effect) {
+        put(effect, overflowParticles$ID);
+        return effect;
     }
 
-    @ModifyArgs(method = "updateEffectAlphaLayer", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z"))
-    private void update(Args args) {
-        List<EntityFX> list = args.get(0);
+    @ModifyArg(method = "updateEffectAlphaLayer", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 0))
+    private Collection<?> update(Collection<?> c) {
+        List<EntityFX> list = c instanceof List ? (List<EntityFX>) c : null;
+        if (list == null) return c;
         for (EntityFX entityFX : list) {
             remove(entityFX);
         }
+        return c;
     }
 
     @Inject(method = "addEffect", at = @At("HEAD"))
@@ -139,5 +149,4 @@ public abstract class EffectRendererMixin {
             ci.cancel();
         }
     }
-
 }

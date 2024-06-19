@@ -21,8 +21,8 @@ class ParticleEntry {
     var size = 1.0f
         get() = field.coerceIn(0f, 5f)
 
-    @Slider(name = "Multiplier", min = 1f, max = 10f)
-    var multiplier = 1
+    @Slider(name = "Multiplier", min = 0f, max = 10f)
+    var multiplier = 1f
 
     @Button(name = "", text = "Reset", size = 2)
     var reset = Runnable {

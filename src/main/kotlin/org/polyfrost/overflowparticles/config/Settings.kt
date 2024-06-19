@@ -8,6 +8,13 @@ import cc.polyfrost.oneconfig.config.core.ConfigUtils
 class Settings {
 
     @Switch(
+        name = "Cleaner Particles",
+        description = "Remove the random offset from particles.",
+        subcategory = "Features"
+    )
+    var cleanerParticles = true
+
+    @Switch(
         name = "Clean View",
         description = "Stop rendering your potion effect particles.",
         subcategory = "Features"
