@@ -99,7 +99,7 @@ dependencies {
 
     modRuntimeOnly("me.djtheredstoner:DevAuth-${if (platform.isFabric) "fabric" else if (platform.isLegacyForge) "forge-legacy" else "forge-latest"}:1.2.0")
 
-    modRuntimeOnly("org.polyfrost:legacycraftycrashes:1.0.0")
+    //modRuntimeOnly("org.polyfrost:legacycraftycrashes:1.0.0")
 
     // If we are building for legacy forge, includes the launch wrapper with `shade` as we configured earlier.
     if (platform.isLegacyForge) {
