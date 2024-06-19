@@ -8,7 +8,7 @@ import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.OverflowParticles
 import java.util.ArrayList
 
-object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.UTIL_QOL), "${OverflowParticles.MODID}.json") {
+object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.UTIL_QOL, "/overflowparticles.svg"), "${OverflowParticles.MODID}.json") {
 
     var settings = Settings()
 

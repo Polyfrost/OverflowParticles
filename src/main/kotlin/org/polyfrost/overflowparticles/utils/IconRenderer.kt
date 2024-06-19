@@ -151,7 +151,7 @@ object IconRenderer {
             }
         }
         RenderHelper.disableStandardItemLighting()
-        GL.color(1.0f, 1.0f, 1.0f, 1.0f)
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
         GL.disableBlend()
         GL.disableRescaleNormal()
         GL.enableAlpha()
