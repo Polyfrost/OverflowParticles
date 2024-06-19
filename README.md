@@ -15,6 +15,6 @@ Extremely precise and advanced particle mod for 1.8.9.
 ## Gallery
 
 ![settings-page.png](images/settings-page.png)
-![settings-page.png](images/settings.png)
-![settings-page.png](images/particle.png)
+![settings.png](images/settings.png)
+![particle.png](images/particle.png)
 
