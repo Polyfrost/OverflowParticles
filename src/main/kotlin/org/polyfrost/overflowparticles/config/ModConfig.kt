@@ -3,6 +3,7 @@ package org.polyfrost.overflowparticles.config
 import cc.polyfrost.oneconfig.config.Config
 import cc.polyfrost.oneconfig.config.data.*
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
+import cc.polyfrost.oneconfig.utils.Notifications
 import club.sk1er.patcher.config.OldPatcherConfig
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.OverflowParticles
@@ -45,12 +46,25 @@ object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.UTIL_QOL, "/overfl
         ConfigCore.subMods[this.mod] = subMods
 
         if (OverflowParticles.isPolyPatcher && !settings.hasMigratedPatcher) {
-            settings.cleanView = OldPatcherConfig.cleanView
-            settings.staticParticleColor = OldPatcherConfig.staticParticleColor
-            settings.maxParticleLimit = OldPatcherConfig.maxParticleLimit
-
+            var didAnything = false
+            if (OldPatcherConfig.cleanView) {
+                settings.cleanView = OldPatcherConfig.cleanView
+                didAnything = true
+            }
+            if (OldPatcherConfig.staticParticleColor) {
+                settings.staticParticleColor = OldPatcherConfig.staticParticleColor
+                didAnything = true
+            }
+            if (OldPatcherConfig.maxParticleLimit != 4000) {
+                settings.maxParticleLimit = OldPatcherConfig.maxParticleLimit
+                didAnything = true
+            }
             settings.hasMigratedPatcher = true
             save()
+
+            if (didAnything) {
+                Notifications.INSTANCE.send("OverflowParticles", "Migrated Patcher settings replaced by OverflowParticles. Please check OverflowParticles's settings to make sure they are correct.")
+            }
         }
     }
 

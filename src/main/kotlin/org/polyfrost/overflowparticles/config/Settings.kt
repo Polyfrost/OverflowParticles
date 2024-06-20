@@ -16,7 +16,7 @@ class Settings {
 
     @Switch(
         name = "Clean View",
-        description = "Stop rendering your potion effect particles.",
+        description = "Stop rendering your own potion effect particles.",
         subcategory = "Features"
     )
     var cleanView = false
@@ -26,7 +26,7 @@ class Settings {
         description = "Disable particle lighting checks each frame.",
         subcategory = "Features"
     )
-    var staticParticleColor = false
+    var staticParticleColor = true
 
     @Slider(
         name = "Max Particle Limit",
