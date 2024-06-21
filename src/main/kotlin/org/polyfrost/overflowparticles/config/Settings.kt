@@ -67,6 +67,7 @@ class Settings {
     }
 
     var hasMigratedPatcher = false
+    var hasMigratedParticlesEnhanced = false
 
     fun loadFrom(entry: Settings) {
         val newFields = ConfigUtils.getClassFields(entry::class.java)

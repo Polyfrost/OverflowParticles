@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-@Mixin(World.class)
+@Mixin(value = World.class, priority = 999)
 public class WorldMixin {
 
     @Shadow protected List<IWorldAccess> worldAccesses;

@@ -29,20 +29,11 @@ object OverflowParticles {
 
     val unfair = listOf(28, 37)
 
-    var isPolyPatcher = false
-        private set
-
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent) {
         ModConfig
         MinecraftForge.EVENT_BUS.register(IconRenderer)
         EventManager.INSTANCE.register(IconRenderer)
-        isPolyPatcher = try {
-            Class.forName("club.sk1er.patcher.config.OldPatcherConfig")
-            true
-        } catch (e: ClassNotFoundException) {
-            false
-        }
     }
 
     fun fillConfigs() {
