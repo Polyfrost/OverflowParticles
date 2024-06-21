@@ -25,6 +25,10 @@ class ParticleConfig(val name: String, val id: Int) : SubConfig(name, "") {
         for (i in colors) {
             hideIf(i) { id == 28 }
         }
+        val fades = listOf("fade", "fadeStart")
+        for (i in fades) {
+            hideIf(i) { id == 0 || id == 1 || id == 2 || id == 3 }
+        }
     }
 
     override fun reInitialize() {

@@ -1,7 +1,8 @@
 package org.polyfrost.overflowparticles.config
 
 import cc.polyfrost.oneconfig.config.annotations.*
-import cc.polyfrost.oneconfig.config.core.*
+import cc.polyfrost.oneconfig.config.core.ConfigUtils
+import cc.polyfrost.oneconfig.config.core.OneColor
 import org.polyfrost.overflowparticles.OverflowParticles
 
 class ParticleEntry {
@@ -16,6 +17,12 @@ class ParticleEntry {
 
     @Color(name = "Color")
     var color = OneColor(255, 255, 255, 255)
+
+    @Switch(name = "Fade", description = "Make particles fade rather than just disappearing.")
+    var fade = true
+
+    @Slider(name = "Fade Out Start", description = "How far into the lifespan of the particle before it starts to fade.", max = 1F, min = 0F)
+    var fadeStart = 0.5f
 
     @Slider(name = "Size", min = 0.5f, max = 5f)
     var size = 1.0f
