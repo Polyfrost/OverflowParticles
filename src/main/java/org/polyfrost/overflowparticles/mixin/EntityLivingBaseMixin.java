@@ -27,7 +27,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
     @SuppressWarnings({"ConstantConditions"})
     @Inject(method = "updatePotionEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"), cancellable = true)
     private void cleanView(CallbackInfo ci) {
-        if (worldObj != null & isServerWorld()) return;
+        if (worldObj != null && isServerWorld()) return;
         if (MainConfig.INSTANCE.getSettings().getCleanView() && (Object) this == UMinecraft.getPlayer()) {
             ci.cancel();
         }
@@ -35,7 +35,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
 
     @Redirect(method = "updateFallState", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getMaterial()Lnet/minecraft/block/material/Material;"))
     private Material fall(Block instance) {
-        if (worldObj != null & isServerWorld()) return instance.getMaterial();
+        if (worldObj != null && isServerWorld()) return instance.getMaterial();
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
         if (!config.enabled) return Material.air;
         BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();
