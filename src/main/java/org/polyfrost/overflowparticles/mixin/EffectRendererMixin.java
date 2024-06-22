@@ -11,21 +11,15 @@ import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.MainConfig;
 import org.polyfrost.overflowparticles.config.ModConfig;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.polyfrost.overflowparticles.utils.UtilKt;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collection;
-import java.util.List;
-
 @Mixin(EffectRenderer.class)
 public abstract class EffectRendererMixin {
-
-    @Shadow
-    private List<EntityFX>[][] fxLayers;
 
     @Unique
     private int overflowParticles$ID;
@@ -84,47 +78,20 @@ public abstract class EffectRendererMixin {
 
     @ModifyArg(method = "spawnEffectParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EffectRenderer;addEffect(Lnet/minecraft/client/particle/EntityFX;)V", ordinal = 0))
     private EntityFX spawn(EntityFX effect) {
-        put(effect, overflowParticles$ID);
+        UtilKt.setParticleEntityID(effect, overflowParticles$ID);
         return effect;
-    }
-
-    @ModifyArg(method = "updateEffectAlphaLayer", at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z", ordinal = 0))
-    private Collection<?> update(Collection<?> c) {
-        List<EntityFX> list = c instanceof List ? (List<EntityFX>) c : null;
-        if (list == null) return c;
-        for (EntityFX entityFX : list) {
-            remove(entityFX);
-        }
-        return c;
     }
 
     @Inject(method = "addEffect", at = @At("HEAD"))
     private void check(EntityFX effect, CallbackInfo ci) {
         if (effect instanceof EntityDiggingFX) {
-            put(effect, 37);
+            UtilKt.setParticleEntityID(effect, 37);
         }
-    }
-
-    @Inject(method = "addEffect", at = @At(value = "INVOKE", target = "Ljava/util/List;remove(I)Ljava/lang/Object;"))
-    private void limit(EntityFX effect, CallbackInfo ci) {
-        int i = effect.getFXLayer();
-        int j = effect.getAlpha() != 1.0F ? 0 : 1;
-        remove(this.fxLayers[i][j].get(0));
     }
 
     @ModifyConstant(method = "addEffect", constant = @Constant(intValue = 4000))
     private int changeMaxParticleLimit(int original) {
         return MainConfig.INSTANCE.getSettings().getMaxParticleLimit();
-    }
-
-    @Unique
-    private void remove(EntityFX entityFX) {
-        OverflowParticles.INSTANCE.getEntitiesCache().remove(entityFX.getEntityId());
-    }
-
-    @Unique
-    private void put(EntityFX entityFX, int id) {
-        OverflowParticles.INSTANCE.getEntitiesCache().put(entityFX.getEntityId(), id);
     }
 
     @Inject(

@@ -1,8 +1,16 @@
 package org.polyfrost.overflowparticles.utils
 
+import net.minecraft.client.particle.EntityFX
 import net.minecraft.world.IWorldAccess
 import org.polyfrost.overflowparticles.config.MainConfig
 import org.polyfrost.overflowparticles.config.ParticleConfig
+import org.polyfrost.overflowparticles.hook.EntityFXHook
+
+fun setParticleEntityID(entity: EntityFX, id: Int) {
+    if (entity is EntityFXHook) {
+        entity.`overflowParticles$setParticleID`(id)
+    }
+}
 
 fun color(color: Int, targetColor: Float, cfg: ParticleConfig): Float =
     if (cfg.entry.customColor) color / 255f * if (cfg.entry.colorMode) 1f else targetColor else targetColor

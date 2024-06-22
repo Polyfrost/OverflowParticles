@@ -4,12 +4,13 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import org.polyfrost.overflowparticles.config.*;
+import org.polyfrost.overflowparticles.hook.EntityFXHook;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityFX.class, priority = 1001) // after particlesehanced
-public abstract class EntityFXMixin {
+public abstract class EntityFXMixin implements EntityFXHook {
 
     @Shadow protected float particleScale;
     @Shadow protected int particleAge;
@@ -20,6 +21,7 @@ public abstract class EntityFXMixin {
 
     @Shadow protected int particleMaxAge;
     @Unique private float overflowParticles$scale;
+    @Unique private int overflowParticles$ID;
 
     @Inject(method = "renderParticle", at = @At(value = "HEAD"))
     private void setScale(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
@@ -49,4 +51,13 @@ public abstract class EntityFXMixin {
         particleScale = overflowParticles$scale;
     }
 
+    @Override
+    public int overflowParticles$getParticleID() {
+        return overflowParticles$ID;
+    }
+
+    @Override
+    public void overflowParticles$setParticleID(int id) {
+        overflowParticles$ID = id;
+    }
 }

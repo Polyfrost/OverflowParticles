@@ -6,7 +6,8 @@ import net.minecraft.util.EnumParticleTypes
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
-import org.polyfrost.overflowparticles.config.*
+import org.polyfrost.overflowparticles.config.ModConfig
+import org.polyfrost.overflowparticles.config.ParticleConfig
 import org.polyfrost.overflowparticles.utils.IconRenderer
 
 @Mod(modid = OverflowParticles.MODID, name = OverflowParticles.NAME, version = OverflowParticles.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter")
@@ -22,8 +23,6 @@ object OverflowParticles {
     var configs = HashMap<Int, ParticleConfig>()
 
     val names = listOf("Entity Death", "Large Explosion", "Huge Explosion", "Firework Spark", "Water Bubble", "Water Splash", "Water Wake", "Liquid", "Depth Suspended", "Critical", "Sharpness", "Smoke", "Large Smoke", "Splash Potion", "Instant Potion", "Potion", "Beacon Effect", "Witch Spell", "Water Drip", "Lava Drip", "Angry Villager", "Happy Villager", "Mycelium", "Note", "Portal", "Enchantment", "Flame", "Lava", "Footstep", "Cloud", "Redstone", "Snowball", "Shovel Snow", "Slime", "Heart", "Barrier", "Item Eat / Break", "Blocks", "Block Dust", "Rain Drop", "Item Pickup", "Mob Appearance")
-
-    var entitiesCache = HashMap<Int, Int>()
 
     val ignores = listOf(2, 32, 38, 40, 41)
 
