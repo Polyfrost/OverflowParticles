@@ -11,7 +11,7 @@ import org.polyfrost.overflowparticles.OverflowParticles
 import org.polyfrost.overflowparticles.hook.EntityFXHook
 import java.util.ArrayList
 
-object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.UTIL_QOL, "/overflowparticles.svg"), "${OverflowParticles.MODID}.json") {
+object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.PVP, "/overflowparticles.svg"), "${OverflowParticles.MODID}.json") {
 
     var settings = Settings()
 
