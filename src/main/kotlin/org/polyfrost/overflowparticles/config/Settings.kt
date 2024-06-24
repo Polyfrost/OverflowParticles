@@ -67,6 +67,7 @@ class Settings {
     }
 
     var hasMigratedPatcher = false
+    var hasMigratedPatcherPt2CauseImStupid = false
     var hasMigratedParticlesEnhanced = false
 
     fun loadFrom(entry: Settings) {

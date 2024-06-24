@@ -47,29 +47,41 @@ object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.PVP, "/overflowpar
         subMods.add(MainConfig.mod)
         ConfigCore.subMods[this.mod] = subMods
 
-        if (!settings.hasMigratedPatcher) {
-            try {
-                Class.forName("club.sk1er.patcher.config.OldPatcherConfig")
-                var didAnything = false
-                if (OldPatcherConfig.cleanView) {
-                    settings.cleanView = OldPatcherConfig.cleanView
-                    didAnything = true
-                }
-                if (OldPatcherConfig.staticParticleColor) {
-                    settings.staticParticleColor = OldPatcherConfig.staticParticleColor
-                    didAnything = true
-                }
-                if (OldPatcherConfig.maxParticleLimit != 4000) {
-                    settings.maxParticleLimit = OldPatcherConfig.maxParticleLimit
-                    didAnything = true
-                }
-                settings.hasMigratedPatcher = true
-                save()
+        val patcher = try {
+            Class.forName("club.sk1er.patcher.config.OldPatcherConfig")
+            true
+        } catch (_: ClassNotFoundException) {
+            false
+        }
 
-                if (didAnything) {
-                    Notifications.INSTANCE.send("OverflowParticles", "Migrated Patcher settings replaced by OverflowParticles. Please check OverflowParticles's settings to make sure they are correct.")
-                }
-            } catch (_: ClassNotFoundException) {
+        var didAnythingForPatcher = false
+        if (!settings.hasMigratedPatcherPt2CauseImStupid && patcher) {
+            settings.hasMigratedPatcherPt2CauseImStupid = true
+            if (OldPatcherConfig.disableBlockBreakParticles) {
+                blockSetting.hideDigging = true
+                didAnythingForPatcher = true
+            }
+            save()
+        }
+
+        if (!settings.hasMigratedPatcher && patcher) {
+            if (OldPatcherConfig.cleanView) {
+                settings.cleanView = OldPatcherConfig.cleanView
+                didAnythingForPatcher = true
+            }
+            if (OldPatcherConfig.staticParticleColor) {
+                settings.staticParticleColor = OldPatcherConfig.staticParticleColor
+                didAnythingForPatcher = true
+            }
+            if (OldPatcherConfig.maxParticleLimit != 4000) {
+                settings.maxParticleLimit = OldPatcherConfig.maxParticleLimit
+                didAnythingForPatcher = true
+            }
+            settings.hasMigratedPatcher = true
+            save()
+
+            if (didAnythingForPatcher) {
+                Notifications.INSTANCE.send("OverflowParticles", "Migrated Patcher settings replaced by OverflowParticles. Please check OverflowParticles's settings to make sure they are correct.")
             }
         }
         if (!settings.hasMigratedParticlesEnhanced) {
