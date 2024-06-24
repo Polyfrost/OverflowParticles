@@ -9,8 +9,11 @@ Extremely precise and advanced particle mod for 1.8.9.
 ## Features
 
 - Per Particle Settings
-- Size & Amount Multiplier
+- Max Limit
+- No-Clip
 - Customizable Color
+- Size & Amount Multiplier
+- Fade Out
 
 ## Gallery
 
