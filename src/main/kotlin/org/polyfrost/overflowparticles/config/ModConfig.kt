@@ -1,7 +1,8 @@
 package org.polyfrost.overflowparticles.config
 
 import cc.polyfrost.oneconfig.config.Config
-import cc.polyfrost.oneconfig.config.data.*
+import cc.polyfrost.oneconfig.config.data.Mod
+import cc.polyfrost.oneconfig.config.data.ModType
 import cc.polyfrost.oneconfig.internal.config.core.ConfigCore
 import cc.polyfrost.oneconfig.utils.Notifications
 import club.sk1er.patcher.config.OldPatcherConfig
@@ -9,7 +10,6 @@ import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.OverflowParticles
 import org.polyfrost.overflowparticles.hook.EntityFXHook
-import java.util.ArrayList
 
 object ModConfig : Config(Mod(OverflowParticles.NAME, ModType.PVP, "/overflowparticles.svg"), "${OverflowParticles.MODID}.json") {
 

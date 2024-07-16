@@ -23,6 +23,7 @@
     "particles.EntityBreakingFXMixin",
     "particles.EntityDiggingFXMixin",
     "particles.EntityFootStepFXMixin",
-    "particles.EntityLargeExplodeFXMixin"
+    "particles.EntityLargeExplodeFXMixin",
+    "particles.EntityParticleEmitterMixin"
   ]
 }

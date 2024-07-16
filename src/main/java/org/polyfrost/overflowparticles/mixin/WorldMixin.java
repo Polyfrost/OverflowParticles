@@ -24,6 +24,10 @@ public class WorldMixin {
     @Inject(method = "spawnParticle(IZDDDDDD[I)V", at = @At("HEAD"), cancellable = true)
     private void multiplier(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xOffset, double yOffset, double zOffset, int[] arguments, CallbackInfo ci) {
         if (!isRemote) return;
+        if (UtilKt.getMultiplied()) {
+            UtilKt.setMultiplied(false);
+            return;
+        }
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(particleID);
         if (config == null || config.getEntry().getMultiplier() == 1 || config.getId() == 28) return;
         UtilKt.spawn(config, worldAccesses, particleID, ignoreRange, xCoord, yCoord, zCoord, xOffset, yOffset, zOffset, arguments);

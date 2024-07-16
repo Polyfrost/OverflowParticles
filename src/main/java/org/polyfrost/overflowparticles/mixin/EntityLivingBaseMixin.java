@@ -11,6 +11,7 @@ import org.polyfrost.overflowparticles.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.config.MainConfig;
 import org.polyfrost.overflowparticles.config.ModConfig;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.polyfrost.overflowparticles.utils.UtilKt;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -45,5 +46,17 @@ public abstract class EntityLivingBaseMixin extends Entity {
         }
 
         return instance.getMaterial();
+    }
+
+    @ModifyConstant(method = "onDeathUpdate", constant = @Constant(intValue = 20, ordinal = 1))
+    private int multiplier(int constant) {
+        ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(0);
+        if (config == null || config.getEntry().getMultiplier() == 1 || config.getId() == 28) return constant;
+        return (int) (constant * config.getEntry().getMultiplier());
+    }
+
+    @Inject(method = "onDeathUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"))
+    private void cancel(CallbackInfo ci) {
+        UtilKt.setMultiplied(true);
     }
 }
