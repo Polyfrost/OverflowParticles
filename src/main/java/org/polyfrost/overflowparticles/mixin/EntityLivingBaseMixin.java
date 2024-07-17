@@ -51,7 +51,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
     @ModifyConstant(method = "onDeathUpdate", constant = @Constant(intValue = 20, ordinal = 1))
     private int multiplier(int constant) {
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(0);
-        if (config == null || config.getEntry().getMultiplier() == 1 || config.getId() == 28) return constant;
+        if (config == null || config.getEntry().getMultiplier() == 1) return constant;
         return (int) (constant * config.getEntry().getMultiplier());
     }
 

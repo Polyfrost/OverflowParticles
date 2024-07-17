@@ -20,6 +20,7 @@
     "oneconfig.ConfigSliderMixin",
     "oneconfig.ModCardMixin",
     "particles.BarrierMixin",
+    "particles.EntityArrowMixin",
     "particles.EntityBreakingFXMixin",
     "particles.EntityDiggingFXMixin",
     "particles.EntityFootStepFXMixin",

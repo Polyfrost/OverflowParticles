@@ -21,7 +21,7 @@ public class EntityParticleEmitterMixin {
     @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 16))
     private int multiplier(int constant) {
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(particleTypes.getParticleID());
-        if (config == null || config.getEntry().getMultiplier() == 1 || config.getId() == 28) return constant;
+        if (config == null || config.getEntry().getMultiplier() == 1) return constant;
         return (int) (constant * config.getEntry().getMultiplier());
     }
 
