@@ -44,7 +44,7 @@ public abstract class EntityMixin {
         }
     }
 
-    @Inject(method = "spawnRunningParticles", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "createRunningParticles", at = @At("HEAD"), cancellable = true)
     private void runningParticle(CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
