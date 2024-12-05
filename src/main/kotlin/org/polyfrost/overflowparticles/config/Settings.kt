@@ -35,6 +35,9 @@ class Settings {
         min = 1f, max = 10000f
     )
     var maxParticleLimit = 4000
+        set(value) {
+            field = if (value in 1..10000) value else 4000
+        }
 
     @Switch(
         name = "Particles No-Clip",
