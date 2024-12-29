@@ -2,7 +2,7 @@
   "compatibilityLevel": "JAVA_8",
   "minVersion": "0.7",
   "package": "org.polyfrost.overflowparticles.mixin",
-  "refmap": "mixins.${id}.refmap.json",
+  "refmap": "mixins.${mod_id}.refmap.json",
   "injectors": {
     "maxShiftBy": 5
   },
@@ -16,8 +16,7 @@
     "RendererLivingEntityMixin",
     "WorldMixin",
     "WorldRendererMixin",
-    "oneconfig.ConfigCoreMixin",
-    "oneconfig.ConfigSliderMixin",
+    "event.EntityPlayerMixin_PlayerAttack",
     "oneconfig.ModCardMixin",
     "particles.BarrierMixin",
     "particles.EntityArrowMixin",

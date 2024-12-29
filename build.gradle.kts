@@ -15,7 +15,17 @@ plugins {
 
 toolkitLoomHelper {
     // Adds OneConfig to our project
-    useOneConfig(mcData.version, mcData.loader, "commands", "config-impl", "events", "internal", "ui")
+    useOneConfig {
+        version = "1.0.0-alpha.47"
+        loaderVersion = "1.1.0-alpha.34"
+
+        //usePolyMixin = true
+        //polyMixinVersion = "0.8.4+build.2"
+
+        for (module in arrayOf("commands", "config-impl", "events", "hud", "internal", "ui")) {
+            +module
+        }
+    }
     useDevAuth()
 
     // Removes the server configs from IntelliJ IDEA, leaving only client runs.
@@ -29,7 +39,6 @@ toolkitLoomHelper {
 
     // Adds the tweak class if we are building legacy version of forge as per the documentation (https://docs.polyfrost.org)
     if (mcData.isLegacyForge) {
-        useCoreMod("org.polyfrost.craftycrashes.plugin.LegacyCraftyCrashesLoadingPlugin")
         useTweaker("org.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker", GameSide.CLIENT)
         useForgeMixin(modData.id) // Configures the mixins if we are building for forge, useful for when we are dealing with cross-platform projects.
     }
@@ -49,12 +58,13 @@ sourceSets {
 repositories {
     mavenLocal()
     maven("https://repo.polyfrost.org/releases")
+    maven("https://repo.polyfrost.org/snapshots")
 }
 
 // Configures the libraries/dependencies for your mod.
 dependencies {
-    // If we are building for legacy forge, includes the launch wrapper with `shade` as we configured earlier.
-    if (mcData.isLegacyForge) {
-        compileOnly("org.spongepowered:mixin:0.7.11-SNAPSHOT")
-    }
+    compileOnly("io.github.llamalad7:mixinextras-common:0.4.1")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
+    compileOnly("org.polyfrost:polymixin:0.8.4+build.2")
+    implementation("org.polyfrost.oneconfig:internal:1.0.0-alpha.47")
 }

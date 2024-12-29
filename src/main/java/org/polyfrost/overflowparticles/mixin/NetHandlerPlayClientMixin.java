@@ -19,7 +19,7 @@ public class NetHandlerPlayClientMixin {
     private void serverFalling(S2APacketParticles packetIn, CallbackInfo ci) {
         if (packetIn.getParticleType() != EnumParticleTypes.BLOCK_DUST) return;
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
-        if (!config.enabled) ci.cancel();
+        if (!config.getEntry().getEnabled()) ci.cancel();
         BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();
         if (entry.getHideRunning()) ci.cancel();
     }

@@ -6,9 +6,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.BlockParticleEntry;
-import org.polyfrost.overflowparticles.config.MainConfig;
 import org.polyfrost.overflowparticles.config.ModConfig;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.polyfrost.overflowparticles.config.Settings;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -29,7 +29,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "getBrightnessForRender", at = @At("HEAD"), cancellable = true)
     private void staticColor(float partialTicks, CallbackInfoReturnable<Integer> cir) {
-        if (MainConfig.INSTANCE.getSettings().getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
+        if (Settings.INSTANCE.getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
             cir.setReturnValue(15728880);
         }
     }
@@ -37,7 +37,7 @@ public abstract class EntityMixin {
     @Inject(method = "moveEntity", at = @At("HEAD"), cancellable = true)
     private void enableNoClip(double x, double y, double z, CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
-        if (MainConfig.INSTANCE.getSettings().getParticleNoClip() && ((Entity) (Object) this) instanceof EntityFX) {
+        if (Settings.INSTANCE.getParticleNoClip() && ((Entity) (Object) this) instanceof EntityFX) {
             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
             this.resetPositionToBB();
             ci.cancel();
@@ -48,10 +48,10 @@ public abstract class EntityMixin {
     private void runningParticle(CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
-        if (!config.enabled) ci.cancel();
+        if (!config.getEntry().getEnabled()) ci.cancel();
         BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();
         if (entry.getHideRunning()) {
-            if (entry.getHideMode()) {
+            if (entry.getHideMode() == 1) {
                 ci.cancel();
             } else if (!((Entity) (Object) this).isInvisible()) {
                 ci.cancel();

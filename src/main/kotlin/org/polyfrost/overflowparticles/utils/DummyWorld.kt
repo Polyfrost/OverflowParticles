@@ -8,7 +8,7 @@ import net.minecraft.world.*
 import net.minecraft.world.gen.ChunkProviderDebug
 
 object DummyWorld : World(null, null, WorldProviderSurface(), null, true) {
-    val Sheep = EntitySheep(DummyWorld)
+    val SHEEP = EntitySheep(DummyWorld)
 
     init {
         chunkProvider = createChunkProvider()

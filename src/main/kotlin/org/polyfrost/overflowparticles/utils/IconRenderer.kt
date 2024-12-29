@@ -1,10 +1,5 @@
 package org.polyfrost.overflowparticles.utils
 
-import cc.polyfrost.oneconfig.events.event.*
-import cc.polyfrost.oneconfig.gui.OneConfigGui
-import cc.polyfrost.oneconfig.libs.eventbus.Subscribe
-import cc.polyfrost.oneconfig.libs.universal.UResolution
-import cc.polyfrost.oneconfig.utils.dsl.mc
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.*
@@ -15,6 +10,11 @@ import net.minecraft.util.*
 import net.minecraftforge.client.event.GuiScreenEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.lwjgl.opengl.GL11
+import org.polyfrost.oneconfig.api.event.v1.events.TickEvent
+import org.polyfrost.oneconfig.api.event.v1.invoke.impl.Subscribe
+import org.polyfrost.oneconfig.api.ui.v1.internal.wrappers.PolyUIScreen
+import org.polyfrost.oneconfig.utils.v1.dsl.mc
+import org.polyfrost.universal.UResolution
 import java.util.*
 import kotlin.math.*
 import net.minecraft.client.renderer.GlStateManager as GL
@@ -40,10 +40,11 @@ object IconRenderer {
     @SubscribeEvent
     fun draw(e: GuiScreenEvent.DrawScreenEvent.Post) {
         if (particleInfo.isEmpty()) return
-        val oneConfigGui = mc.currentScreen as? OneConfigGui ?: return
+        val oneConfigGui = mc.currentScreen as? PolyUIScreen ?: return
+        if (oneConfigGui.polyUI.window == null) return
         val unscaleMC = 1 / UResolution.scaleFactor
-        val oneUIScale = OneConfigGui.getScaleFactor() * oneConfigGui.animationScaleFactor
-        val rawX = ((UResolution.windowWidth - 1200 * oneUIScale) / 2f).toInt()
+        val oneUIScale = 1f
+        val rawX = ((UResolution.windowWidth - 1200 * oneUIScale) / 2f).toInt() //todo What the hell bro
         val rawY = ((UResolution.windowHeight - 800 * oneUIScale) / 2f).toInt()
         GL.pushMatrix()
         GL11.glEnable(GL11.GL_SCISSOR_TEST)
@@ -66,7 +67,7 @@ object IconRenderer {
         RenderHelper.enableGUIStandardItemLighting()
         val itemRenderer = mc.renderItem
         if (id == 0) {
-            drawEntityPointingMouse(DummyWorld.Sheep, x.toInt() - 8, y.toInt() + 6)
+            drawEntityPointingMouse(DummyWorld.SHEEP, x.toInt() - 8, y.toInt() + 6)
         } else {
             GL.translate(x, y, 0f)
             val item = ItemStack(when (id) {
@@ -249,8 +250,7 @@ object IconRenderer {
     }
 
     @Subscribe
-    fun change(e: TickEvent) {
-        if (e.stage != Stage.START) return
+    fun change(e: TickEvent.Start) {
         animation++
         if (animation > 31) animation = 0
         if (reverse) index-- else index++

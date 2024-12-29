@@ -15,7 +15,7 @@ fun setParticleEntityID(entity: EntityFX, id: Int) {
 }
 
 fun color(color: Int, targetColor: Float, cfg: ParticleConfig): Float =
-    if (cfg.entry.customColor) color / 255f * if (cfg.entry.colorMode) 1f else targetColor else targetColor
+    if (cfg.entry.customColor) color / 255f * if (cfg.entry.colorMode == 1) 1f else targetColor else targetColor
 
 fun colorInt(color: Int, targetColor: Float, cfg: ParticleConfig): Int = (color(color, targetColor, cfg) * 255f).toInt()
 
@@ -25,7 +25,7 @@ fun spawn(config: ParticleConfig, worldAccesses: List<IWorldAccess>, particleID:
             val modX = x - 0.5 + Math.random()
             val modY = y - 0.5 + Math.random()
             val modZ = z - 0.5 + Math.random()
-            worldAccess.spawnParticle(particleID, ignoreRange, modX, modY, modZ, xOffset, yOffset, zOffset, *arguments);
+            worldAccess.spawnParticle(particleID, ignoreRange, modX, modY, modZ, xOffset, yOffset, zOffset, *arguments)
         }
     }
 }

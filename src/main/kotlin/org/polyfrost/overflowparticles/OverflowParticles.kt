@@ -1,16 +1,17 @@
 package org.polyfrost.overflowparticles
 
-import cc.polyfrost.oneconfig.events.EventManager
 import net.minecraft.client.particle.EntityFX
 import net.minecraft.util.EnumParticleTypes
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
+import org.polyfrost.oneconfig.api.event.v1.EventManager
 import org.polyfrost.overflowparticles.config.ModConfig
 import org.polyfrost.overflowparticles.config.ParticleConfig
+import org.polyfrost.overflowparticles.config.Settings
 import org.polyfrost.overflowparticles.utils.IconRenderer
 
-@Mod(modid = OverflowParticles.MODID, name = OverflowParticles.NAME, version = OverflowParticles.VERSION, modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter")
+@Mod(modid = OverflowParticles.MODID, name = OverflowParticles.NAME, version = OverflowParticles.VERSION, modLanguageAdapter = "org.polyfrost.oneconfig.utils.v1.forge.KotlinLanguageAdapter")
 object OverflowParticles {
     const val MODID = "@ID@"
     const val NAME = "@NAME@"
@@ -31,6 +32,8 @@ object OverflowParticles {
     @Mod.EventHandler
     fun onInit(event: FMLInitializationEvent) {
         ModConfig
+        Settings
+        IdkImRenamingThisLater
         MinecraftForge.EVENT_BUS.register(IconRenderer)
         EventManager.INSTANCE.register(IconRenderer)
     }

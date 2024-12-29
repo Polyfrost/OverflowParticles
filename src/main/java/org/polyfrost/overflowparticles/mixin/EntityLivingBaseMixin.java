@@ -1,19 +1,22 @@
 package org.polyfrost.overflowparticles.mixin;
 
-import cc.polyfrost.oneconfig.libs.universal.UMinecraft;
-import net.minecraft.block.Block;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.BlockParticleEntry;
-import org.polyfrost.overflowparticles.config.MainConfig;
 import org.polyfrost.overflowparticles.config.ModConfig;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.polyfrost.overflowparticles.config.Settings;
 import org.polyfrost.overflowparticles.utils.UtilKt;
+import org.polyfrost.universal.UMinecraft;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLivingBase.class)
@@ -26,26 +29,26 @@ public abstract class EntityLivingBaseMixin extends Entity {
     @Inject(method = "updatePotionEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"), cancellable = true)
     private void cleanView(CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
-        if (MainConfig.INSTANCE.getSettings().getCleanView() && (Object) this == UMinecraft.getPlayer()) {
+        if (Settings.INSTANCE.getCleanView() && (Object) this == UMinecraft.getPlayer()) {
             ci.cancel();
         }
     }
 
-    @Redirect(method = "updateFallState", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getMaterial()Lnet/minecraft/block/material/Material;"))
-    private Material fall(Block instance) {
-        if (worldObj != null && !worldObj.isRemote) return instance.getMaterial();
+    @ModifyExpressionValue(method = "updateFallState", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;getMaterial()Lnet/minecraft/block/material/Material;"))
+    private Material fall(Material original) {
+        if (worldObj != null && !worldObj.isRemote) return original;
         ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
-        if (!config.enabled) return Material.air;
+        if (!config.getEntry().getEnabled()) return Material.air;
         BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();
         if (entry.getHideRunning()) {
-            if (entry.getHideMode()) {
+            if (entry.getHideMode() == 1) {
                 return Material.air;
             } else if (!isInvisible()) {
                 return Material.air;
             }
         }
 
-        return instance.getMaterial();
+        return original;
     }
 
     @ModifyConstant(method = "onDeathUpdate", constant = @Constant(intValue = 20, ordinal = 1))
