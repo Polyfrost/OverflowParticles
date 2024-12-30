@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.polyfrost.overflowparticles.OverflowParticles;
-import org.polyfrost.overflowparticles.config.ModConfig;
+import org.polyfrost.overflowparticles.config.ConfigManager;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
 import org.polyfrost.overflowparticles.config.Settings;
 import org.polyfrost.overflowparticles.utils.UtilKt;
@@ -26,27 +26,17 @@ public abstract class EffectRendererMixin {
     @Unique
     private int overflowParticles$ID;
 
-    //@WrapOperation(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
-    //private void a(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, Operation<Void> original) {
-    //    OverflowParticles.INSTANCE.setRenderingEntity(instance);
-    //    ParticleConfig config = ModConfig.INSTANCE.getConfig(instance);
-    //    if (config != null && !config.getEntry().getEnabled() && config.getId() != 37) return;
-    //    OverflowParticles.INSTANCE.setRendering(true);
-    //    original.call(instance, worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-    //    OverflowParticles.INSTANCE.setRendering(false);
-    //}
-
-    @Redirect(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
-    private void a(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+    @WrapOperation(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
+    private void a(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, Operation<Void> original) {
         OverflowParticles.INSTANCE.setRenderingEntity(instance);
-        ParticleConfig config = ModConfig.INSTANCE.getConfig(instance);
-        if (config != null && !config.getEntry().getEnabled() && config.getId() != 37) return;
+        ParticleConfig config = ConfigManager.INSTANCE.getConfig(instance);
+        if (config != null && !config.getEnabled() && config.getId() != 37) return;
         OverflowParticles.INSTANCE.setRendering(true);
-        instance.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        original.call(instance, worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         OverflowParticles.INSTANCE.setRendering(false);
     }
 
-
+    @SuppressWarnings("MixinAnnotationTarget")
     @ModifyVariable(method = "renderParticles", at = @At(value = "STORE"), ordinal = 0)
     private EntityFX capture(EntityFX entityFX) {
         OverflowParticles.INSTANCE.setRenderingEntity(entityFX);
@@ -72,8 +62,8 @@ public abstract class EffectRendererMixin {
     @Inject(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
     private void end(Entity entityIn, float partialTicks, CallbackInfo ci) {
         OverflowParticles.INSTANCE.setRendering(false);
-        ParticleConfig config = ModConfig.INSTANCE.getConfig(OverflowParticles.INSTANCE.getRenderingEntity());
-        if (config != null && !config.getEntry().getEnabled() && config.getId() != 37) {
+        ParticleConfig config = ConfigManager.INSTANCE.getConfig(OverflowParticles.INSTANCE.getRenderingEntity());
+        if (config != null && !config.getEnabled() && config.getId() != 37) {
             Tessellator.getInstance().getWorldRenderer().reset();
         }
         Tessellator.getInstance().draw();
@@ -110,7 +100,7 @@ public abstract class EffectRendererMixin {
             at = @At("HEAD"), cancellable = true
     )
     private void removeBlockBreakingParticles(CallbackInfo ci) {
-        if (!OverflowParticles.INSTANCE.getConfigs().get(37).getEntry().getEnabled() || ModConfig.INSTANCE.getBlockSetting().getHideDigging()) {
+        if (!ConfigManager.INSTANCE.getConfigs().get(37).getEnabled() || ConfigManager.INSTANCE.getBlockSetting().getHideDigging()) {
             ci.cancel();
         }
     }
@@ -120,7 +110,7 @@ public abstract class EffectRendererMixin {
             at = @At("HEAD"), cancellable = true, remap = false
     )
     private void removeBlockBreakingParticles_Forge(CallbackInfo ci) {
-        if (!OverflowParticles.INSTANCE.getConfigs().get(37).getEntry().getEnabled() || ModConfig.INSTANCE.getBlockSetting().getHideDigging()) {
+        if (!ConfigManager.INSTANCE.getConfigs().get(37).getEnabled() || ConfigManager.INSTANCE.getBlockSetting().getHideDigging()) {
             ci.cancel();
         }
     }

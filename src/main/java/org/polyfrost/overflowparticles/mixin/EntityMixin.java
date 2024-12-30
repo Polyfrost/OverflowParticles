@@ -4,9 +4,8 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.BlockParticleEntry;
-import org.polyfrost.overflowparticles.config.ModConfig;
+import org.polyfrost.overflowparticles.config.ConfigManager;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
 import org.polyfrost.overflowparticles.config.Settings;
 import org.spongepowered.asm.mixin.*;
@@ -47,9 +46,9 @@ public abstract class EntityMixin {
     @Inject(method = "createRunningParticles", at = @At("HEAD"), cancellable = true)
     private void runningParticle(CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
-        ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(37);
-        if (!config.getEntry().getEnabled()) ci.cancel();
-        BlockParticleEntry entry = ModConfig.INSTANCE.getBlockSetting();
+        ParticleConfig config = ConfigManager.INSTANCE.getConfigs().get(37);
+        if (!config.getEnabled()) ci.cancel();
+        BlockParticleEntry entry = ConfigManager.INSTANCE.getBlockSetting();
         if (entry.getHideRunning()) {
             if (entry.getHideMode() == 1) {
                 ci.cancel();

@@ -16,17 +16,18 @@ plugins {
 toolkitLoomHelper {
     // Adds OneConfig to our project
     useOneConfig {
-        version = "1.0.0-alpha.47"
-        loaderVersion = "1.1.0-alpha.34"
+        version = "1.0.0-alpha.48"
+        loaderVersion = "1.1.0-alpha.35"
 
-        //usePolyMixin = true
-        //polyMixinVersion = "0.8.4+build.2"
+        usePolyMixin = true
+        polyMixinVersion = "0.8.4+build.2"
 
         for (module in arrayOf("commands", "config-impl", "events", "hud", "internal", "ui")) {
             +module
         }
     }
-    useDevAuth()
+    useMixinExtras("0.4.1")
+    useDevAuth("1.2.1")
 
     // Removes the server configs from IntelliJ IDEA, leaving only client runs.
     // If you're developing a server-side mod, you can remove this line.
@@ -39,7 +40,6 @@ toolkitLoomHelper {
 
     // Adds the tweak class if we are building legacy version of forge as per the documentation (https://docs.polyfrost.org)
     if (mcData.isLegacyForge) {
-        useTweaker("org.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker", GameSide.CLIENT)
         useForgeMixin(modData.id) // Configures the mixins if we are building for forge, useful for when we are dealing with cross-platform projects.
     }
 }
@@ -63,8 +63,5 @@ repositories {
 
 // Configures the libraries/dependencies for your mod.
 dependencies {
-    compileOnly("io.github.llamalad7:mixinextras-common:0.4.1")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
-    compileOnly("org.polyfrost:polymixin:0.8.4+build.2")
-    implementation("org.polyfrost.oneconfig:internal:1.0.0-alpha.47")
+    implementation("org.polyfrost.oneconfig:internal:1.0.0-alpha.48")
 }

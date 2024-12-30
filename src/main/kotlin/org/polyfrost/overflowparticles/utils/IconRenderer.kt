@@ -14,6 +14,7 @@ import org.polyfrost.oneconfig.api.event.v1.events.TickEvent
 import org.polyfrost.oneconfig.api.event.v1.invoke.impl.Subscribe
 import org.polyfrost.oneconfig.api.ui.v1.internal.wrappers.PolyUIScreen
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
+import org.polyfrost.polyui.PolyUI
 import org.polyfrost.universal.UResolution
 import java.util.*
 import kotlin.math.*
@@ -251,6 +252,7 @@ object IconRenderer {
 
     @Subscribe
     fun change(e: TickEvent.Start) {
+        nukeDebugMode()
         animation++
         if (animation > 31) animation = 0
         if (reverse) index-- else index++
@@ -266,6 +268,17 @@ object IconRenderer {
             update = 30
         }
         update--
+    }
+
+    private fun nukeDebugMode() {
+        if (mc.currentScreen is PolyUIScreen) {
+            val polyUI = (mc.currentScreen as PolyUIScreen).polyUI
+            if (polyUI.settings.debug) {
+                polyUI.settings.debug = !polyUI.settings.debug
+                polyUI.master.needsRedraw = true
+                println("Debug mode FALSE")
+            }
+        }
     }
 
 }

@@ -4,14 +4,11 @@ import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.polyfrost.oneconfig.api.config.v1.Config
 import org.polyfrost.oneconfig.api.config.v1.Tree
-import org.polyfrost.oneconfig.api.config.v1.annotations.Accordion
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
-import org.polyfrost.oneconfig.utils.v1.MHUtils.getAnnotationValues
-import org.polyfrost.overflowparticles.OverflowParticles
 
 object Settings : Config("overflowparticles.json", "overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
 
@@ -66,17 +63,11 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
     @Include var hasMigratedParticlesEnhanced = false
 
     init {
-        OverflowParticles.fillConfigs()
+        ConfigManager.fillConfigs()
         val collector = OneConfigCollector()
         var i = -1
-        for (particle in OverflowParticles.configs) {
+        for (particle in ConfigManager.configs) {
             i++
-            val accordion = Accordion(
-                title = particle.value.name,
-                description = "Settings for the ${particle.value.name} particle.",
-                //icon
-                subcategory = "Particles"
-            )
             try {
                 val t: Tree = Tree.tree("Particle${particle.key}")
                 t.addMetadata(mapOf(
@@ -89,11 +80,11 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                     "index" to i
                 ))
                 if (particle.value.id == 37) {
-                    collector.handle(t, ModConfig.blockSetting, 0)
+                    collector.handle(t, ConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {
-                    collector.handle(t, particle.value.entry, 0)
-                    particle.value.entry.handle(t)
+                    collector.handle(t, particle.value, 0)
+                    particle.value.handle(t)
                 }
                 tree.put(t)
             } catch (e: Exception) {
@@ -116,7 +107,7 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
             var didAnythingForPatcher = false
 
             if (OldPatcherConfig.disableBlockBreakParticles) {
-                ModConfig.blockSetting.hideDigging = true
+                ConfigManager.blockSetting.hideDigging = true
                 didAnythingForPatcher = true
             }
             if (OldPatcherConfig.cleanView) {
@@ -156,22 +147,22 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                 }
                 ParticlesEnhancedConfig.checkInvulnerable = checkInvulnerable
                 if (!ParticlesEnhancedConfig.fade) {
-                    for (i in ModConfig.particles) {
+                    for (i in ConfigManager.configs) {
                         i.value.fade = false
                     }
-                    ModConfig.blockSetting.fade = false
+                    ConfigManager.blockSetting.fade = false
                     didAnything = true
                 }
                 if (ParticlesEnhancedConfig.fadeOutStart != 0.5f) {
-                    for (i in ModConfig.particles) {
+                    for (i in ConfigManager.configs) {
                         i.value.fadeStart = ParticlesEnhancedConfig.fadeOutStart
                     }
-                    ModConfig.blockSetting.fadeStart = ParticlesEnhancedConfig.fadeOutStart
+                    ConfigManager.blockSetting.fadeStart = ParticlesEnhancedConfig.fadeOutStart
                     didAnything = true
                 }
                 if (ParticlesEnhancedConfig.critMultiplier != 1) {
-                    for (i in ModConfig.particles) {
-                        if (i.key == "Critical") {
+                    for (i in ConfigManager.configs) {
+                        if (i.value.name == "Critical") {
                             i.value.multiplier = ParticlesEnhancedConfig.critMultiplier.toFloat()
                             ParticlesEnhancedConfig.critMultiplier = 1
                             didAnything = true
@@ -179,8 +170,8 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                     }
                 }
                 if (ParticlesEnhancedConfig.sharpMultiplier != 1) {
-                    for (i in ModConfig.particles) {
-                        if (i.key == "Sharpness") {
+                    for (i in ConfigManager.configs) {
+                        if (i.value.name == "Sharpness") {
                             i.value.multiplier = ParticlesEnhancedConfig.sharpMultiplier.toFloat()
                             ParticlesEnhancedConfig.sharpMultiplier = 1
                             didAnything = true

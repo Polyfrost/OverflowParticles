@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.*;
 public class EntityFootStepFXMixin {
     @ModifyConstant(method = "renderParticle", constant = @Constant(floatValue = 0.125f))
     private float scale(float constant) {
-        ParticleConfig config = ModConfig.INSTANCE.getConfig((EntityFX) (Object) this);
-        return constant * (config == null ? 1 : Math.min(config.getEntry().getSize(), 1f));
+        ParticleConfig config = ConfigManager.INSTANCE.getConfig((EntityFX) (Object) this);
+        return constant * (config == null ? 1 : Math.min(config.getSize(), 1f));
     }
 }

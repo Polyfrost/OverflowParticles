@@ -26,16 +26,15 @@ public abstract class EntityFXMixin implements EntityFXHook {
     @Inject(method = "renderParticle", at = @At(value = "HEAD"))
     private void setScale(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
         overflowParticles$scale = particleScale;
-        ParticleConfig config = ModConfig.INSTANCE.getConfig((EntityFX) (Object) this);
+        ParticleConfig config = ConfigManager.INSTANCE.getConfig((EntityFX) (Object) this);
         if (config == null) return;
-        ParticleEntry entry = config.getEntry();
-        particleScale *= entry.getSize();
+        particleScale *= config.getSize();
         int id = config.getId();
-        boolean fade = entry.getFade();
-        float fadeStart = entry.getFadeStart();
+        boolean fade = config.getFade();
+        float fadeStart = config.getFadeStart();
         if (id == 37) {
-            fade = ModConfig.INSTANCE.getBlockSetting().getFade();
-            fadeStart = ModConfig.INSTANCE.getBlockSetting().getFadeStart();
+            fade = ConfigManager.INSTANCE.getBlockSetting().getFade();
+            fadeStart = ConfigManager.INSTANCE.getBlockSetting().getFadeStart();
         }
 
         float age = (float) particleAge / particleMaxAge;

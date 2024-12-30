@@ -52,7 +52,7 @@ object IdkImRenamingThisLater {
                 doSharpness(event.player, event.target)
                 doCritical(event.player, event.target)
             }
-        }
+        }.register()
     }
 
     private fun doCritical(attacker: EntityPlayer, target: Entity) {

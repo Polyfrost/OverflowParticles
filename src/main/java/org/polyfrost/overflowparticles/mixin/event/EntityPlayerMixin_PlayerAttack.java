@@ -15,7 +15,7 @@ public class EntityPlayerMixin_PlayerAttack {
 
     @Unique private final EntityPlayer overflowParticles$self = (EntityPlayer) (Object) this;
 
-    @Inject(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;canAttackWithItem()Z"))
+    @Inject(method = "attackTargetEntityWithCurrentItem", at = @At("HEAD"))
     private void callEvent(Entity target, CallbackInfo ci) {
         EventManager.INSTANCE.post(new AttackEntityEvent(overflowParticles$self, target));
     }

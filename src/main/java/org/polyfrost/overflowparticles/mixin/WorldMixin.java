@@ -2,8 +2,8 @@ package org.polyfrost.overflowparticles.mixin;
 
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
-import org.polyfrost.overflowparticles.OverflowParticles;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
+import org.polyfrost.overflowparticles.config.ConfigManager;
 import org.polyfrost.overflowparticles.utils.UtilKt;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,8 +28,8 @@ public class WorldMixin {
             UtilKt.setMultiplied(false);
             return;
         }
-        ParticleConfig config = OverflowParticles.INSTANCE.getConfigs().get(particleID);
-        if (config == null || config.getEntry().getMultiplier() == 1 || config.getId() == 28) return;
+        ParticleConfig config = ConfigManager.INSTANCE.getConfigs().get(particleID);
+        if (config == null || config.getMultiplier() == 1 || config.getId() == 28) return;
         UtilKt.spawn(config, worldAccesses, particleID, ignoreRange, xCoord, yCoord, zCoord, xOffset, yOffset, zOffset, arguments);
         ci.cancel();
     }
