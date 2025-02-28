@@ -16,7 +16,7 @@ class Settings {
 
     @Switch(
         name = "Clean View",
-        description = "Stop rendering your own potion effect particles.",
+        description = "Stop rendering your own particles.",
         subcategory = "Features"
     )
     var cleanView = false
