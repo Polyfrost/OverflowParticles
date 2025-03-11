@@ -1,6 +1,7 @@
 package org.polyfrost.overflowparticles.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import dev.deftu.omnicore.client.OmniClientPlayer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +11,6 @@ import org.polyfrost.overflowparticles.config.ConfigManager;
 import org.polyfrost.overflowparticles.config.ParticleConfig;
 import org.polyfrost.overflowparticles.config.Settings;
 import org.polyfrost.overflowparticles.utils.UtilKt;
-import org.polyfrost.universal.UMinecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -28,7 +28,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
     @Inject(method = "updatePotionEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"), cancellable = true)
     private void cleanView(CallbackInfo ci) {
         if (worldObj != null && !worldObj.isRemote) return;
-        if (Settings.INSTANCE.getCleanView() && (Object) this == UMinecraft.getPlayer()) {
+        if (Settings.INSTANCE.getCleanView() && (Object) this == OmniClientPlayer.getInstance()) {
             ci.cancel();
         }
     }

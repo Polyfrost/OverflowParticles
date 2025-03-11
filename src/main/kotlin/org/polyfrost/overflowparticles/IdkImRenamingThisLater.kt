@@ -10,7 +10,7 @@ import net.minecraft.network.play.server.S19PacketEntityStatus
 import net.minecraft.potion.Potion
 import net.minecraft.util.EnumParticleTypes
 import org.polyfrost.oneconfig.api.event.v1.eventHandler
-import org.polyfrost.oneconfig.api.event.v1.events.ReceivePacketEvent
+import org.polyfrost.oneconfig.api.event.v1.events.PacketEvent
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
 import org.polyfrost.overflowparticles.config.Settings
 import org.polyfrost.overflowparticles.event.AttackEntityEvent
@@ -24,7 +24,7 @@ object IdkImRenamingThisLater {
     private var targetId = -1
 
     init {
-        eventHandler { event: ReceivePacketEvent ->
+        eventHandler { event: PacketEvent.Receive ->
             if (!Settings.checkInvulnerable) return@eventHandler
 
             val packet: Packet<*> = event.getPacket()

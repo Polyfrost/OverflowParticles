@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.utils
 
+import dev.deftu.omnicore.client.render.OmniResolution
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.renderer.*
@@ -14,8 +15,6 @@ import org.polyfrost.oneconfig.api.event.v1.events.TickEvent
 import org.polyfrost.oneconfig.api.event.v1.invoke.impl.Subscribe
 import org.polyfrost.oneconfig.api.ui.v1.internal.wrappers.PolyUIScreen
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
-import org.polyfrost.polyui.PolyUI
-import org.polyfrost.universal.UResolution
 import java.util.*
 import kotlin.math.*
 import net.minecraft.client.renderer.GlStateManager as GL
@@ -43,10 +42,10 @@ object IconRenderer {
         if (particleInfo.isEmpty()) return
         val oneConfigGui = mc.currentScreen as? PolyUIScreen ?: return
         if (oneConfigGui.polyUI.window == null) return
-        val unscaleMC = 1 / UResolution.scaleFactor
+        val unscaleMC = 1 / OmniResolution.scaleFactor
         val oneUIScale = 1f
-        val rawX = ((UResolution.windowWidth - 1200 * oneUIScale) / 2f).toInt() //todo What the hell bro
-        val rawY = ((UResolution.windowHeight - 800 * oneUIScale) / 2f).toInt()
+        val rawX = ((OmniResolution.viewportWidth - 1200 * oneUIScale) / 2f).toInt() //todo What the hell bro
+        val rawY = ((OmniResolution.viewportHeight - 800 * oneUIScale) / 2f).toInt()
         GL.pushMatrix()
         GL11.glEnable(GL11.GL_SCISSOR_TEST)
         GL11.glScissor((rawX + 244 * oneUIScale).toInt(), rawY, (956 * oneUIScale).toInt(), (728 * oneUIScale).toInt())
