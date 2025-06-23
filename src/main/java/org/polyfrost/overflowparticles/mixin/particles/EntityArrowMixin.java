@@ -2,9 +2,9 @@ package org.polyfrost.overflowparticles.mixin.particles;
 
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.EnumParticleTypes;
-import org.polyfrost.overflowparticles.config.ParticleConfig;
-import org.polyfrost.overflowparticles.config.ConfigManager;
-import org.polyfrost.overflowparticles.utils.UtilKt;
+import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.utils.ParticleSpawnerKt;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -17,20 +17,27 @@ public class EntityArrowMixin {
 
     @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 4, ordinal = 0))
     private int multiplier(int constant) {
-        ParticleConfig config = ConfigManager.INSTANCE.getConfigs().get(EnumParticleTypes.CRIT.getParticleID());
-        if (config == null || config.getMultiplier() == 1) return constant;
+        ParticleConfig config = PerParticleConfigManager.getConfigs().get(EnumParticleTypes.CRIT.getParticleID());
+        if (config == null || config.getMultiplier() == 1) {
+            return constant;
+        }
+
         return (int) (constant * config.getMultiplier());
     }
 
     @ModifyConstant(method = "onUpdate", constant = @Constant(doubleValue = 4.0D))
     private double multiplier1(double constant) {
-        ParticleConfig config = ConfigManager.INSTANCE.getConfigs().get(EnumParticleTypes.CRIT.getParticleID());
-        if (config == null || config.getMultiplier() == 1) return constant;
+        ParticleConfig config = PerParticleConfigManager.getConfigs().get(EnumParticleTypes.CRIT.getParticleID());
+        if (config == null || config.getMultiplier() == 1) {
+            return constant;
+        }
+
         return (int) (constant * config.getMultiplier());
     }
 
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V", ordinal = 0))
     private void cancel(CallbackInfo ci) {
-        UtilKt.setMultiplied(true);
+        ParticleSpawnerKt.setMultiplied(true);
     }
+
 }

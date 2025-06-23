@@ -4,17 +4,22 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import org.polyfrost.overflowparticles.config.BlockParticleEntry;
-import org.polyfrost.overflowparticles.config.ConfigManager;
-import org.polyfrost.overflowparticles.config.ParticleConfig;
-import org.polyfrost.overflowparticles.config.Settings;
+import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
+import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
+//#if MC >= 1.12.2
+//$$ import net.minecraft.entity.MovementType;
+//#endif
+
 @SuppressWarnings({"ConstantConditions"})
 @Mixin(Entity.class)
 public abstract class EntityMixin {
+
     @Shadow
     public abstract void setEntityBoundingBox(AxisAlignedBB bb);
 
@@ -26,17 +31,21 @@ public abstract class EntityMixin {
 
     @Shadow public World worldObj;
 
-    @Inject(method = "getBrightnessForRender", at = @At("HEAD"), cancellable = true)
-    private void staticColor(float partialTicks, CallbackInfoReturnable<Integer> cir) {
-        if (Settings.INSTANCE.getStaticParticleColor() && ((Entity) (Object) this) instanceof EntityFX) {
-            cir.setReturnValue(15728880);
-        }
-    }
-
     @Inject(method = "moveEntity", at = @At("HEAD"), cancellable = true)
-    private void enableNoClip(double x, double y, double z, CallbackInfo ci) {
-        if (worldObj != null && !worldObj.isRemote) return;
-        if (Settings.INSTANCE.getParticleNoClip() && ((Entity) (Object) this) instanceof EntityFX) {
+    private void enableNoClip(
+            //#if MC >= 1.12.2
+            //$$ MovementType type,
+            //#endif
+            double x,
+            double y,
+            double z,
+            CallbackInfo ci
+    ) {
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            return;
+        }
+
+        if (OverflowParticlesConfig.INSTANCE.getParticleNoClip() && ((Entity) (Object) this) instanceof EntityFX) {
             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
             this.resetPositionToBB();
             ci.cancel();
@@ -45,10 +54,16 @@ public abstract class EntityMixin {
 
     @Inject(method = "createRunningParticles", at = @At("HEAD"), cancellable = true)
     private void runningParticle(CallbackInfo ci) {
-        if (worldObj != null && !worldObj.isRemote) return;
-        ParticleConfig config = ConfigManager.INSTANCE.getConfigs().get(37);
-        if (!config.getEnabled()) ci.cancel();
-        BlockParticleEntry entry = ConfigManager.INSTANCE.getBlockSetting();
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            return;
+        }
+
+        ParticleConfig config = PerParticleConfigManager.getConfigs().get(37);
+        if (!config.getEnabled()) {
+            ci.cancel();
+        }
+
+        BlockParticleEntry entry = PerParticleConfigManager.getBlockSetting();
         if (entry.getHideRunning()) {
             if (entry.getHideMode() == 1) {
                 ci.cancel();
@@ -57,4 +72,5 @@ public abstract class EntityMixin {
             }
         }
     }
+
 }

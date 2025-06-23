@@ -1,18 +1,12 @@
-package org.polyfrost.overflowparticles.utils
+@file:JvmName("ParticleSpawner")
 
-import net.minecraft.client.particle.EntityFX
+package org.polyfrost.overflowparticles.client.utils
+
 import net.minecraft.world.IWorldAccess
-import org.polyfrost.overflowparticles.config.ParticleConfig
-import org.polyfrost.overflowparticles.hook.EntityFXHook
+import org.polyfrost.overflowparticles.client.config.ParticleConfig
 import kotlin.math.ceil
 
-var multiplied = false
-
-fun setParticleEntityID(entity: EntityFX, id: Int) {
-    if (entity is EntityFXHook) {
-        entity.`overflowParticles$setParticleID`(id)
-    }
-}
+var isMultiplied = false
 
 fun color(color: Int, targetColor: Float, cfg: ParticleConfig): Float =
     if (cfg.customColor) color / 255f * if (cfg.colorMode == 1) 1f else targetColor else targetColor

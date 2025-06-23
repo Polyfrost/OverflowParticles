@@ -1,16 +1,23 @@
-package org.polyfrost.overflowparticles.utils
+package org.polyfrost.overflowparticles.client.utils
 
+import dev.deftu.eventbus.SubscribeEvent
+import dev.deftu.omnicore.OmniCore
+import dev.deftu.omnicore.client.events.ScreenEvent
 import dev.deftu.omnicore.client.render.OmniResolution
 import net.minecraft.client.gui.FontRenderer
 import net.minecraft.client.gui.Gui
-import net.minecraft.client.renderer.*
-import net.minecraft.entity.*
-import net.minecraft.init.*
-import net.minecraft.item.*
-import net.minecraft.util.*
-import net.minecraftforge.client.event.GuiScreenEvent
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+import net.minecraft.client.renderer.OpenGlHelper
+import net.minecraft.client.renderer.RenderHelper
+import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.init.Blocks
+import net.minecraft.init.Items
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.util.MathHelper
+import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
+import org.polyfrost.oneconfig.api.event.v1.EventManager
 import org.polyfrost.oneconfig.api.event.v1.events.TickEvent
 import org.polyfrost.oneconfig.api.event.v1.invoke.impl.Subscribe
 import org.polyfrost.oneconfig.api.ui.v1.internal.wrappers.PolyUIScreen
@@ -37,8 +44,13 @@ object IconRenderer {
 
     var rendering = false
 
+    fun initialize() {
+        OmniCore.eventBus.register(this)
+        EventManager.INSTANCE.register(this)
+    }
+
     @SubscribeEvent
-    fun draw(e: GuiScreenEvent.DrawScreenEvent.Post) {
+    fun renderIcons(e: ScreenEvent.Render.Post) {
         if (particleInfo.isEmpty()) return
         val oneConfigGui = mc.currentScreen as? PolyUIScreen ?: return
         if (oneConfigGui.polyUI.window == null) return
@@ -70,7 +82,7 @@ object IconRenderer {
             drawEntityPointingMouse(DummyWorld.SHEEP, x.toInt() - 8, y.toInt() + 6)
         } else {
             GL.translate(x, y, 0f)
-            val item = ItemStack(when (id) {
+            val displayItem = when (id) {
                 1, 2 -> Item.getItemFromBlock(Blocks.tnt)
                 3 -> Items.fireworks
                 6 -> Items.fishing_rod
@@ -88,9 +100,11 @@ object IconRenderer {
                 36 -> Items.bread
                 37 -> Items.diamond_pickaxe
                 else -> null
-            }, 1)
-            if (item.item != null) {
+            }
+
+            if (displayItem != null) {
                 GL.scale(56 / 16f, 56 / 16f, 1f)
+                val item = ItemStack(displayItem, 1)
                 itemRenderer.renderItemAndEffectIntoGUI(item, 0, 0)
             } else if (id == 24) {
                 mc.textureManager.bindTexture(ResourceLocation("textures/blocks/portal.png"))
@@ -189,7 +203,11 @@ object IconRenderer {
                 rotationYawHead = rotationYaw
                 renderYawOffset = rotationYaw
                 rotationPitch = -atan(dy / 40f) * 20f
+                //#if MC >= 1.12.2
+                //$$ ride(this) // cancel nametag
+                //#else
                 riddenByEntity = this // cancel nametag
+                //#endif
                 deathTime = 7
             }
 
@@ -237,7 +255,11 @@ object IconRenderer {
             entity.rotationYawHead,
             entity.renderYawOffset,
             entity.rotationPitch,
+            //#if MC >= 1.12.2
+            //$$ entity.vehicle,
+            //#else
             entity.riddenByEntity,
+            //#endif
         )
 
         fun reset(entity: EntityLivingBase) {
@@ -245,7 +267,11 @@ object IconRenderer {
             entity.rotationYawHead = yawHead
             entity.renderYawOffset = yawOffset
             entity.rotationPitch = pitch
+            //#if MC >= 1.12.2
+            //$$ riddenBy?.let(entity::ride)
+            //#else
             entity.riddenByEntity = riddenBy
+            //#endif
         }
     }
 

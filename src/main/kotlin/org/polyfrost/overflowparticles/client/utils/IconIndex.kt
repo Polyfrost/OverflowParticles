@@ -1,4 +1,4 @@
-package org.polyfrost.overflowparticles.utils
+package org.polyfrost.overflowparticles.client.utils
 
 import org.lwjgl.util.vector.Vector2f
 

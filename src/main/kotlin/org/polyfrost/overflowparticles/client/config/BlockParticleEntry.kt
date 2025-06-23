@@ -1,4 +1,4 @@
-package org.polyfrost.overflowparticles.config
+package org.polyfrost.overflowparticles.client.config
 
 import org.polyfrost.oneconfig.api.config.v1.annotations.RadioButton
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider

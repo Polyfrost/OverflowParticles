@@ -1,10 +1,11 @@
-package org.polyfrost.overflowparticles.config
+package org.polyfrost.overflowparticles.client.config
 
 import org.polyfrost.oneconfig.api.config.v1.Node
 import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.*
 import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
+import org.polyfrost.overflowparticles.client.ParticleType
 import org.polyfrost.polyui.color.toColor
 
 class ParticleConfig(val name: String, val id: Int) {
@@ -34,21 +35,25 @@ class ParticleConfig(val name: String, val id: Int) {
     @Slider(title = "Multiplier", min = 0f, max = 10f)
     var multiplier = 1f
 
+    @Suppress("UNCHECKED_CAST")
     fun handle(t: Tree) {
         val theMap = Tree::class.java.getDeclaredField("theMap")
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        if (ConfigManager.unfair.contains(id)) {
+        val particle = ParticleType.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
+        if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
         }
-        if (id == 28) {
+
+        if (particle == ParticleType.FOOTSTEP) {
             map.remove("customColor")
             map.remove("colorMode")
             map.remove("color")
         }
-        if (id == 0 || id == 1 || id == 2 || id == 3) {
+
+        if (particle in arrayOf(ParticleType.EXPLOSION, ParticleType.LARGE_EXPLOSION, ParticleType.HUGE_EXPLOSION, ParticleType.FIREWORK_SPARK)) {
             map.remove("fade")
             map.remove("fadeStart")
         }
@@ -76,4 +81,5 @@ class ParticleConfig(val name: String, val id: Int) {
         return if (option.indexOf('.') >= 0) getProp(*option.split(dotRegex).dropLastWhile { it.isEmpty() }
             .toTypedArray<String>()) else getProp(option)
     }
+
 }

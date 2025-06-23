@@ -1,10 +1,11 @@
-package org.polyfrost.overflowparticles.mixin;
+package org.polyfrost.overflowparticles.mixin.client;
 
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
-import org.polyfrost.overflowparticles.utils.IconRenderer;
+import org.polyfrost.overflowparticles.client.utils.IconRenderer;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.nio.FloatBuffer;
 
 @Mixin(RendererLivingEntity.class)
-public class RendererLivingEntityMixin {
+public class Mixin_RendererLivingEntity_FixGuiEntityRendering {
 
     @Shadow protected FloatBuffer brightnessBuffer;
 
@@ -43,7 +44,7 @@ public class RendererLivingEntityMixin {
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA, GL11.GL_REPLACE);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA, OpenGlHelper.GL_PREVIOUS);
             GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA, GL11.GL_SRC_ALPHA);
-            brightnessBuffer.position(0);
+            this.brightnessBuffer.position(0);
             this.brightnessBuffer.put(1.0F);
             this.brightnessBuffer.put(0.0F);
             this.brightnessBuffer.put(0.0F);

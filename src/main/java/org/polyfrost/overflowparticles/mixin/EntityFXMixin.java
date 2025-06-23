@@ -3,14 +3,15 @@ package org.polyfrost.overflowparticles.mixin;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
-import org.polyfrost.overflowparticles.config.*;
-import org.polyfrost.overflowparticles.hook.EntityFXHook;
+import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.hook.ParticleId;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityFX.class, priority = 1001) // after particlesehanced
-public abstract class EntityFXMixin implements EntityFXHook {
+public abstract class EntityFXMixin implements ParticleId {
 
     @Shadow protected float particleScale;
     @Shadow protected int particleAge;
@@ -20,24 +21,27 @@ public abstract class EntityFXMixin implements EntityFXHook {
     @Shadow public abstract void setAlphaF(float alpha);
 
     @Shadow protected int particleMaxAge;
-    @Unique private float overflowParticles$scale;
+    @Unique private float overflowparticles$scale;
     @Unique private int overflowParticles$ID;
 
     @Inject(method = "renderParticle", at = @At(value = "HEAD"))
     private void setScale(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        overflowParticles$scale = particleScale;
-        ParticleConfig config = ConfigManager.INSTANCE.getConfig((EntityFX) (Object) this);
-        if (config == null) return;
-        particleScale *= config.getSize();
+        this.overflowparticles$scale = this.particleScale;
+        ParticleConfig config = PerParticleConfigManager.getConfig((EntityFX) (Object) this);
+        if (config == null) {
+            return;
+        }
+
+        this.particleScale *= config.getSize();
         int id = config.getId();
         boolean fade = config.getFade();
         float fadeStart = config.getFadeStart();
         if (id == 37) {
-            fade = ConfigManager.INSTANCE.getBlockSetting().getFade();
-            fadeStart = ConfigManager.INSTANCE.getBlockSetting().getFadeStart();
+            fade = PerParticleConfigManager.getBlockSetting().getFade();
+            fadeStart = PerParticleConfigManager.getBlockSetting().getFadeStart();
         }
 
-        float age = (float) particleAge / particleMaxAge;
+        float age = (float) this.particleAge / this.particleMaxAge;
         if ((id != 0 && id != 1 && id != 2 && id != 3 && id != 100) // fireworks
                 && fade && age > fadeStart) {
             float alpha = 1 - age + fadeStart;
@@ -47,16 +51,16 @@ public abstract class EntityFXMixin implements EntityFXHook {
 
     @Inject(method = "renderParticle", at = @At(value = "RETURN"))
     private void reset(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        particleScale = overflowParticles$scale;
+        this.particleScale = this.overflowparticles$scale;
     }
 
     @Override
-    public int overflowParticles$getParticleID() {
+    public int overflowparticles$getParticleId() {
         return overflowParticles$ID;
     }
 
     @Override
-    public void overflowParticles$setParticleID(int id) {
+    public void overflowparticles$setParticleId(int id) {
         overflowParticles$ID = id;
     }
 }

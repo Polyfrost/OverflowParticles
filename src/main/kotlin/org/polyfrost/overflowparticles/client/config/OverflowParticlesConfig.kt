@@ -1,4 +1,4 @@
-package org.polyfrost.overflowparticles.config
+package org.polyfrost.overflowparticles.client.config
 
 import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
@@ -10,29 +10,48 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
 
-object Settings : Config("overflowparticles.json", "overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
+object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
+
+    val maxParticleLimit: Int
+        get() {
+            //#if MC >= 1.12.2
+            return modernMaxParticleLimit
+            //#else
+            //$$ return legacyMaxParticleLimit
+            //#endif
+        }
 
     @Switch(
         title = "Clean View",
         description = "Stop rendering your own potion effect particles.",
         subcategory = "Features"
     )
-    var cleanView = false
+    @JvmStatic
+    var isCleanView = false
 
     @Switch(
         title = "Static Particle Color",
         description = "Disable particle lighting checks each frame.",
         subcategory = "Features"
     )
-    var staticParticleColor = true
+    @JvmStatic
+    var isStaticParticleColor = true
 
     @Slider(
         title = "Max Particle Limit",
         description = "Stop additional particles from appearing when there are too many at once.",
         subcategory = "Features",
-        min = 1f, max = 10000f
+        min = 1f, max = 10_000f
     )
-    var maxParticleLimit = 4000
+    var legacyMaxParticleLimit = 4000
+
+    @Slider(
+        title = "Particle Limit",
+        description = "The maximum number of particles that can be rendered at once. Set to 0 to disable.",
+        subcategory = "Features",
+        min = 0f, max = 20_000f
+    )
+    var modernMaxParticleLimit = 16_384
 
     @Switch(
         title = "Particles No-Clip",
@@ -63,10 +82,11 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
     @Include var hasMigratedParticlesEnhanced = false
 
     init {
-        ConfigManager.fillConfigs()
+        PerParticleConfigManager.fillConfigs()
+
         val collector = OneConfigCollector()
         var i = -1
-        for (particle in ConfigManager.configs) {
+        for (particle in PerParticleConfigManager.configs) {
             i++
             try {
                 val t: Tree = Tree.tree("Particle${particle.key}")
@@ -80,7 +100,7 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                     "index" to i
                 ))
                 if (particle.value.id == 37) {
-                    collector.handle(t, ConfigManager.blockSetting, 0)
+                    collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {
                     collector.handle(t, particle.value, 0)
@@ -93,6 +113,12 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
         }
 
         dirtyMigration()
+
+        //#if MC >= 1.12.2
+        //$$ hideIf("legacyMaxParticleLimit") { true }
+        //#else
+        hideIf("modernMaxParticleLimit") { true }
+        //#endif
     }
 
     private fun dirtyMigration() {
@@ -107,19 +133,19 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
             var didAnythingForPatcher = false
 
             if (OldPatcherConfig.disableBlockBreakParticles) {
-                ConfigManager.blockSetting.hideDigging = true
+                PerParticleConfigManager.blockSetting.hideDigging = true
                 didAnythingForPatcher = true
             }
             if (OldPatcherConfig.cleanView) {
-                cleanView = OldPatcherConfig.cleanView
+                isCleanView = OldPatcherConfig.cleanView
                 didAnythingForPatcher = true
             }
             if (OldPatcherConfig.staticParticleColor) {
-                staticParticleColor = OldPatcherConfig.staticParticleColor
+                isStaticParticleColor = OldPatcherConfig.staticParticleColor
                 didAnythingForPatcher = true
             }
             if (OldPatcherConfig.maxParticleLimit != 4000) {
-                maxParticleLimit = OldPatcherConfig.maxParticleLimit
+                legacyMaxParticleLimit = OldPatcherConfig.maxParticleLimit
                 didAnythingForPatcher = true
             }
             hasMigratedPatcher = true
@@ -147,21 +173,21 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                 }
                 ParticlesEnhancedConfig.checkInvulnerable = checkInvulnerable
                 if (!ParticlesEnhancedConfig.fade) {
-                    for (i in ConfigManager.configs) {
+                    for (i in PerParticleConfigManager.configs) {
                         i.value.fade = false
                     }
-                    ConfigManager.blockSetting.fade = false
+                    PerParticleConfigManager.blockSetting.fade = false
                     didAnything = true
                 }
                 if (ParticlesEnhancedConfig.fadeOutStart != 0.5f) {
-                    for (i in ConfigManager.configs) {
+                    for (i in PerParticleConfigManager.configs) {
                         i.value.fadeStart = ParticlesEnhancedConfig.fadeOutStart
                     }
-                    ConfigManager.blockSetting.fadeStart = ParticlesEnhancedConfig.fadeOutStart
+                    PerParticleConfigManager.blockSetting.fadeStart = ParticlesEnhancedConfig.fadeOutStart
                     didAnything = true
                 }
                 if (ParticlesEnhancedConfig.critMultiplier != 1) {
-                    for (i in ConfigManager.configs) {
+                    for (i in PerParticleConfigManager.configs) {
                         if (i.value.name == "Critical") {
                             i.value.multiplier = ParticlesEnhancedConfig.critMultiplier.toFloat()
                             ParticlesEnhancedConfig.critMultiplier = 1
@@ -170,7 +196,7 @@ object Settings : Config("overflowparticles.json", "overflowparticles.svg", "Ove
                     }
                 }
                 if (ParticlesEnhancedConfig.sharpMultiplier != 1) {
-                    for (i in ConfigManager.configs) {
+                    for (i in PerParticleConfigManager.configs) {
                         if (i.value.name == "Sharpness") {
                             i.value.multiplier = ParticlesEnhancedConfig.sharpMultiplier.toFloat()
                             ParticlesEnhancedConfig.sharpMultiplier = 1
