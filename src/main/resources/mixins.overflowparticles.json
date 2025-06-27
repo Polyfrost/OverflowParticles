@@ -1,29 +1,39 @@
 {
-  "compatibilityLevel": "JAVA_8",
-  "minVersion": "0.7",
-  "package": "org.polyfrost.overflowparticles.mixin",
-  "refmap": "mixins.${mod_id}.refmap.json",
-  "injectors": {
-    "maxShiftBy": 5
-  },
-  "verbose": true,
-  "client": [
-    "EffectRendererMixin",
-    "EntityFXMixin",
-    "EntityLivingBaseMixin",
-    "EntityMixin",
-    "client.Mixin_NetHandlerPlayClient_DealWithBlockParticles",
-    "client.Mixin_RendererLivingEntity_FixGuiEntityRendering",
-    "client.Mixin_World_OverrideParticleSpawning",
-    "client.Mixin_WorldRenderer_ApplyCustomParticleColors",
-    "event.EntityPlayerMixin_PlayerAttack",
-    "oneconfig.ModCardMixin",
-    "particles.BarrierMixin",
-    "particles.EntityArrowMixin",
-    "particles.EntityBreakingFXMixin",
-    "particles.EntityDiggingFXMixin",
-    "particles.EntityFootStepFXMixin",
-    "particles.EntityLargeExplodeFXMixin",
-    "particles.EntityParticleEmitterMixin"
-  ]
+    "compatibilityLevel": "JAVA_8",
+    "minVersion": "0.7",
+    "package": "org.polyfrost.overflowparticles.mixin",
+    "refmap": "mixins.${mod_id}.refmap.json",
+    "injectors": {
+        "maxShiftBy": 5
+    },
+    "verbose": true,
+    "client": [
+        "client.event.Mixin_EntityPlayer_AttackEntityEvent",
+
+        "client.particles.Mixin_Barrier_ModifyParticleSize",
+        "client.particles.Mixin_EntityArrow_ApplyMultiplier",
+        "client.particles.Mixin_EntityBreakingFX_ModifyParticleSize",
+        "client.particles.Mixin_EntityDiggingFX_ModifyParticleSize",
+        "client.particles.Mixin_EntityFootStepFX_ModifyParticleSize",
+        "client.particles.Mixin_EntityLargeExplodeFX_ModifyParticleSize",
+        "client.particles.Mixin_EntityParticleEmitter_ApplyMultiplier",
+
+        "client.Mixin_EffectRenderer_CancelDiggingParticles",
+        "client.Mixin_EffectRenderer_FixBlockBreakingId",
+        "client.Mixin_EffectRenderer_ModifyParticleLimit",
+        "client.Mixin_EffectRenderer_SetParticleIds",
+        "client.Mixin_EffectRenderer_UpdateIconRendererState",
+        "client.Mixin_Entity_CancelFootstepsIfNeeded",
+        "client.Mixin_Entity_ParticleNoClip",
+        "client.Mixin_EntityFX_ParticleFading",
+        "client.Mixin_EntityFX_ParticleId",
+        "client.Mixin_EntityFX_ParticleScaling",
+        "client.Mixin_EntityFX_StaticParticleColor",
+        "client.Mixin_EntityLivingBase_CleanView",
+        "client.Mixin_EntityLivingBase_DeathParticleMultiplier",
+        "client.Mixin_NetHandlerPlayClient_DealWithBlockParticles",
+        "client.Mixin_RendererLivingEntity_FixGuiEntityRendering",
+        "client.Mixin_World_OverrideParticleSpawning",
+        "client.Mixin_WorldRenderer_ApplyCustomParticleColors"
+    ]
 }

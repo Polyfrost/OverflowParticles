@@ -15,7 +15,13 @@ import net.minecraft.world.gen.ChunkProviderDebug
 //#endif
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-object DummyWorld : World(null, null, WorldProviderSurface(), null, true) {
+object DummyWorld : World(
+    null,
+    null,
+    WorldProviderSurface(),
+    null,
+    true
+) {
 
     val SHEEP = EntitySheep(DummyWorld)
 
@@ -48,5 +54,9 @@ object DummyWorld : World(null, null, WorldProviderSurface(), null, true) {
     override fun getBlockState(pos: BlockPos): IBlockState {
         return Blocks.air.defaultState
     }
+
+    //#if MC >= 1.16.5
+    //$$ private object
+    //#endif
 
 }

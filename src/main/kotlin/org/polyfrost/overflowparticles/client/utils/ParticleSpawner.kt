@@ -13,7 +13,15 @@ fun color(color: Int, targetColor: Float, cfg: ParticleConfig): Float =
 
 fun colorInt(color: Int, targetColor: Float, cfg: ParticleConfig): Int = (color(color, targetColor, cfg) * 255f).toInt()
 
-fun spawn(config: ParticleConfig, worldAccesses: List<IWorldAccess>, particleID: Int, ignoreRange: Boolean, x: Double, y: Double, z: Double, xOffset: Double, yOffset: Double, zOffset: Double, vararg arguments: Int) {
+fun spawn(
+    config: ParticleConfig,
+    worldAccesses: List<IWorldAccess>,
+    particleID: Int,
+    ignoreRange: Boolean,
+    x: Double, y: Double, z: Double,
+    xOffset: Double, yOffset: Double, zOffset: Double,
+    vararg arguments: Int
+) {
     repeat(ceil(config.multiplier).toInt()) {
         for (worldAccess in worldAccesses) {
             val modX = x - 0.5 + Math.random()

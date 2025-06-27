@@ -13,7 +13,7 @@ import org.polyfrost.oneconfig.api.event.v1.eventHandler
 import org.polyfrost.oneconfig.api.event.v1.events.PacketEvent
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
-import org.polyfrost.overflowparticles.event.AttackEntityEvent
+import org.polyfrost.overflowparticles.client.event.AttackEntityEvent
 
 //#if MC >= 1.12.2
 //$$ import net.minecraft.entity.effect.StatusEffects

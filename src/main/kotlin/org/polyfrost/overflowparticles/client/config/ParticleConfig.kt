@@ -5,7 +5,8 @@ import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.*
 import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
-import org.polyfrost.overflowparticles.client.ParticleType
+import org.polyfrost.overflowparticles.client.utils.ParticleData
+import org.polyfrost.overflowparticles.client.utils.VanillaParticles
 import org.polyfrost.polyui.color.toColor
 
 class ParticleConfig(val name: String, val id: Int) {
@@ -41,19 +42,19 @@ class ParticleConfig(val name: String, val id: Int) {
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        val particle = ParticleType.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
+        val particle = ParticleData.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
         if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
         }
 
-        if (particle == ParticleType.FOOTSTEP) {
+        if (particle == VanillaParticles.FOOTSTEP) {
             map.remove("customColor")
             map.remove("colorMode")
             map.remove("color")
         }
 
-        if (particle in arrayOf(ParticleType.EXPLOSION, ParticleType.LARGE_EXPLOSION, ParticleType.HUGE_EXPLOSION, ParticleType.FIREWORK_SPARK)) {
+        if (particle in arrayOf(VanillaParticles.EXPLOSION_NORMAL, VanillaParticles.EXPLOSION_LARGE, VanillaParticles.EXPLOSION_HUGE, VanillaParticles.FIREWORK_SPARK)) {
             map.remove("fade")
             map.remove("fadeStart")
         }

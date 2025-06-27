@@ -1,2 +1,3 @@
 net.minecraft.client.render.entity.EntityRenderDispatcher method_12446() method_6913()
 net.minecraft.client.render.item.ItemRenderer method_12455() renderInGuiWithOverrides()
+net.minecraft.client.particle.Particle method_12243() getLightmapCoordinates()

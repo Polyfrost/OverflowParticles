@@ -17,7 +17,11 @@ public class Mixin_EntityFX_StaticParticleColor {
     private int overflowparticles$staticParticleColor(EntityFX instance, float partialTicks) {
         return OverflowParticlesConfig.isStaticParticleColor()
                 ? STATIC_PARTICLE_COLOR
+                //#if MC >= 1.12.2
+                //$$ : instance.method_12243(partialTicks);
+                //#else
                 : instance.getBrightnessForRender(partialTicks);
+                //#endif
     }
 
 }

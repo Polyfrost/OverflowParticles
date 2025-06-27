@@ -1,10 +1,11 @@
-package org.polyfrost.overflowparticles.mixin.particles;
+package org.polyfrost.overflowparticles.mixin.client.particles;
 
 import net.minecraft.client.particle.EntityParticleEmitter;
 import net.minecraft.util.EnumParticleTypes;
+import org.polyfrost.overflowparticles.client.utils.ParticleData;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.utils.ParticleSpawnerKt;
+import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,14 +15,19 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityParticleEmitter.class)
-public class EntityParticleEmitterMixin {
+public class Mixin_EntityParticleEmitter_ApplyMultiplier {
 
     @Shadow private EnumParticleTypes particleTypes;
 
     @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 16))
     private int multiplier(int constant) {
-        ParticleConfig config = PerParticleConfigManager.getConfigs().get(this.particleTypes.getParticleID());
-        if (config == null || config.getMultiplier() == 1) {
+        ParticleData type = ParticleData.of(this.particleTypes.getParticleID());
+        if (type == null) {
+            return constant;
+        }
+
+        ParticleConfig config = PerParticleConfigManager.getConfigByType(type);
+        if (config.getMultiplier() == 1) {
             return constant;
         }
 
@@ -30,7 +36,7 @@ public class EntityParticleEmitterMixin {
 
     @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;ZDDDDDD[I)V"))
     private void cancel(CallbackInfo ci) {
-        ParticleSpawnerKt.setMultiplied(true);
+        ParticleSpawner.setMultiplied(true);
     }
 
 }
