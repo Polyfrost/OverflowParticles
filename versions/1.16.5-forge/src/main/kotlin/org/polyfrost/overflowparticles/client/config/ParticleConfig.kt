@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.client.config
 
+import net.minecraft.core.particles.ParticleType
 import org.polyfrost.oneconfig.api.config.v1.Node
 import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
@@ -9,7 +10,7 @@ import org.polyfrost.overflowparticles.client.utils.ParticleData
 import org.polyfrost.overflowparticles.client.utils.VanillaParticles
 import org.polyfrost.polyui.color.toColor
 
-class ParticleConfig(val name: String, val id: Int) {
+class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
 
     @Include
     var enabled = true
@@ -42,22 +43,22 @@ class ParticleConfig(val name: String, val id: Int) {
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        val particle = ParticleData.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
+        val particle = ParticleData.of(particleType) ?: throw IllegalArgumentException("Invalid particle type: $particleType")
         if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
         }
 
-        if (particle == VanillaParticles.FOOTSTEP) {
-            map.remove("customColor")
-            map.remove("colorMode")
-            map.remove("color")
-        }
-
-        if (particle in arrayOf(VanillaParticles.EXPLOSION_NORMAL, VanillaParticles.EXPLOSION_LARGE, VanillaParticles.EXPLOSION_HUGE, VanillaParticles.FIREWORK_SPARK)) {
-            map.remove("fade")
-            map.remove("fadeStart")
-        }
+//        if (particle == VanillaParticles.FOOTSTEP) {
+//            map.remove("customColor")
+//            map.remove("colorMode")
+//            map.remove("color")
+//        }
+//
+//        if (particle in arrayOf(VanillaParticles.EXPLOSION_NORMAL, VanillaParticles.EXPLOSION_LARGE, VanillaParticles.EXPLOSION_HUGE, VanillaParticles.FIREWORK_SPARK)) {
+//            map.remove("fade")
+//            map.remove("fadeStart")
+//        }
 
         //t.addDependency("General.color", "General.customColor")
         //t.addDependency("General.colorMode", "General.customColor")

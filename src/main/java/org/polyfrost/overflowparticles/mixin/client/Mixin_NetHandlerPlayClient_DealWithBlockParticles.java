@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.EnumParticleTypes;
@@ -33,3 +35,5 @@ public class Mixin_NetHandlerPlayClient_DealWithBlockParticles {
     }
 
 }
+
+//#endif

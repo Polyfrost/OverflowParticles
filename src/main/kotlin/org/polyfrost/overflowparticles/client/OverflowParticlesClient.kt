@@ -2,7 +2,6 @@ package org.polyfrost.overflowparticles.client
 
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
-import org.polyfrost.overflowparticles.client.utils.IconRenderer
 import org.polyfrost.overflowparticles.client.utils.VanillaParticles
 
 object OverflowParticlesClient {
@@ -17,7 +16,6 @@ object OverflowParticlesClient {
         VanillaParticles.initialize()
         OverflowParticlesConfig.preload()
         OverflowParticlesEventHandler.initialize()
-        IconRenderer.initialize()
     }
 
 }

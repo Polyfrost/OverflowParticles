@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EntityParticleEmitter;
 import net.minecraft.util.EnumParticleTypes;
 import org.polyfrost.overflowparticles.client.utils.ParticleData;
@@ -40,3 +42,4 @@ public class Mixin_EntityParticleEmitter_ApplyMultiplier {
     }
 
 }
+//#endif

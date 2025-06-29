@@ -99,6 +99,9 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
                     "canBeEnabled" to true,
                     "index" to i
                 ))
+                //#if MC >= 1.16.5
+                //$$
+                //#else
                 if (particle.value.id == 37) {
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
@@ -106,6 +109,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
                     collector.handle(t, particle.value, 0)
                     particle.value.handle(t)
                 }
+                //#endif
                 tree.put(t)
             } catch (e: Exception) {
                 throw RuntimeException(e)

@@ -1,20 +1,18 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
-//#if MC <= 1.12.2
-
-import net.minecraft.client.particle.Barrier;
+import net.minecraft.client.particle.BarrierParticle;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 
-@Mixin(Barrier.class)
+@Mixin(BarrierParticle.class)
 public class Mixin_Barrier_ModifyParticleSize {
 
-    @ModifyConstant(method = "renderParticle", constant = @Constant(floatValue = 0.5f))
+    @ModifyConstant(method = "getQuadSize", constant = @Constant(floatValue = 0.5f))
     private float scale(float constant) {
-        return constant * PerParticleConfigManager.getConfigByType(VanillaParticles.BARRIER).getSize();
+//        return constant * PerParticleConfigManager.getConfigByType(VanillaParticles.BARRIER).getSize();
+        return 0.5f;
     }
 
 }
-//#endif

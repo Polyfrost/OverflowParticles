@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -43,3 +45,4 @@ public abstract class Mixin_EntityLivingBase_FallStateParticles extends Entity {
     }
 
 }
+//#endif
