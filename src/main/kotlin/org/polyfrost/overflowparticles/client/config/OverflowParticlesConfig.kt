@@ -1,5 +1,9 @@
 package org.polyfrost.overflowparticles.client.config
 
+//#if MC >= 1.16.5
+//$$ import net.minecraft.core.particles.ParticleTypes
+//#endif
+
 import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.polyfrost.oneconfig.api.config.v1.Config
@@ -100,16 +104,16 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
                     "index" to i
                 ))
                 //#if MC >= 1.16.5
-                //$$
+                //$$  if (particle.value.particleType == ParticleTypes.BLOCK) {
                 //#else
                 if (particle.value.id == 37) {
+                    //#endif
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {
                     collector.handle(t, particle.value, 0)
                     particle.value.handle(t)
                 }
-                //#endif
                 tree.put(t)
             } catch (e: Exception) {
                 throw RuntimeException(e)
