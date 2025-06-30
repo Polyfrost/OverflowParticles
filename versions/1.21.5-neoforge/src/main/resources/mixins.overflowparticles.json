@@ -8,6 +8,7 @@
     },
     "verbose": true,
     "client": [
+        "client.Mixin_ParticleEngineParticleLimit",
         "client.Mixin_ParticleNoClip",
         "client.Mixin_StaticParticleColor",
         "client.accessor.Accessor_Particle"
