@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.hook
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EntityFX
 
 interface ParticleId {
@@ -23,3 +25,4 @@ interface ParticleId {
     fun `overflowparticles$setParticleId`(id: Int)
 
 }
+//#endif

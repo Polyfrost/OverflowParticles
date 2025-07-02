@@ -3,7 +3,7 @@ package org.polyfrost.overflowparticles.client.config
 import net.minecraft.client.particle.Particle
 import net.minecraft.core.particles.ParticleType
 import org.polyfrost.overflowparticles.client.utils.ParticleData
-import org.polyfrost.overflowparticles.hook.ParticleId
+import org.polyfrost.overflowparticles.hook.OFParticleType
 
 object PerParticleConfigManager {
 
@@ -29,13 +29,12 @@ object PerParticleConfigManager {
 
     @JvmStatic
     fun getConfig(entity: Particle?): ParticleConfig? {
-        if (entity !is ParticleId) {
+        if (entity !is OFParticleType) {
             return null
         }
 
-//        val particleType = entity.`overflowparticles$getParticleType`()
-//        return getConfigByType(particleType)
-        return null;
+        val particleType = entity.`overflowparticles$getParticleType`()
+        return getConfigByType(particleType)
     }
 
     @JvmStatic
