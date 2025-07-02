@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import dev.deftu.omnicore.client.OmniClientPlayer;
 import net.minecraft.entity.EntityLivingBase;
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
@@ -29,3 +31,4 @@ public class Mixin_EntityLivingBase_CleanView {
     }
 
 }
+//#endif

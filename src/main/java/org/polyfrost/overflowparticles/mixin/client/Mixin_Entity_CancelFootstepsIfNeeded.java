@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
@@ -40,3 +42,4 @@ public class Mixin_Entity_CancelFootstepsIfNeeded {
     }
 
 }
+//#endif

@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EffectRenderer;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
@@ -37,3 +39,4 @@ public class Mixin_EffectRenderer_CancelDiggingParticles {
     //#endif
 
 }
+//#endif

@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -37,3 +39,4 @@ public abstract class Mixin_EntityLivingBase_DeathParticleMultiplier extends Ent
     }
 
 }
+//#endif

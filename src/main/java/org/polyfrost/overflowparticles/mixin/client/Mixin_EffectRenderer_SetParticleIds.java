@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import org.polyfrost.overflowparticles.hook.ParticleId;
@@ -39,3 +41,4 @@ public class Mixin_EffectRenderer_SetParticleIds {
     }
 
 }
+//#endif

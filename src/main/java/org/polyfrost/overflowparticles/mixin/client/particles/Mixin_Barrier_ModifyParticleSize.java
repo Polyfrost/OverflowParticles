@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.Barrier;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
@@ -15,3 +17,4 @@ public class Mixin_Barrier_ModifyParticleSize {
     }
 
 }
+//#endif

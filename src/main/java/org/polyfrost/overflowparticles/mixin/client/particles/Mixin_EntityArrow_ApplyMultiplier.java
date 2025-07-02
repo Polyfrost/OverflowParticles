@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.entity.projectile.EntityArrow;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
@@ -41,3 +43,4 @@ public class Mixin_EntityArrow_ApplyMultiplier {
     }
 
 }
+//#endif

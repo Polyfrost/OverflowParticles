@@ -1,0 +1,18 @@
+{
+    "compatibilityLevel": "JAVA_8",
+    "minVersion": "0.7",
+    "package": "org.polyfrost.overflowparticles.mixin",
+    "refmap": "mixins.${mod_id}.refmap.json",
+    "injectors": {
+        "maxShiftBy": 5
+    },
+    "verbose": true,
+    "client": [
+        "client.Mixin_ParticleNoClip",
+        "client.Mixin_ParticleScale",
+        "client.Mixin_ParticleType",
+        "client.Mixin_SetParticleType",
+        "client.Mixin_StaticParticleColor",
+        "client.accessor.Accessor_Particle"
+    ]
+}

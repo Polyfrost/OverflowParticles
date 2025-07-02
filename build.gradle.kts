@@ -17,7 +17,7 @@ plugins {
 
 toolkitLoomHelper {
     useOneConfig {
-        version = "1.0.0-alpha.108"
+        version = "1.0.0-alpha.111"
         loaderVersion = "1.1.0-alpha.48"
 
         usePolyMixin = true
@@ -55,4 +55,6 @@ dependencies {
             modImplementation("net.fabricmc.fabric-api:fabric-api:${mcData.dependencies.fabric.fabricApiVersion}")
         }
     }
+
+    modImplementation ("dev.deftu:textile-$mcData:0.18.0")
 }
