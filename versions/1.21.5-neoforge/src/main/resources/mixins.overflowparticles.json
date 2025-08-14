@@ -13,6 +13,7 @@
         "client.Mixin_ParticleType",
         "client.Mixin_SetParticleType",
         "client.Mixin_StaticParticleColor",
-        "client.accessor.Accessor_Particle"
+        "client.accessor.Accessor_Particle",
+        "client.Mixin_ParticleColor"
     ]
 }

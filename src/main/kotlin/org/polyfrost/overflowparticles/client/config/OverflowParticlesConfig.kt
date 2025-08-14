@@ -14,7 +14,7 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
 
-object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
+object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
 
     val maxParticleLimit: Int
         get() {
@@ -85,7 +85,8 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
     @Include var hasMigratedPatcher = false
     @Include var hasMigratedParticlesEnhanced = false
 
-    init {
+    override fun initialize(byConfigManager: Boolean) {
+        super.initialize(byConfigManager)
         PerParticleConfigManager.fillConfigs()
 
         val collector = OneConfigCollector()
