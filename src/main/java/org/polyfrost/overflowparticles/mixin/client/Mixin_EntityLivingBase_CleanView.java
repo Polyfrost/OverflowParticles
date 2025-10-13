@@ -1,6 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-import dev.deftu.omnicore.client.OmniClientPlayer;
+//#if MC <= 1.12.2
+import dev.deftu.omnicore.api.client.OmniClient;
 import net.minecraft.entity.EntityLivingBase;
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLivingBase.class)
 public class Mixin_EntityLivingBase_CleanView {
-
     @Inject(
             method = "updatePotionEffects",
             at = @At(
@@ -21,11 +21,11 @@ public class Mixin_EntityLivingBase_CleanView {
     )
     private void overflowparticles$cleanView(CallbackInfo ci) {
         EntityLivingBase $this = (EntityLivingBase) (Object) this;
-        if ($this != OmniClientPlayer.getInstance() || !OverflowParticlesConfig.isCleanView()) {
+        if ($this != OmniClient.getPlayer() || !OverflowParticlesConfig.isCleanView()) {
             return;
         }
 
         ci.cancel();
     }
-
 }
+//#endif

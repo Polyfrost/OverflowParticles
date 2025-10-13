@@ -1,6 +1,10 @@
 package org.polyfrost.overflowparticles.client.utils
 
+//#if MC >= 1.16.5
+//$$ import net.minecraft.world.phys.Vec2
+//#else
 import org.lwjgl.util.vector.Vector2f
+//#endif
 
 enum class IconIndex(val id: Int, val x: Number, val y: Number) {
     DEATH(0, 1, 1),
@@ -24,9 +28,17 @@ enum class IconIndex(val id: Int, val x: Number, val y: Number) {
     RAINDROP(39, 4, 2);
 
     companion object {
+        //#if MC >= 1.16.5
+        //$$ fun getFromID(id: Int): Vec2? {
+        //#else
         fun getFromID(id: Int): Vector2f? {
+        //#endif
             for (i in entries) {
+                //#if MC >= 1.16.5
+                //$$ if (i.id == id) return Vec2(((i.x.toFloat() - 1) * 8), ((i.y.toFloat() - 1) * 8))
+                //#else
                 if (i.id == id) return Vector2f(((i.x.toFloat() - 1) * 8), ((i.y.toFloat() - 1) * 8))
+                //#endif
             }
             return null
         }

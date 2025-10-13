@@ -1,12 +1,15 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
-import org.polyfrost.overflowparticles.client.utils.ParticleData;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
+import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
+import org.polyfrost.overflowparticles.client.particles.ParticleRegistry;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,7 +39,7 @@ public abstract class Mixin_EntityFX_ParticleFading {
         }
 
         int id = config.getId();
-        ParticleData type = ParticleData.of(id);
+        ParticleInfo type = ParticleRegistry.of(id);
         if (type == null) {
             return;
         }
@@ -58,3 +61,4 @@ public abstract class Mixin_EntityFX_ParticleFading {
     }
 
 }
+//#endif

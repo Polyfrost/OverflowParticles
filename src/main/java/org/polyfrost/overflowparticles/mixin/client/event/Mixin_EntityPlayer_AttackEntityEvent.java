@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.event;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import org.polyfrost.oneconfig.api.event.v1.EventManager;
@@ -21,3 +23,5 @@ public class Mixin_EntityPlayer_AttackEntityEvent {
     }
 
 }
+
+//#endif

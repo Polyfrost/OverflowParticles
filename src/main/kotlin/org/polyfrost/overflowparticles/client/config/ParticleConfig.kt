@@ -5,9 +5,13 @@ import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.*
 import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
-import org.polyfrost.overflowparticles.client.utils.ParticleData
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles
+import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 import org.polyfrost.polyui.color.toColor
+
+//#if MC >= 1.16.5
+//$$ import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
+//#endif
 
 class ParticleConfig(val name: String, val id: Int) {
 
@@ -42,7 +46,7 @@ class ParticleConfig(val name: String, val id: Int) {
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        val particle = ParticleData.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
+        val particle = ParticleRegistry.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
         if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
@@ -72,7 +76,7 @@ class ParticleConfig(val name: String, val id: Int) {
         val cond = getProperty(condition)
         require(cond.type == Boolean::class.javaPrimitiveType) { "Condition property must be boolean" }
         val opt = getProperty(option).addDisplayCondition((cond as Property<Boolean?>)!!, false)
-        opt.getOrPutMetadata<ArrayList<String>>("dependencyNames") { ArrayList(3) }.add(cond.title)
+        opt.getOrPutMetadata<ArrayList<String>>("dependencyNames") { ArrayList(3) }.add(cond.title!!)
     }
 
     /**

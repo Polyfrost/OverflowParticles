@@ -2,22 +2,15 @@ package org.polyfrost.overflowparticles.client
 
 import net.minecraft.client.particle.EntityFX
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
-import org.polyfrost.overflowparticles.client.utils.IconRenderer
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 
 object OverflowParticlesClient {
-
-    @JvmStatic
-    var renderingEntity: EntityFX? = null
-
-    @JvmStatic
-    var rendering = false
+    @JvmStatic var renderingEntity: EntityFX? = null
+    @JvmStatic var rendering = false
 
     fun initialize() {
-        VanillaParticles.initialize()
+        VanillaParticles.preload()
         OverflowParticlesConfig.preload()
         OverflowParticlesEventHandler.initialize()
-        IconRenderer.initialize()
     }
-
 }

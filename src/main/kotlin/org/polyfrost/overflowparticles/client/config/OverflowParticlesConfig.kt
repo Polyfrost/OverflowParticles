@@ -10,8 +10,11 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
 
-object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
+//#if MC >= 1.16.5
+//$$ import net.minecraft.core.particles.ParticleTypes
+//#endif
 
+object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
     val maxParticleLimit: Int
         get() {
             //#if MC >= 1.12.2
@@ -81,7 +84,8 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
     @Include var hasMigratedPatcher = false
     @Include var hasMigratedParticlesEnhanced = false
 
-    init {
+    override fun initialize(byConfigManager: Boolean) {
+        super.initialize(byConfigManager)
         PerParticleConfigManager.fillConfigs()
 
         val collector = OneConfigCollector()
@@ -99,7 +103,11 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "overflowparti
                     "canBeEnabled" to true,
                     "index" to i
                 ))
+                //#if MC >= 1.16.5
+                //$$  if (particle.value.particleType == ParticleTypes.BLOCK) {
+                //#else
                 if (particle.value.id == 37) {
+                    //#endif
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {

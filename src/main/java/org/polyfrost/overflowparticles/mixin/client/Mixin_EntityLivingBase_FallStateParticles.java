@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -8,13 +9,12 @@ import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityLivingBase.class)
 public abstract class Mixin_EntityLivingBase_FallStateParticles extends Entity {
-
     public Mixin_EntityLivingBase_FallStateParticles(World worldIn) {
         super(worldIn);
     }
@@ -41,5 +41,5 @@ public abstract class Mixin_EntityLivingBase_FallStateParticles extends Entity {
 
         return original;
     }
-
 }
+//#endif

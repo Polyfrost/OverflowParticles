@@ -5,15 +5,10 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 
 class BlockParticleEntry {
-
-    @Switch(
-        title = "Hide Block Digging Particles"
-    )
+    @Switch(title = "Hide Block Digging Particles")
     var hideDigging = false
 
-    @Switch(
-        title = "Hide Entity Running / Falling Particles"
-    )
+    @Switch(title = "Hide Entity Running / Falling Particles")
     var hideRunning = false
 
     @RadioButton(
@@ -27,5 +22,4 @@ class BlockParticleEntry {
 
     @Slider(title = "Fade Out Start", description = "How far into the lifespan of the particle before it starts to fade.", max = 1F, min = 0F)
     var fadeStart = 0.5f
-
 }

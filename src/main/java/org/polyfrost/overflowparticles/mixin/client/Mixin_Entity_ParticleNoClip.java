@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
@@ -49,3 +51,4 @@ public abstract class Mixin_Entity_ParticleNoClip {
     }
 
 }
+//#endif

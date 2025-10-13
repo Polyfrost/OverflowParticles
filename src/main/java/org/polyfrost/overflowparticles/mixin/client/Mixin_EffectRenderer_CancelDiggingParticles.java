@@ -1,8 +1,9 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
 import net.minecraft.client.particle.EffectRenderer;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -10,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EffectRenderer.class)
 public class Mixin_EffectRenderer_CancelDiggingParticles {
-
     @Inject(
             method = {
                     "addBlockHitEffects(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;)V",
@@ -35,5 +35,5 @@ public class Mixin_EffectRenderer_CancelDiggingParticles {
         }
     }
     //#endif
-
 }
+//#endif

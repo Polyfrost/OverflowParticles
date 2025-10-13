@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.*;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
@@ -16,3 +18,5 @@ public class Mixin_EntityLargeExplodeFX_ModifyParticleSize {
     }
 
 }
+
+//#endif

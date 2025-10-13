@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
@@ -42,3 +44,5 @@ public class Mixin_World_OverrideParticleSpawning {
     }
 
 }
+
+//#endif

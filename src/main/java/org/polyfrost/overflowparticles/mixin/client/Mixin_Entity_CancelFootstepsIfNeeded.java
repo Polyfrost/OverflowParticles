@@ -1,11 +1,12 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -38,5 +39,5 @@ public class Mixin_Entity_CancelFootstepsIfNeeded {
             }
         }
     }
-
 }
+//#endif

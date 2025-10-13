@@ -1,12 +1,14 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -16,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityLivingBase.class)
 public abstract class Mixin_EntityLivingBase_DeathParticleMultiplier extends Entity {
-
     public Mixin_EntityLivingBase_DeathParticleMultiplier(World worldIn) {
         super(worldIn);
     }
@@ -35,5 +36,5 @@ public abstract class Mixin_EntityLivingBase_DeathParticleMultiplier extends Ent
     private void overflowparticles$updateMultiplyState(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }
-
 }
+//#endif

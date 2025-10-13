@@ -1,10 +1,12 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
 import net.minecraft.client.particle.EntityParticleEmitter;
 import net.minecraft.util.EnumParticleTypes;
-import org.polyfrost.overflowparticles.client.utils.ParticleData;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
+import org.polyfrost.overflowparticles.client.particles.ParticleRegistry;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +23,7 @@ public class Mixin_EntityParticleEmitter_ApplyMultiplier {
 
     @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 16))
     private int multiplier(int constant) {
-        ParticleData type = ParticleData.of(this.particleTypes.getParticleID());
+        ParticleInfo type = ParticleRegistry.of(this.particleTypes.getParticleID());
         if (type == null) {
             return constant;
         }
@@ -38,5 +40,5 @@ public class Mixin_EntityParticleEmitter_ApplyMultiplier {
     private void cancel(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }
-
 }
+//#endif

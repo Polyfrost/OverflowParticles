@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.particle.EffectRenderer;
@@ -37,3 +39,4 @@ public class Mixin_EffectRenderer_UpdateIconRendererState {
     }
 
 }
+//#endif

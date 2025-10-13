@@ -1,10 +1,11 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
+//#if MC <= 1.12.2
 import net.minecraft.entity.projectile.EntityArrow;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -14,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityArrow.class)
 public class Mixin_EntityArrow_ApplyMultiplier {
-
     @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 4, ordinal = 0))
     private int multiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.CRITICAL);
@@ -39,5 +39,5 @@ public class Mixin_EntityArrow_ApplyMultiplier {
     private void cancel(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }
-
 }
+//#endif

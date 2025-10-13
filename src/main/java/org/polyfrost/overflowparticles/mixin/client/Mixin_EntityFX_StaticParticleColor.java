@@ -1,5 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//#if MC <= 1.12.2
+
 import net.minecraft.client.particle.EntityFX;
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,3 +27,4 @@ public class Mixin_EntityFX_StaticParticleColor {
     }
 
 }
+//#endif
