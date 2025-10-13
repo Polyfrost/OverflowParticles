@@ -1,6 +1,7 @@
 package org.polyfrost.overflowparticles.client
 
-import dev.deftu.omnicore.common.OmniEquipment
+import dev.deftu.omnicore.api.equipment.EquipmentType
+import dev.deftu.omnicore.api.equipment.get
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
@@ -88,7 +89,7 @@ object OverflowParticlesEventHandler {
             return
         }
 
-        val heldItem = OmniEquipment.getEquipment(attacker, OmniEquipment.EquipmentType.MAIN_HAND) ?: return
+        val heldItem = attacker[EquipmentType.MainHand] ?: return
         val modifier = if (target is LivingEntity) {
             EnchantmentHelper.getDamageBonus(heldItem, target.mobType)
         } else {

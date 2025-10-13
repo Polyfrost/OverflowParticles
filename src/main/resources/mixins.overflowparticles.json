@@ -26,7 +26,7 @@
         "client.Mixin_Entity_CancelFootstepsIfNeeded",
         "client.Mixin_Entity_ParticleNoClip",
         "client.Mixin_EntityFX_ParticleFading",
-        "client.Mixin_EntityFX_ParticleId",
+        "client.Mixin_ParticleIdentifier",
         "client.Mixin_EntityFX_ParticleScaling",
         "client.Mixin_EntityFX_StaticParticleColor",
         "client.Mixin_EntityLivingBase_CleanView",

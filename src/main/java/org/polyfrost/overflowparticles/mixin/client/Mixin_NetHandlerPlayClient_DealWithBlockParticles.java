@@ -1,14 +1,13 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
 //#if MC <= 1.12.2
-
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.EnumParticleTypes;
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,5 +34,4 @@ public class Mixin_NetHandlerPlayClient_DealWithBlockParticles {
     }
 
 }
-
 //#endif

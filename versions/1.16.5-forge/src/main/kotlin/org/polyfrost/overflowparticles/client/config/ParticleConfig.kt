@@ -6,12 +6,11 @@ import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.*
 import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
-import org.polyfrost.overflowparticles.client.utils.ParticleData
-import org.polyfrost.overflowparticles.client.utils.VanillaParticles
+import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 import org.polyfrost.polyui.color.toColor
 
 class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
-
     @Include
     var enabled = true
 
@@ -43,22 +42,23 @@ class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        val particle = ParticleData.of(particleType) ?: throw IllegalArgumentException("Invalid particle type: $particleType")
+//        val particle = ParticleRegistry.of(particleType) ?: throw IllegalArgumentException("Invalid particle type: ${ParticleRegistry.location(particleType)}")
+        val particle = ParticleRegistry.of(particleType) ?: return
         if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
         }
 
-//        if (particle == VanillaParticles.FOOTSTEP) {
-//            map.remove("customColor")
-//            map.remove("colorMode")
-//            map.remove("color")
-//        }
-//
-//        if (particle in arrayOf(VanillaParticles.EXPLOSION_NORMAL, VanillaParticles.EXPLOSION_LARGE, VanillaParticles.EXPLOSION_HUGE, VanillaParticles.FIREWORK_SPARK)) {
-//            map.remove("fade")
-//            map.remove("fadeStart")
-//        }
+        if (particle == VanillaParticles.FOOTSTEP) {
+            map.remove("customColor")
+            map.remove("colorMode")
+            map.remove("color")
+        }
+
+        if (particle.isFireworkTriggered) {
+            map.remove("fade")
+            map.remove("fadeStart")
+        }
 
         //t.addDependency("General.color", "General.customColor")
         //t.addDependency("General.colorMode", "General.customColor")
@@ -73,7 +73,7 @@ class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
         val cond = getProperty(condition)
         require(cond.type == Boolean::class.javaPrimitiveType) { "Condition property must be boolean" }
         val opt = getProperty(option).addDisplayCondition((cond as Property<Boolean?>)!!, false)
-        opt.getOrPutMetadata<ArrayList<String>>("dependencyNames") { ArrayList(3) }.add(cond.title)
+        opt.getOrPutMetadata<ArrayList<String>>("dependencyNames") { ArrayList(3) }.add(cond.title!!)
     }
 
     /**

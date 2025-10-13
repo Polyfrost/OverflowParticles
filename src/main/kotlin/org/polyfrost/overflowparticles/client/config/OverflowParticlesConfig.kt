@@ -1,9 +1,5 @@
 package org.polyfrost.overflowparticles.client.config
 
-//#if MC >= 1.16.5
-//$$ import net.minecraft.core.particles.ParticleTypes
-//#endif
-
 import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.polyfrost.oneconfig.api.config.v1.Config
@@ -14,8 +10,11 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
 
-object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
+//#if MC >= 1.16.5
+//$$ import net.minecraft.core.particles.ParticleTypes
+//#endif
 
+object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
     val maxParticleLimit: Int
         get() {
             //#if MC >= 1.12.2
