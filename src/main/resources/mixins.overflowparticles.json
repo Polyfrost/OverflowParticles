@@ -1,11 +1,8 @@
 {
-    "compatibilityLevel": "JAVA_8",
-    "minVersion": "0.7",
+    "compatibilityLevel": "${java_version}",
+    "minVersion": "0.8",
     "package": "org.polyfrost.overflowparticles.mixin",
-    "refmap": "mixins.${mod_id}.refmap.json",
-    "injectors": {
-        "maxShiftBy": 5
-    },
+    "refmap": "mixins.overflowparticles.refmap.json",
     "verbose": true,
     "client": [
         "client.event.Mixin_EntityPlayer_AttackEntityEvent",
@@ -18,6 +15,8 @@
         "client.particles.Mixin_EntityLargeExplodeFX_ModifyParticleSize",
         "client.particles.Mixin_EntityParticleEmitter_ApplyMultiplier",
 
+        "client.Mixin_CleanEmitterView",
+        "client.Mixin_CleanView",
         "client.Mixin_EffectRenderer_CancelDiggingParticles",
         "client.Mixin_EffectRenderer_FixBlockBreakingId",
         "client.Mixin_EffectRenderer_ModifyParticleLimit",
