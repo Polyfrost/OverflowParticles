@@ -48,6 +48,7 @@ object ParticleRegistry {
 
     @JvmStatic
     fun of(id: Int): ParticleInfo? {
-        return ofSingular(id)?.redirectsTo
+        val value = ofSingular(id) ?: return null
+        return value.redirectsTo ?: value
     }
 }

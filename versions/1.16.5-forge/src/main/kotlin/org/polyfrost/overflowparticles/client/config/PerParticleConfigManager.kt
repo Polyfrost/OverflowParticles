@@ -2,6 +2,7 @@ package org.polyfrost.overflowparticles.client.config
 
 import net.minecraft.client.particle.Particle
 import net.minecraft.core.particles.ParticleType
+import org.polyfrost.overflowparticles.client.particles.ParticleInfo
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
 import org.polyfrost.overflowparticles.utils.ParticleIdentifier
 
@@ -31,6 +32,11 @@ object PerParticleConfigManager {
 
         val particleType = entity.getId()
         return getConfigByType(particleType)
+    }
+
+    @JvmStatic
+    fun getConfigByType(info: ParticleInfo): ParticleConfig {
+        return getConfigByType(info.id) ?: throw IllegalArgumentException("No config found for particle type: ${info.name} (ID: ${info.id})")
     }
 
     @JvmStatic

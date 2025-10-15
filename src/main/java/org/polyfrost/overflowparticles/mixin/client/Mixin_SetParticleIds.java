@@ -1,7 +1,5 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-//#if MC <= 1.12.2
-
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityFX;
 import org.polyfrost.overflowparticles.utils.ParticleIdentifier;
@@ -13,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EffectRenderer.class)
-public class Mixin_EffectRenderer_SetParticleIds {
+public class Mixin_SetParticleIds {
     @Unique private int overflowparticles$currentId;
 
     @Inject(method = "spawnEffectParticle", at = @At("HEAD"))
@@ -38,4 +36,3 @@ public class Mixin_EffectRenderer_SetParticleIds {
         return effect;
     }
 }
-//#endif

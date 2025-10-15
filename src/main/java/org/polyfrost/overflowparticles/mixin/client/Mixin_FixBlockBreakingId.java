@@ -1,7 +1,6 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
 //#if MC <= 1.12.2
-
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.particle.EntityFX;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EffectRenderer.class)
-public class Mixin_EffectRenderer_FixBlockBreakingId {
+public class Mixin_FixBlockBreakingId {
     @Inject(
             //#if MC >= 1.12.2
             //$$ method = "method_12256",

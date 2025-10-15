@@ -1,7 +1,5 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-//#if MC <= 1.12.2
-
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.particle.EffectRenderer;
@@ -11,18 +9,18 @@ import net.minecraft.entity.Entity;
 import org.polyfrost.overflowparticles.client.OverflowParticlesClient;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(EffectRenderer.class)
-public class Mixin_EffectRenderer_UpdateIconRendererState {
-
+public class Mixin_TrackRenderState {
     @WrapOperation(method = "renderLitParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/EntityFX;renderParticle(Lnet/minecraft/client/renderer/WorldRenderer;Lnet/minecraft/entity/Entity;FFFFFF)V"))
     private void overflowparticles$updateRenderingEntityState(EntityFX instance, WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, Operation<Void> original) {
         OverflowParticlesClient.setRenderingEntity(instance);
         ParticleConfig config = PerParticleConfigManager.getConfig(instance);
-        if (config != null && !config.getEnabled() && config.getId() != 37) {
+        if (config != null && !config.getEnabled() && config.getId() != VanillaParticles.BLOCKS.getId()) {
             return;
         }
 
@@ -37,6 +35,4 @@ public class Mixin_EffectRenderer_UpdateIconRendererState {
         OverflowParticlesClient.setRenderingEntity(entityFX);
         return entityFX;
     }
-
 }
-//#endif

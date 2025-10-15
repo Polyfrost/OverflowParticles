@@ -15,6 +15,7 @@ import org.polyfrost.oneconfig.api.ui.v1.Notifications
 //#endif
 
 object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
+    @JvmStatic
     val maxParticleLimit: Int
         get() {
             //#if MC >= 1.12.2
@@ -42,14 +43,14 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
 
     @Slider(
         title = "Max Particle Limit",
-        description = "Stop additional particles from appearing when there are too many at once.",
+        description = "The maximum number of particles that can be rendered at once. Set to 0 to disable.",
         subcategory = "Features",
         min = 1f, max = 10_000f
     )
     var legacyMaxParticleLimit = 4000
 
     @Slider(
-        title = "Particle Limit",
+        title = "Max Particle Limit",
         description = "The maximum number of particles that can be rendered at once. Set to 0 to disable.",
         subcategory = "Features",
         min = 0f, max = 20_000f

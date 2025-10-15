@@ -15,13 +15,13 @@
         "client.particles.Mixin_EntityLargeExplodeFX_ModifyParticleSize",
         "client.particles.Mixin_EntityParticleEmitter_ApplyMultiplier",
 
+        "client.Mixin_CancelDiggingParticles",
         "client.Mixin_CleanEmitterView",
         "client.Mixin_CleanView",
-        "client.Mixin_EffectRenderer_CancelDiggingParticles",
-        "client.Mixin_EffectRenderer_FixBlockBreakingId",
-        "client.Mixin_EffectRenderer_ModifyParticleLimit",
-        "client.Mixin_EffectRenderer_SetParticleIds",
-        "client.Mixin_EffectRenderer_UpdateIconRendererState",
+        "client.Mixin_FixBlockBreakingId",
+        "client.Mixin_ModifyParticleLimit",
+        "client.Mixin_SetParticleIds",
+        "client.Mixin_TrackRenderState",
         "client.Mixin_Entity_CancelFootstepsIfNeeded",
         "client.Mixin_Entity_ParticleNoClip",
         "client.Mixin_EntityFX_ParticleFading",
@@ -33,6 +33,6 @@
         "client.Mixin_NetHandlerPlayClient_DealWithBlockParticles",
         "client.Mixin_RendererLivingEntity_FixGuiEntityRendering",
         "client.Mixin_World_OverrideParticleSpawning",
-        "client.Mixin_WorldRenderer_ApplyCustomParticleColors"
+        "client.Mixin_ApplyCustomParticleColors"
     ]
 }

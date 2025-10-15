@@ -6,7 +6,7 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 
 object OverflowParticlesClient {
     @JvmStatic var renderingEntity: EntityFX? = null
-    @JvmStatic var rendering = false
+    @JvmStatic var isRendering = false
 
     fun initialize() {
         VanillaParticles.preload()
