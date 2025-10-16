@@ -94,7 +94,13 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
         for (particle in PerParticleConfigManager.configs) {
             i++
             try {
-                val t: Tree = Tree.tree("Particle${particle.key}")
+                val name =
+                    //#if MC >= 1.16.5
+                    //$$ particle.key.toString()
+                    //#else
+                    "Particle${particle.key}"
+                    //#endif
+                val t: Tree = Tree.tree(name)
                 t.addMetadata(mapOf(
                     "title" to particle.value.name,
                     "description" to "Settings for the ${particle.value.name} particle.",

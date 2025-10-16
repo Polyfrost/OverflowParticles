@@ -1,6 +1,5 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-//#if MC <= 1.12.2
 import net.minecraft.client.renderer.WorldRenderer;
 import org.polyfrost.overflowparticles.client.OverflowParticlesClient;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
@@ -38,4 +37,3 @@ public abstract class Mixin_ApplyCustomParticleColors {
 
     @Shadow public abstract WorldRenderer color(int red, int green, int blue, int alpha);
 }
-//#endif

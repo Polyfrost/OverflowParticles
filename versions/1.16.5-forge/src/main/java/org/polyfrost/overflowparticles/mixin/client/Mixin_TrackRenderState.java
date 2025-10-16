@@ -47,7 +47,8 @@ public class Mixin_TrackRenderState {
     ) {
         OverflowParticlesClient.setRenderingEntity(instance);
         ParticleConfig config = PerParticleConfigManager.getConfig(instance);
-        if (config != null && !config.getEnabled() && config.getParticleType() != VanillaParticles.BLOCKS.getId()) {
+        if (config == null || !config.getEnabled() || config.getParticleType() == VanillaParticles.BLOCKS.getId()) {
+            original.call(instance, vertexConsumer, camera, tickDelta);
             return;
         }
         

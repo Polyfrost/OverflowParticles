@@ -50,6 +50,7 @@ object ParticleRegistry {
         return value.redirectsTo ?: value
     }
 
+    @JvmStatic
     fun location(id: ParticleType<*>): ResourceLocation {
         //#if MC >= 1.20.1
         //$$ return Registries.PARTICLE_TYPE.getId(id) ?: identifierOrThrow("unknown")
