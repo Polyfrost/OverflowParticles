@@ -31,6 +31,7 @@ fun spawn(
     xOffset: Double, yOffset: Double, zOffset: Double,
 ) {
     repeat(ceil(config.multiplier).toInt()) {
+        isMultiplied = true
         val modX = x - 0.5 + Math.random()
         val modY = y - 0.5 + Math.random()
         val modZ = z - 0.5 + Math.random()

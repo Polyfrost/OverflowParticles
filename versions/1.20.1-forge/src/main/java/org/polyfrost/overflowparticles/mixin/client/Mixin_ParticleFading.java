@@ -20,16 +20,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ParticleEngine.class)
 public abstract class Mixin_ParticleFading {
-    @WrapOperation(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V", shift = At.Shift.BEFORE))
+    @WrapOperation(
+            //#if FORGE-LIKE
+            //#if MC >= 1.21.1
+            //$$ method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;Ljava/util/function/Predicate;)V",
+            //#else
+            method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;)V",
+            //#endif
+            //#else
+            //$$ method = "renderParticles",
+            //#endif
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V",
+                    shift = At.Shift.BEFORE
+            )
+    )
     private void overflowparticle$fade(
             Particle instance,
-            BufferBuilder buffer,
-            Camera camera,
             Operation<Void> original
     ) {
         ParticleConfig config = PerParticleConfigManager.getConfig((Particle) (Object) this);
         if (config == null) {
-            original.call(instance, buffer, camera);
+            original.call(instance);
             return;
         }
 
@@ -57,6 +70,6 @@ public abstract class Mixin_ParticleFading {
             }
         }
 
-        original.call(instance, buffer, camera);
+        original.call(instance);
     }
 }

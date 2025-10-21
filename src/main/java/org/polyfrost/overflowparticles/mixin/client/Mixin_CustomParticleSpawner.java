@@ -31,7 +31,15 @@ public class Mixin_CustomParticleSpawner {
         }
 
         ParticleConfig config = PerParticleConfigManager.getConfigs().get(particleID);
-        if (config == null || config.getMultiplier() == 1 || config.getId() == 28) {
+        if (config == null) {
+            return;
+        }
+
+        if (!config.getEnabled()) {
+            ci.cancel();
+        }
+
+        if (config.getMultiplier() == 1 || config.getId() == 28) {
             return;
         }
 

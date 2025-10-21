@@ -15,6 +15,7 @@
         "client.particles.Mixin_ModifyFootstepSize",
         "client.particles.Mixin_ModifyLargeExplosionSize",
 
+        "client.Mixin_AccessParticleData",
         "client.Mixin_ApplyCustomParticleColors",
         "client.Mixin_CancelBreakingParticles",
         "client.Mixin_CancelDiggingParticles",

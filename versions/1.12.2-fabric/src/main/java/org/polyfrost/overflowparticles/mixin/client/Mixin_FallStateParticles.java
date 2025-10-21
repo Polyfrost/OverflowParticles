@@ -49,7 +49,7 @@ public abstract class Mixin_FallStateParticles extends Entity {
     //$$     }
     //$$
     //$$     ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.BLOCKS);
-    //$$     if (!config.getEnabled()) {
+    //$$     if (!config.isEnabled()) {
     //$$         return true;
     //$$     }
     //$$

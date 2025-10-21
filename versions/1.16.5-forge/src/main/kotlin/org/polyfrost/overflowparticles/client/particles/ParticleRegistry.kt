@@ -14,6 +14,7 @@ import net.minecraft.core.Registry
 object ParticleRegistry {
     private val LOGGER = LogManager.getLogger("OverflowParticles / Particle Registry")
 
+    private val _cache = mutableMapOf<ParticleType<*>, ResourceLocation>()
     private val _registry = mutableMapOf<ParticleType<*>, ParticleInfo>()
 
     /**
@@ -52,10 +53,12 @@ object ParticleRegistry {
 
     @JvmStatic
     fun location(id: ParticleType<*>): ResourceLocation {
-        //#if MC >= 1.20.1
-        //$$ return Registries.PARTICLE_TYPE.getId(id) ?: identifierOrThrow("unknown")
-        //#else
-        return Registry.PARTICLE_TYPE.getKey(id) ?: identifierOrThrow("unknown")
-        //#endif
+        return _cache.getOrPut(id) {
+            //#if MC >= 1.20.1
+            //$$ Registries.PARTICLE_TYPE.getId(id) ?: identifierOrThrow("unknown")
+            //#else
+            Registry.PARTICLE_TYPE.getKey(id) ?: identifierOrThrow("unknown")
+            //#endif
+        }
     }
 }
