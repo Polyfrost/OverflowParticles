@@ -1,29 +1,30 @@
 package org.polyfrost.overflowparticles.utils
 
-import net.minecraft.client.particle.EntityFX
+import net.minecraft.client.particle.Particle
+import net.minecraft.core.particles.ParticleType
 
 @Suppress("FunctionName")
 interface ParticleIdentifier {
     companion object {
         @JvmStatic
-        fun get(entity: EntityFX): Int? {
+        fun get(entity: Particle): ParticleType<*>? {
             return (entity as? ParticleIdentifier)?.getId()
         }
 
         @JvmStatic
-        fun set(entity: EntityFX, id: Int) {
+        fun set(entity: Particle, id: ParticleType<*>) {
             (entity as? ParticleIdentifier)?.setId(id)
         }
     }
 
-    fun `overflowparticles$getId`(): Int
-    fun `overflowparticles$setId`(id: Int)
+    fun `overflowparticles$getId`(): ParticleType<*>
+    fun `overflowparticles$setId`(id: ParticleType<*>)
 
-    fun getId(): Int {
+    fun getId(): ParticleType<*> {
         return `overflowparticles$getId`()
     }
 
-    fun setId(id: Int) {
+    fun setId(id: ParticleType<*>) {
         `overflowparticles$setId`(id)
     }
 }

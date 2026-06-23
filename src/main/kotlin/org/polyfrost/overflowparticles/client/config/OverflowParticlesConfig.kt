@@ -8,21 +8,20 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
-import org.polyfrost.oneconfig.api.ui.v1.Notifications
 
-//#if MC >= 1.16.5
-//$$ import net.minecraft.core.particles.ParticleTypes
-//#endif
+//? if >=1.16.5 {
+import net.minecraft.core.particles.ParticleTypes
+//?}
 
 object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
     @JvmStatic
     val maxParticleLimit: Int
         get() {
-            //#if MC >= 1.12.2
+            //? if >=1.12.2 {
             return modernMaxParticleLimit
-            //#else
-            //$$ return legacyMaxParticleLimit
-            //#endif
+            //?} else {
+            /*return legacyMaxParticleLimit
+            *///?}
         }
 
     @Switch(
@@ -82,9 +81,6 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
     )
     var checkInvulnerable = false
 
-    @Include var hasMigratedPatcher = false
-    @Include var hasMigratedParticlesEnhanced = false
-
     override fun initialize(byConfigManager: Boolean) {
         super.initialize(byConfigManager)
         PerParticleConfigManager.fillConfigs()
@@ -95,11 +91,11 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
             i++
             try {
                 val name =
-                    //#if MC >= 1.16.5
-                    //$$ particle.key.toString()
-                    //#else
-                    "Particle${particle.key}"
-                    //#endif
+                    //? if >=1.16.5 {
+                    particle.key.toString()
+                    //?} else {
+                    /*"Particle${particle.key}"
+                    *///?}
                 val t: Tree = Tree.tree(name)
                 t.addMetadata(mapOf(
                     "title" to particle.value.name,
@@ -108,13 +104,14 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
                     "category" to "General",
                     "subcategory" to "Particles",
                     "canBeEnabled" to true,
-                    "index" to i
+                    "index" to i,
+                    "collapsed" to true
                 ))
-                //#if MC >= 1.16.5
-                //$$  if (particle.value.particleType == ParticleTypes.BLOCK) {
-                //#else
-                if (particle.value.id == 37) {
-                    //#endif
+                //? if >=1.16.5 {
+                 if (particle.value.particleType == ParticleTypes.BLOCK) {
+                //?} else {
+                /*if (particle.value.id == 37) {
+                *///?}
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {
@@ -127,126 +124,11 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
             }
         }
 
-        dirtyMigration()
-
-        //#if MC >= 1.12.2
-        //$$ hideIf("legacyMaxParticleLimit") { true }
-        //#else
-        hideIf("modernMaxParticleLimit") { true }
-        //#endif
-    }
-
-    private fun dirtyMigration() {
-        val patcher = try {
-            Class.forName("club.sk1er.patcher.config.OldPatcherConfig")
-            true
-        } catch (_: ClassNotFoundException) {
-            false
-        }
-
-        if (!hasMigratedPatcher && patcher) {
-            var didAnythingForPatcher = false
-
-            if (OldPatcherConfig.disableBlockBreakParticles) {
-                PerParticleConfigManager.blockSetting.hideDigging = true
-                didAnythingForPatcher = true
-            }
-            if (OldPatcherConfig.cleanView) {
-                isCleanView = OldPatcherConfig.cleanView
-                didAnythingForPatcher = true
-            }
-            if (OldPatcherConfig.staticParticleColor) {
-                isStaticParticleColor = OldPatcherConfig.staticParticleColor
-                didAnythingForPatcher = true
-            }
-            if (OldPatcherConfig.maxParticleLimit != 4000) {
-                legacyMaxParticleLimit = OldPatcherConfig.maxParticleLimit
-                didAnythingForPatcher = true
-            }
-            hasMigratedPatcher = true
-            save()
-
-            if (didAnythingForPatcher) {
-                Notifications.enqueue(Notifications.Type.Info, "OverflowParticles", "Migrated Patcher settings replaced by OverflowParticles. Please check OverflowParticles's settings to make sure they are correct.")
-            }
-        }
-
-        if (!hasMigratedParticlesEnhanced) {
-            try {
-                val clazz = Class.forName("dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig")
-                var didAnything = false
-
-                if (ParticlesEnhancedConfig.alwaysCrit) {
-                    alwaysCritical = true
-                    ParticlesEnhancedConfig.alwaysCrit = false
-                    didAnything = true
-                }
-                if (ParticlesEnhancedConfig.alwaysSharp) {
-                    alwaysSharp = true
-                    ParticlesEnhancedConfig.alwaysSharp = false
-                    didAnything = true
-                }
-                ParticlesEnhancedConfig.checkInvulnerable = checkInvulnerable
-                if (!ParticlesEnhancedConfig.fade) {
-                    for (i in PerParticleConfigManager.configs) {
-                        i.value.fade = false
-                    }
-                    PerParticleConfigManager.blockSetting.fade = false
-                    didAnything = true
-                }
-                if (ParticlesEnhancedConfig.fadeOutStart != 0.5f) {
-                    for (i in PerParticleConfigManager.configs) {
-                        i.value.fadeStart = ParticlesEnhancedConfig.fadeOutStart
-                    }
-                    PerParticleConfigManager.blockSetting.fadeStart = ParticlesEnhancedConfig.fadeOutStart
-                    didAnything = true
-                }
-                if (ParticlesEnhancedConfig.critMultiplier != 1) {
-                    for (i in PerParticleConfigManager.configs) {
-                        if (i.value.name == "Critical") {
-                            i.value.multiplier = ParticlesEnhancedConfig.critMultiplier.toFloat()
-                            ParticlesEnhancedConfig.critMultiplier = 1
-                            didAnything = true
-                        }
-                    }
-                }
-                if (ParticlesEnhancedConfig.sharpMultiplier != 1) {
-                    for (i in PerParticleConfigManager.configs) {
-                        if (i.value.name == "Sharpness") {
-                            i.value.multiplier = ParticlesEnhancedConfig.sharpMultiplier.toFloat()
-                            ParticlesEnhancedConfig.sharpMultiplier = 1
-                            didAnything = true
-                        }
-                    }
-                }
-
-                hasMigratedParticlesEnhanced = true
-                save()
-
-                try {
-                    val field = clazz.getDeclaredField("INSTANCE")
-                    val instance = field.get(null)
-                    if (clazz.superclass.name.equals("gg.essential.vigilance.Vigilant")) {
-                        val markDirty = clazz.getDeclaredMethod("markDirty")
-                        val writeData = clazz.getDeclaredMethod("writeData")
-                        markDirty.invoke(instance)
-                        writeData.invoke(instance)
-                    } else if (clazz.superclass.name.equals("cc.polyfrost.oneconfig.config.Config")) {
-                        val save = clazz.getDeclaredMethod("save")
-                        save.invoke(instance)
-                    }
-                } catch (e: NoSuchFieldException) {
-                    e.printStackTrace()
-                } catch (e: NoSuchMethodException) {
-                    e.printStackTrace()
-                }
-
-                if (didAnything) {
-                    Notifications.enqueue(Notifications.Type.Info, "OverflowParticles", "Migrated ParticlesEnhanced settings replaced by OverflowParticles. Please check OverflowParticles's settings to make sure they are correct. ParticlesEnhanced can now be deleted.")
-                }
-            } catch (_: ClassNotFoundException) {
-            }
-        }
+        //? if >=1.12.2 {
+        hideIf("legacyMaxParticleLimit") { true }
+        //?} else {
+        /*hideIf("modernMaxParticleLimit") { true }
+        *///?}
     }
 
 }

@@ -1,39 +1,26 @@
 package org.polyfrost.overflowparticles.client
 
-import dev.deftu.omnicore.api.equipment.EquipmentType
-import dev.deftu.omnicore.api.equipment.get
-import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.EnumCreatureAttribute
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.network.Packet
-import net.minecraft.network.play.server.S19PacketEntityStatus
-import net.minecraft.util.EnumParticleTypes
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.effect.MobEffects
+import net.minecraft.world.entity.player.Player
+import net.minecraft.network.protocol.Packet
+import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
+import net.minecraft.core.particles.ParticleTypes
 import org.polyfrost.oneconfig.api.event.v1.eventHandler
 import org.polyfrost.oneconfig.api.event.v1.events.PacketEvent
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
 import org.polyfrost.overflowparticles.client.event.AttackEntityEvent
 
-//#if MC >= 1.12.2
-//$$ import net.minecraft.entity.effect.StatusEffects
-//#else
-import net.minecraft.potion.Potion
-//#endif
-
 object OverflowParticlesEventHandler {
 
-    private val EntityLivingBase.isBlind: Boolean
+    private val LivingEntity.isBlind: Boolean
         get() {
-            //#if MC >= 1.12.2
-            //$$ return this.hasStatusEffect(StatusEffects.BLINDNESS)
-            //#else
-            return this.isPotionActive(Potion.blindness)
-            //#endif
+            return this.hasEffect(MobEffects.BLINDNESS)
         }
 
-    private var lastAttacker: EntityPlayer? = null
+    private var lastAttacker: Player? = null
 
     private var targetId = -1
 
@@ -43,15 +30,11 @@ object OverflowParticlesEventHandler {
                 return@eventHandler
             }
 
+            val world = mc.level ?: return@eventHandler
             val packet: Packet<*> = event.getPacket()
-
-            if (packet is S19PacketEntityStatus) {
-                if (packet.opCode.toInt() != 2) {
-                    return@eventHandler
-                }
-
-                val target = packet.getEntity(mc.theWorld) ?: return@eventHandler
-                if (lastAttacker != null && targetId == target.entityId) {
+            if (packet is ClientboundEntityEventPacket) {
+                val target = packet.getEntity(world) ?: return@eventHandler
+                if (lastAttacker != null && targetId == target.id) {
                     doCritical(lastAttacker!!, target)
                     doSharpness(lastAttacker!!, target)
                     lastAttacker = null
@@ -61,14 +44,18 @@ object OverflowParticlesEventHandler {
         }.register()
 
         eventHandler { event: AttackEntityEvent ->
-            if (!event.target.worldObj.isRemote) {
+            val targetWorld = event.target.level()
+
+            val isClientWorld = targetWorld.isClientSide
+
+            if (!isClientWorld) {
                 return@eventHandler
             }
 
             if (OverflowParticlesConfig.checkInvulnerable) {
-                if (event.player.entityId == mc.thePlayer.entityId) {
+                if (event.player.id == mc.player?.id) {
                     lastAttacker = event.player
-                    targetId = event.target.entityId
+                    targetId = event.target.id
                 }
             } else {
                 doSharpness(event.player, event.target)
@@ -77,38 +64,36 @@ object OverflowParticlesEventHandler {
         }.register()
     }
 
-    private fun doCritical(attacker: EntityPlayer, target: Entity) {
+    private fun doCritical(attacker: Player, target: Entity) {
         if (!OverflowParticlesConfig.alwaysCritical) {
             return
         }
 
         val criticalHit = attacker.fallDistance > 0.0F
-                && !attacker.onGround
-                && !attacker.isOnLadder
-                && !attacker.isInWater
+                && !attacker.onGround()
+                && !attacker.onClimbable()
+                && !attacker.isInWater()
                 && !attacker.isBlind
-                && attacker.ridingEntity == null
-                && target is EntityLivingBase
+                && attacker.vehicle == null
+                && target is LivingEntity
 
         if (!criticalHit) {
-            mc.effectRenderer.emitParticleAtEntity(target, EnumParticleTypes.CRIT)
+            mc.particleEngine.createTrackingEmitter(target, ParticleTypes.CRIT)
         }
     }
 
-    private fun doSharpness(attacker: EntityPlayer, target: Entity) {
+    private fun doSharpness(attacker: Player, target: Entity) {
         if (!OverflowParticlesConfig.alwaysSharp) {
             return
         }
 
-        val heldItem = attacker[EquipmentType.MainHand] ?: return
-        val modifier = if (target is EntityLivingBase) {
-            EnchantmentHelper.getModifierForCreature(heldItem, target.creatureAttribute)
-        } else {
-            EnchantmentHelper.getModifierForCreature(heldItem, EnumCreatureAttribute.UNDEFINED)
-        }
+        if (target is LivingEntity) {
+            val heldItem = attacker.mainHandItem
+            if (heldItem.isEnchanted()) {
+                return
+            }
 
-        if (modifier <= 0f) {
-            mc.effectRenderer.emitParticleAtEntity(target, EnumParticleTypes.CRIT_MAGIC)
+            mc.particleEngine.createTrackingEmitter(target, ParticleTypes.ENCHANTED_HIT)
         }
     }
 }

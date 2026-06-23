@@ -1,8 +1,9 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
@@ -14,13 +15,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityLivingBase.class)
+@Mixin(LivingEntity.class)
 public abstract class Mixin_MultiplyDeathParticles extends Entity {
-    public Mixin_MultiplyDeathParticles(World worldIn) {
-        super(worldIn);
+    public Mixin_MultiplyDeathParticles(EntityType<?> arg, Level arg2) {
+        super(arg, arg2);
     }
 
-    @ModifyConstant(method = "onDeathUpdate", constant = @Constant(intValue = 20, ordinal = 1))
+    @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 20, ordinal = 1))
     private int overflowparticles$applyMultiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
         if (config.getMultiplier() == 1) {
@@ -30,7 +31,7 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
         return (int) (constant * config.getMultiplier());
     }
 
-    @Inject(method = "onDeathUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"))
+    @Inject(method = "tickDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void overflowparticles$updateMultiplyState(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }

@@ -1,75 +1,75 @@
 package org.polyfrost.overflowparticles
 
-//#if FABRIC
-//$$ import net.fabricmc.api.ClientModInitializer
-//#elseif FORGE
-//#if MC >= 1.16.5
-//$$ import net.minecraftforge.eventbus.api.IEventBus
-//$$ import net.minecraftforge.fml.common.Mod
-//$$ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
-//$$ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
-//#else
+//? if fabric {
+import net.fabricmc.api.ClientModInitializer
+//?} elif forge {
+/*//? if >=1.16.5 {
+import net.minecraftforge.eventbus.api.IEventBus
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext
+//?} else {
+/^import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
-//#endif
-//#elseif NEOFORGE
-//$$ import net.neoforged.bus.api.IEventBus
-//$$ import net.neoforged.fml.common.Mod
-//$$ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
-//#endif
+^///?}
+*///?} elif neoforge {
+/*import net.neoforged.bus.api.IEventBus
+import net.neoforged.fml.common.Mod
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
+*///?}
 
 import org.polyfrost.overflowparticles.client.OverflowParticlesClient
 
-//#if FORGE-LIKE
-//$$ import org.polyfrost.overflowparticles.OverflowParticlesConstants
-//#if MC >= 1.16.5
-//$$ @Mod(OverflowParticlesConstants.ID)
-//#else
-@Mod(modid = OverflowParticlesConstants.ID, version = OverflowParticlesConstants.VERSION)
-//#endif
-//#endif
+//? if forge_like {
+/*import org.polyfrost.overflowparticles.OverflowParticlesConstants
+//? if >=1.16.5 {
+@Mod(OverflowParticlesConstants.ID)
+//?} else {
+/^@Mod(modid = OverflowParticlesConstants.ID, version = OverflowParticlesConstants.VERSION)
+^///?}
+*///?}
 class OverflowParticlesEntrypoint
-//#if FABRIC
-//$$     : ClientModInitializer
-//#endif
+//? if fabric {
+    : ClientModInitializer
+//?}
 {
-    //#if FORGE && MC >= 1.16.5
-    //$$ init {
-    //$$     setupForgeEvents(FMLJavaModLoadingContext.get().modEventBus)
-    //$$ }
-    //#elseif NEOFORGE
-    //$$ constructor(modEventBus: IEventBus) {
-    //$$     setupForgeEvents(modEventBus)
-    //$$ }
-    //#endif
+    //? if forge && >=1.16.5 {
+    /*init {
+        setupForgeEvents(FMLJavaModLoadingContext.get().modEventBus)
+    }
+    *///?} elif neoforge {
+    /*constructor(modEventBus: IEventBus) {
+        setupForgeEvents(modEventBus)
+    }
+    *///?}
 
-    //#if FABRIC
-    //$$ override
-    //#elseif FORGE && MC <= 1.12.2
-    @EventHandler
-    //#endif
+    //? if fabric {
+    override
+    //?} elif forge && <=1.12.2 {
+    /*@EventHandler
+    *///?}
     fun onInitializeClient(
-        //#if FORGE-LIKE
-        //#if MC >= 1.16.5
-        //$$ event: FMLClientSetupEvent
-        //#else
-        event: FMLInitializationEvent
-        //#endif
-        //#endif
+        //? if forge_like {
+        /*//? if >=1.16.5 {
+        event: FMLClientSetupEvent
+        //?} else {
+        /^event: FMLInitializationEvent
+        ^///?}
+        *///?}
     ) {
-        //#if FORGE && MC <= 1.12.2
-        if (!event.side.isClient) {
+        //? if forge && <=1.12.2 {
+        /*if (!event.side.isClient) {
             return
         }
-        //#endif
+        *///?}
 
         OverflowParticlesClient.initialize()
     }
 
-    //#if FORGE-LIKE && MC >= 1.16.5
-    //$$ fun setupForgeEvents(modEventBus: IEventBus) {
-    //$$     modEventBus.addListener(this::onInitializeClient)
-    //$$ }
-    //#endif
+    //? if forge_like && >=1.16.5 {
+    /*fun setupForgeEvents(modEventBus: IEventBus) {
+        modEventBus.addListener(this::onInitializeClient)
+    }
+    *///?}
 }

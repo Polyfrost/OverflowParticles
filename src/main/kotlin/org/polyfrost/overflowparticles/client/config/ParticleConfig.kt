@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.client.config
 
+import net.minecraft.core.particles.ParticleType
 import org.polyfrost.oneconfig.api.config.v1.Node
 import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
@@ -7,14 +8,9 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.*
 import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
-import org.polyfrost.polyui.color.toColor
+import org.polyfrost.compose.render.PolyColor
 
-//#if MC >= 1.16.5
-//$$ import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
-//#endif
-
-class ParticleConfig(val name: String, val id: Int) {
-
+class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
     @Include
     var enabled = true
 
@@ -25,19 +21,19 @@ class ParticleConfig(val name: String, val id: Int) {
     var colorMode = 0
 
     @Color(title = "Color")
-    var color = (-1).toColor()
+    var color = PolyColor(-1)
 
     @Switch(title = "Fade", description = "Make particles fade rather than just disappearing.")
     var fade = true
 
-    @Slider(title = "Fade Out Start", description = "How far into the lifespan of the particle before it starts to fade.", max = 1F, min = 0F)
+    @Slider(title = "Fade Out Start", description = "How far into the lifespan of the particle before it starts to fade.", max = 1F, min = 0F, step = 0.01f)
     var fadeStart = 0.5f
 
-    @Slider(title = "Size", min = 0.5f, max = 5f)
+    @Slider(title = "Size", min = 0.5f, max = 5f, step = 0.1f)
     var size = 1.0f
         get() = field.coerceIn(0f, 5f)
 
-    @Slider(title = "Multiplier", min = 0f, max = 10f)
+    @Slider(title = "Multiplier", min = 0f, max = 10f, step = 0.1f)
     var multiplier = 1f
 
     @Suppress("UNCHECKED_CAST")
@@ -46,7 +42,8 @@ class ParticleConfig(val name: String, val id: Int) {
         theMap.setAccessible()
         val map = theMap.get(t) as LinkedHashMap<String, Node>
 
-        val particle = ParticleRegistry.of(id) ?: throw IllegalArgumentException("Invalid particle ID: $id")
+//        val particle = ParticleRegistry.of(particleType) ?: throw IllegalArgumentException("Invalid particle type: ${ParticleRegistry.location(particleType)}")
+        val particle = ParticleRegistry.of(particleType) ?: return
         if (particle.isUnfair) {
             map.remove("multiplier")
             t.getProp("size").metadata?.set("max", 1.0f)
@@ -58,7 +55,7 @@ class ParticleConfig(val name: String, val id: Int) {
             map.remove("color")
         }
 
-        if (particle in arrayOf(VanillaParticles.EXPLOSION_NORMAL, VanillaParticles.EXPLOSION_LARGE, VanillaParticles.EXPLOSION_HUGE, VanillaParticles.FIREWORK_SPARK)) {
+        if (particle.isFireworkTriggered) {
             map.remove("fade")
             map.remove("fadeStart")
         }
@@ -76,7 +73,9 @@ class ParticleConfig(val name: String, val id: Int) {
         val cond = getProperty(condition)
         require(cond.type == Boolean::class.javaPrimitiveType) { "Condition property must be boolean" }
         val opt = getProperty(option).addDisplayCondition((cond as Property<Boolean?>)!!, false)
-        opt.getOrPutMetadata<ArrayList<String>>("dependencyNames") { ArrayList(3) }.add(cond.title!!)
+        val dependencyNames = opt.getMetadata<ArrayList<String>>("dependencyNames")
+            ?: ArrayList<String>(3).also { opt.addMetadata("dependencyNames", it) }
+        dependencyNames.add(cond.title.toString())
     }
 
     /**

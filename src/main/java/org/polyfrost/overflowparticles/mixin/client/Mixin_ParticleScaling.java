@@ -1,41 +1,24 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(
-        value = EntityFX.class
-        //#if FORGE && MC <= 1.8.9
-        , priority = 1001 // After ParticlesEnhanced
-        //#endif
-)
+@Mixin(value = SingleQuadParticle.class)
 public class Mixin_ParticleScaling {
-    @Shadow protected float particleScale;
-
-    @Unique private float overflowparticles$originalScale;
-
-    @Inject(method = "renderParticle", at = @At(value = "HEAD"))
-    private void overflowparticles$overrideScale(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        this.overflowparticles$originalScale = this.particleScale;
-        ParticleConfig config = PerParticleConfigManager.getConfig((EntityFX) (Object) this);
+    @Inject(method = "getQuadSize", at = @At(value = "RETURN"), cancellable = true)
+    private void overflowparticles$overrideScale(float tickDelta, CallbackInfoReturnable<Float> cir) {
+        ParticleConfig config = PerParticleConfigManager.getConfig((Particle) (Object) this);
         if (config == null) {
             return;
         }
 
-        this.particleScale *= config.getSize();
-    }
-
-    @Inject(method = "renderParticle", at = @At(value = "RETURN"))
-    private void overflowparticles$resetScale(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        this.particleScale = this.overflowparticles$originalScale;
+        float size = config.getSize();
+        cir.setReturnValue(cir.getReturnValueF() * size);
     }
 }

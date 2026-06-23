@@ -1,40 +1,47 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import dev.deftu.omnicore.api.client.OmniClient;
-import dev.deftu.omnicore.api.client.options.OmniPerspective;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.World;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(EntityLivingBase.class)
+@Mixin(LivingEntity.class)
 public class Mixin_CleanView {
     @WrapWithCondition(
-            method = "updatePotionEffects",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;DDDDDD[I)V"
-            )
+        method = "tickEffects",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+        )
     )
-    private boolean overflowparticles$cleanView(World instance, EnumParticleTypes particleType, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int[] parameters) {
-        return !shouldBlock(particleType);
+    private boolean overflowparticles$cleanView(
+            Level level,
+            ParticleOptions particle,
+            double x, double y, double z,
+            double xSpeed, double ySpeed, double zSpeed
+    ) {
+        return !shouldBlock(particle);
     }
 
     @Unique
-    private boolean shouldBlock(EnumParticleTypes type) {
-        if (!OverflowParticlesConfig.isCleanView() || OmniPerspective.getCurrentPerspective() != OmniPerspective.FIRST_PERSON) {
+    private boolean shouldBlock(ParticleOptions particle) {
+        if (!OverflowParticlesConfig.isCleanView() || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             return false;
         }
 
-        EntityLivingBase self = (EntityLivingBase) (Object) this;
-        if (self != OmniClient.getPlayer()) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (self != Minecraft.getInstance().player) {
             return false;
         }
 
-        return type == EnumParticleTypes.SPELL_MOB || type == EnumParticleTypes.SPELL_MOB_AMBIENT;
+        return particle.getType() == ParticleTypes.ENTITY_EFFECT
+            || particle instanceof ColorParticleOption;
     }
 }

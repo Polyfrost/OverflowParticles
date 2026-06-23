@@ -1,12 +1,13 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
-import net.minecraft.client.particle.EntityParticleEmitter;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.client.particle.TrackingEmitter;
+import net.minecraft.core.particles.ParticleOptions;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,13 +16,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityParticleEmitter.class)
+@Mixin(TrackingEmitter.class)
 public class Mixin_ApplyMultiplierToEmitters {
-    @Shadow private EnumParticleTypes particleTypes;
+    @Shadow @Final private ParticleOptions particleType;
 
-    @ModifyConstant(method = "onUpdate", constant = @Constant(intValue = 16))
+    @ModifyConstant(method = "tick", constant = @Constant(intValue = 16))
     private int multiplier(int constant) {
-        ParticleInfo type = ParticleRegistry.of(this.particleTypes.getParticleID());
+        ParticleInfo type = ParticleRegistry.of(this.particleType.getType());
         if (type == null) {
             return constant;
         }
@@ -34,7 +35,7 @@ public class Mixin_ApplyMultiplierToEmitters {
         return (int) (constant * config.getMultiplier());
     }
 
-    @Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnParticle(Lnet/minecraft/util/EnumParticleTypes;ZDDDDDD[I)V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void cancel(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }

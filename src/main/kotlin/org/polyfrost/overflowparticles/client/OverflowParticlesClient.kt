@@ -1,11 +1,11 @@
 package org.polyfrost.overflowparticles.client
 
-import net.minecraft.client.particle.EntityFX
+import net.minecraft.client.particle.Particle
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 
 object OverflowParticlesClient {
-    @JvmStatic var renderingEntity: EntityFX? = null
+    @JvmStatic var renderingEntity: Particle? = null
     @JvmStatic var isRendering = false
 
     fun initialize() {

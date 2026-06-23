@@ -1,29 +1,29 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-//#if MC <= 1.12.2
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.particle.EntityFX;
+//? if <=1.12.2 {
+/*import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.client.particle.Particle;
 import org.polyfrost.overflowparticles.utils.ParticleIdentifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EffectRenderer.class)
+@Mixin(ParticleEngine.class)
 public class Mixin_FixBlockBreakingId {
     @Inject(
-            //#if MC >= 1.12.2
-            //$$ method = "method_12256",
-            //#else
+            //? if >=1.12.2 {
             method = "addEffect",
-            //#endif
+            //?} else {
+            /^method = "add(Lnet/minecraft/client/particle/Particle;)V",
+            ^///?}
             at = @At("HEAD")
     )
-    private void overflowparticles$checkDiggingEffects(EntityFX effect, CallbackInfo ci) {
-        if (effect instanceof EntityDiggingFX) {
+    private void overflowparticles$checkDiggingEffects(Particle effect, CallbackInfo ci) {
+        if (effect instanceof ParticleDigging) {
             ParticleIdentifier.set(effect, 37);
         }
     }
 }
-//#endif
+*///?}

@@ -3,7 +3,7 @@ package org.polyfrost.overflowparticles.mixin;
 //import net.minecraft.client.particle.EffectRenderer;
 //import net.minecraft.client.renderer.Tessellator;
 //import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-//import net.minecraft.entity.Entity;
+//import net.minecraft.world.entity.Entity;
 //import org.polyfrost.overflowparticles.client.OverflowParticlesClient;
 //import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 //import org.polyfrost.overflowparticles.client.config.ParticleConfig;
