@@ -1,0 +1,31 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "name": "${mod_name}",
+    "version": "${mod_version}",
+    "description": "",
+    "authors": [
+        "Polyfrost"
+    ],
+    "contact": {
+        "homepage": "https://github.com/Polyfrost/${mod_name}",
+        "sources": "https://github.com/Polyfrost/${mod_name}",
+        "issues": "https://github.com/Polyfrost/${mod_name}/issues"
+    },
+    "entrypoints": {
+        "client": [
+            {
+                "adapter": "kotlin",
+                "value": "org.polyfrost.overflowparticles.OverflowParticlesEntrypoint"
+            }
+        ]
+    },
+    "mixins": [
+        "mixins.overflowparticles.json"
+    ],
+    "license": "LGPL-3.0",
+    "environment": "client",
+    "depends": {
+        "minecraft": "${mc_version}"
+    }
+}
