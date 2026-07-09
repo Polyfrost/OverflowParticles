@@ -12,35 +12,35 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 //? if >=1.21.10 {
-/*import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*///?} else {
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+//?} else {
+/*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.particle.ParticleEngine;
-//?}
+*///?}
 
 //? if >=1.21.10 {
-/*@Mixin(SingleQuadParticle.class)
-*///?} else {
-@Mixin(ParticleEngine.class)
-//?}
+@Mixin(SingleQuadParticle.class)
+//?} else {
+/*@Mixin(ParticleEngine.class)
+*///?}
 public abstract class Mixin_ParticleFading {
     //? if >=1.21.10 {
-    /*@Inject(method = "extract", at = @At("HEAD"))
+    @Inject(method = "extract", at = @At("HEAD"))
     private void overflowparticle$fade(CallbackInfo ci) {
         Particle instance = (Particle) (Object) this;
         overflowparticles$applyFade(instance);
     }
-    *///?} else {
-    @WrapOperation(
+    //?} else {
+    /*@WrapOperation(
             //? if <1.21.4 {
-            method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
-            //?} else {
-            /*method = "render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
-            *///?}
+            /^method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
+            ^///?} else {
+            method = "render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
+            //?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"
@@ -56,7 +56,7 @@ public abstract class Mixin_ParticleFading {
         overflowparticles$applyFade(instance);
         original.call(instance, vertexConsumer, camera, tickDelta);
     }
-    //?}
+    *///?}
 
     @Unique
     private static void overflowparticles$applyFade(Particle instance) {

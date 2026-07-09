@@ -10,10 +10,10 @@ public interface Mixin_AccessParticleData {
     @Accessor int getAge();
 
     //? if >=26.1 {
-    /*@Invoker("getLightCoords") int overflowparticles$invokeGetLight(float partialTicks);
-    *///?} else {
-    @Invoker("getLightColor") int overflowparticles$invokeGetLight(float partialTicks);
-    //?}
+    @Invoker("getLightCoords") int overflowparticles$invokeGetLight(float partialTicks);
+    //?} else {
+    /*@Invoker("getLightColor") int overflowparticles$invokeGetLight(float partialTicks);
+    *///?}
 
     //? if <1.20.1 {
     /*@Accessor("colorAlpha") float getAlpha();

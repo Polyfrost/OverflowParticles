@@ -2,10 +2,10 @@ package org.polyfrost.overflowparticles.client.particles
 
 import net.minecraft.core.particles.ParticleType
 //? if >=1.21.11 {
-/*import net.minecraft.resources.Identifier as ResourceLocation
-*///?} else {
-import net.minecraft.resources.ResourceLocation
-//?}
+import net.minecraft.resources.Identifier as ResourceLocation
+//?} else {
+/*import net.minecraft.resources.ResourceLocation
+*///?}
 import org.apache.logging.log4j.LogManager
 
 //? if >=1.20.1 {

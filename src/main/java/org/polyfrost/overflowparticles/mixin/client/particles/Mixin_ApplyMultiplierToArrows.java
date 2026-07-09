@@ -1,10 +1,10 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
 //? if >=1.21.11 {
-/*import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
-*///?} else {
-import net.minecraft.world.entity.projectile.AbstractArrow;
-//?}
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+//?} else {
+/*import net.minecraft.world.entity.projectile.AbstractArrow;
+*///?}
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;

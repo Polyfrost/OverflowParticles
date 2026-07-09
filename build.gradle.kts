@@ -36,6 +36,9 @@ repositories {
     maven("https://repo.hypixel.net/repository/Hypixel/")
     maven("https://maven.deftu.dev/releases")
     maven("https://maven.fabricmc.net/releases")
+    maven("https://maven.terraformersmc.com/releases") {
+        content { includeGroup("com.terraformersmc") }
+    }
     maven("https://jitpack.io") {
         content { includeGroupAndSubgroups("com.github") }
     }

@@ -9,24 +9,24 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 //? if >=1.21.10 {
-/*import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*///?} else {
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+//?} else {
+/*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.particle.ParticleEngine;
-//?}
+*///?}
 
 //? if >=1.21.10 {
-/*@Mixin(SingleQuadParticle.class)
-*///?} else {
-@Mixin(ParticleEngine.class)
-//?}
+@Mixin(SingleQuadParticle.class)
+//?} else {
+/*@Mixin(ParticleEngine.class)
+*///?}
 public class Mixin_TrackRenderState {
     //? if >=1.21.10 {
-    /*@Inject(method = "extract", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extract", at = @At("HEAD"), cancellable = true)
     private void overflowparticles$updateRenderingEntityState(CallbackInfo ci) {
         Particle instance = (Particle) (Object) this;
         OverflowParticlesClient.setRenderingEntity(instance);
@@ -35,13 +35,13 @@ public class Mixin_TrackRenderState {
             ci.cancel();
         }
     }
-    *///?} else {
-    @WrapOperation(
+    //?} else {
+    /*@WrapOperation(
             //? if <1.21.4 {
-            method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
-            //?} else {
-            /*method = "render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
-            *///?}
+            /^method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
+            ^///?} else {
+            method = "render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
+            //?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"
@@ -70,5 +70,5 @@ public class Mixin_TrackRenderState {
         original.call(instance, vertexConsumer, camera, tickDelta);
         OverflowParticlesClient.setRendering(false);
     }
-    //?}
+    *///?}
 }

@@ -3,10 +3,10 @@ package org.polyfrost.overflowparticles.client.config
 import net.minecraft.client.particle.Particle
 import net.minecraft.core.particles.ParticleType
 //? if >=1.21.11 {
-/*import net.minecraft.resources.Identifier as ResourceLocation
-*///?} else {
-import net.minecraft.resources.ResourceLocation
-//?}
+import net.minecraft.resources.Identifier as ResourceLocation
+//?} else {
+/*import net.minecraft.resources.ResourceLocation
+*///?}
 import org.polyfrost.overflowparticles.client.particles.ParticleInfo
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
 import org.polyfrost.overflowparticles.utils.ParticleIdentifier

@@ -16,12 +16,12 @@ public abstract class Mixin_ModifyBreakingSize extends Particle {
 
     @Inject(
             //? if <1.21.4 {
-            method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/item/ItemStack;)V",
-            //?} elif <1.21.10 {
+            /*method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/world/item/ItemStack;)V",
+            *///?} elif <1.21.10 {
             /*method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/item/ItemStackRenderState;)V",
             *///?} else {
-            /*method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V",
-            *///?}
+            method = "<init>(Lnet/minecraft/client/multiplayer/ClientLevel;DDDLnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V",
+            //?}
             at = @At("RETURN"))
     private void overflowparticles$scale(CallbackInfo ci) {
         ParticleConfig config = PerParticleConfigManager.getConfig(this);

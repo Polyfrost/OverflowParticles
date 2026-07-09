@@ -125,7 +125,7 @@ object VanillaParticles {
 
     // 1.21.5+
     //? if >=1.21.5 {
-    /*@JvmField val GUST = create("Gust", ParticleTypes.GUST)
+    @JvmField val GUST = create("Gust", ParticleTypes.GUST)
     @JvmField val GUST_EMITTER_SMALL = create("Gust Emitter (Small)", ParticleTypes.GUST_EMITTER_SMALL)
     @JvmField val GUST_EMITTER_LARGE = create("Gust Emitter (Large)", ParticleTypes.GUST_EMITTER_LARGE)
     @JvmField val DUST_PLUME = create("Dust Plume", ParticleTypes.DUST_PLUME)
@@ -139,7 +139,7 @@ object VanillaParticles {
     @JvmField val WHITE_SMOKE = create("White Smoke", ParticleTypes.WHITE_SMOKE)
     @JvmField val BLOCK_MARKER = create("Block Marker", ParticleTypes.BLOCK_MARKER)
     @JvmField val BLOCK_CRUMBLE = create("Block Crumble", ParticleTypes.BLOCK_CRUMBLE)
-    *///?}
+    //?}
 
     val fireworkTriggered = setOf(EXPLOSION_NORMAL, EXPLOSION_LARGE, EXPLOSION_HUGE, FIREWORK_SPARK)
 

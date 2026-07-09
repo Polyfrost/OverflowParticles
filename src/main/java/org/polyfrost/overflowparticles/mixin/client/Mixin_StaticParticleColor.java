@@ -15,19 +15,19 @@ public class Mixin_StaticParticleColor {
 
     @WrapOperation(
             //? if >=26.1 {
-            /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
-            *///?} elif >=1.21.10 {
+            method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
+            //?} elif >=1.21.10 {
             /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
             *///?} else {
-            method = "renderRotatedQuad(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lorg/joml/Quaternionf;FFFF)V",
-            //?}
+            /*method = "renderRotatedQuad(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lorg/joml/Quaternionf;FFFF)V",
+            *///?}
             at = @At(
                     value = "INVOKE",
                     //? if >=26.1 {
-                    /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;getLightCoords(F)I"
-                    *///?} else {
-                    target = "Lnet/minecraft/client/particle/SingleQuadParticle;getLightColor(F)I"
-                    //?}
+                    target = "Lnet/minecraft/client/particle/SingleQuadParticle;getLightCoords(F)I"
+                    //?} else {
+                    /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;getLightColor(F)I"
+                    *///?}
             )
     )
     private int overflowparticles$staticParticleColor(SingleQuadParticle instance, float partialTicks, Operation<Integer> original) {

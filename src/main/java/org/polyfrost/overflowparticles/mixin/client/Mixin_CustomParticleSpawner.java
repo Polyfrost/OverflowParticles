@@ -17,10 +17,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class Mixin_CustomParticleSpawner {
     @Inject(
             //? if >=1.21.4 {
-            /*method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)V",
-            *///?} else {
-            method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V",
-            //?}
+            method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZZDDDDDD)V",
+            //?} else {
+            /*method = "addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V",
+            *///?}
             at = @At("HEAD"),
             cancellable = true
     )
@@ -28,8 +28,8 @@ public class Mixin_CustomParticleSpawner {
             ParticleOptions options,
             boolean ignoreRange,
             //? if >=1.21.4 {
-            /*boolean idk,
-            *///?}
+            boolean idk,
+            //?}
             double xCoord,
             double yCoord,
             double zCoord,

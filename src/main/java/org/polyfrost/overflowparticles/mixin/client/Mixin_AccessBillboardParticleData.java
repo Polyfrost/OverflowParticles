@@ -7,10 +7,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(
         //? if >=1.21.10 {
-        /*SingleQuadParticle.class
-        *///?} else {
-        Particle.class
-        //?}
+        SingleQuadParticle.class
+        //?} else {
+        /*Particle.class
+        *///?}
 )
 public interface Mixin_AccessBillboardParticleData {
     @Accessor float getAlpha();

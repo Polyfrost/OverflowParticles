@@ -10,17 +10,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >=1.21.10 {
-/*@Mixin(ClientLevel.class)
-*///?} else {
-@Mixin(ParticleEngine.class)
-//?}
+@Mixin(ClientLevel.class)
+//?} else {
+/*@Mixin(ParticleEngine.class)
+*///?}
 public class Mixin_CancelBreakingParticles {
     @Inject(
             //? if >=1.21.10 {
-            /*method = "addDestroyBlockEffect",
-            *///?} else {
-            method = "destroy",
-            //?}
+            method = "addDestroyBlockEffect",
+            //?} else {
+            /*method = "destroy",
+            *///?}
             at = @At("HEAD"),
             cancellable = true
     )

@@ -39,8 +39,8 @@ fun spawn(
             options,
             ignoreRange,
             //? if >=1.21.4 {
-            /*true,
-            *///?}
+            true,
+            //?}
             modX, modY, modZ,
             xOffset, yOffset, zOffset,
         )

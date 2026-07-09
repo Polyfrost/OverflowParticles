@@ -39,19 +39,19 @@ public abstract class Mixin_ApplyCustomParticleColors {
     *///?} else {
     @ModifyExpressionValue(
             //? if >=26.1 {
-            /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
-            *///?} elif >=1.21.10 {
+            method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
+            //?} elif >=1.21.10 {
             /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
             *///?} else {
-            method = "renderVertex",
-            //?}
+            /*method = "renderVertex",
+            *///?}
             at = @At(
                     value = "FIELD",
                         //? if >=1.21.10 {
-                        /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;rCol:F"
-                        *///?} elif >=1.20.1 {
-                        target = "Lnet/minecraft/client/particle/Particle;rCol:F"
-                        //?} else {
+                        target = "Lnet/minecraft/client/particle/SingleQuadParticle;rCol:F"
+                        //?} elif >=1.20.1 {
+                        /*target = "Lnet/minecraft/client/particle/Particle;rCol:F"
+                        *///?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorRed:F"
                         *///?}
             )
@@ -62,19 +62,19 @@ public abstract class Mixin_ApplyCustomParticleColors {
 
     @ModifyExpressionValue(
             //? if >=26.1 {
-            /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
-            *///?} elif >=1.21.10 {
+            method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
+            //?} elif >=1.21.10 {
             /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
             *///?} else {
-            method = "renderVertex",
-            //?}
+            /*method = "renderVertex",
+            *///?}
             at = @At(
                     value = "FIELD",
                         //? if >=1.21.10 {
-                        /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;gCol:F"
-                        *///?} elif >=1.20.1 {
-                        target = "Lnet/minecraft/client/particle/Particle;gCol:F"
-                        //?} else {
+                        target = "Lnet/minecraft/client/particle/SingleQuadParticle;gCol:F"
+                        //?} elif >=1.20.1 {
+                        /*target = "Lnet/minecraft/client/particle/Particle;gCol:F"
+                        *///?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorGreen:F"
                         *///?}
             )
@@ -85,19 +85,19 @@ public abstract class Mixin_ApplyCustomParticleColors {
 
     @ModifyExpressionValue(
             //? if >=26.1 {
-            /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
-            *///?} elif >=1.21.10 {
+            method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
+            //?} elif >=1.21.10 {
             /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
             *///?} else {
-            method = "renderVertex",
-            //?}
+            /*method = "renderVertex",
+            *///?}
             at = @At(
                     value = "FIELD",
                         //? if >=1.21.10 {
-                        /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;bCol:F"
-                        *///?} elif >=1.20.1 {
-                        target = "Lnet/minecraft/client/particle/Particle;bCol:F"
-                        //?} else {
+                        target = "Lnet/minecraft/client/particle/SingleQuadParticle;bCol:F"
+                        //?} elif >=1.20.1 {
+                        /*target = "Lnet/minecraft/client/particle/Particle;bCol:F"
+                        *///?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorBlue:F"
                         *///?}
             )
@@ -108,19 +108,19 @@ public abstract class Mixin_ApplyCustomParticleColors {
 
     @ModifyExpressionValue(
             //? if >=26.1 {
-            /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
-            *///?} elif >=1.21.10 {
+            method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/level/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
+            //?} elif >=1.21.10 {
             /*method = "extractRotatedQuad(Lnet/minecraft/client/renderer/state/QuadParticleRenderState;Lorg/joml/Quaternionf;FFFF)V",
             *///?} else {
-            method = "renderVertex",
-            //?}
+            /*method = "renderVertex",
+            *///?}
             at = @At(
                     value = "FIELD",
                         //? if >=1.21.10 {
-                        /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;alpha:F"
-                        *///?} elif >=1.20.1 {
-                        target = "Lnet/minecraft/client/particle/Particle;alpha:F"
-                        //?} else {
+                        target = "Lnet/minecraft/client/particle/SingleQuadParticle;alpha:F"
+                        //?} elif >=1.20.1 {
+                        /*target = "Lnet/minecraft/client/particle/Particle;alpha:F"
+                        *///?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorAlpha:F"
                         *///?}
             )
