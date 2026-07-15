@@ -8,6 +8,7 @@ import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
+import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 
 //? if >=1.16.5 {
 import net.minecraft.core.particles.ParticleTypes
@@ -86,8 +87,13 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
         PerParticleConfigManager.fillConfigs()
 
         val collector = OneConfigCollector()
+        val priorityTypes = listOf(VanillaParticles.CRITICAL.id, VanillaParticles.CRITICAL_MAGIC.id)
+        val orderedConfigs = PerParticleConfigManager.configs.entries.sortedBy {
+            val index = priorityTypes.indexOf(it.value.particleType)
+            if (index >= 0) index else priorityTypes.size
+        }
         var i = -1
-        for (particle in PerParticleConfigManager.configs) {
+        for (particle in orderedConfigs) {
             i++
             try {
                 val name =
@@ -105,7 +111,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
                     "subcategory" to "Particles",
                     "canBeEnabled" to true,
                     "index" to i,
-                    "collapsed" to true
+                    "collapsed" to (particle.value.particleType !in priorityTypes)
                 ))
                 //? if >=1.16.5 {
                  if (particle.value.particleType == ParticleTypes.BLOCK) {
