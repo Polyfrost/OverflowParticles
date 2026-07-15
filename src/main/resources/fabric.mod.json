@@ -26,6 +26,9 @@
     "license": "LGPL-3.0",
     "environment": "client",
     "depends": {
-        "minecraft": "${mc_version}"
+        "minecraft": "${mc_version}",
+        "fabricloader": ">=${loader_version}",
+        "oneconfigv1": ">=1.0.0-beta.7",
+        "fabric-language-kotlin": ">=1.13.8+kotlin.2.3.0"
     }
 }
