@@ -30,7 +30,7 @@ repositories {
     maven("https://repo.polyfrost.org/releases")
     maven("https://repo.polyfrost.org/snapshots")
     maven("https://maven.parchmentmc.org") {
-        content { includeGroup("org.parchmentmc") }
+        content { includeGroupAndSubgroups("org.parchmentmc") }
     }
     maven("https://maven.deftu.dev/releases") {
         content { includeGroup("dev.deftu") }
