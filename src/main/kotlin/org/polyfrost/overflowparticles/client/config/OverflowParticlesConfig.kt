@@ -14,7 +14,7 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 import net.minecraft.core.particles.ParticleTypes
 //?}
 
-object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowParticles", Category.COMBAT) {
+object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overflowparticles/overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
     @JvmStatic
     val maxParticleLimit: Int
         get() {
