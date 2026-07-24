@@ -38,7 +38,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "", "OverflowP
         subcategory = "Features"
     )
     @JvmStatic
-    var isStaticParticleColor = true
+    var isStaticParticleColor = false
 
     @Slider(
         title = "Max Particle Limit",
