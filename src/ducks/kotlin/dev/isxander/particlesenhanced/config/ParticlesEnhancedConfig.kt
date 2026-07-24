@@ -8,7 +8,7 @@ object ParticlesEnhancedConfig {
 
     var checkInvulnerable = true
 
-    var fade = true
+    var fade = false
 
     var fadeOutStart = 0.5f
 
