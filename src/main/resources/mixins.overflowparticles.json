@@ -1,9 +1,13 @@
 {
     "compatibilityLevel": "${java_version}",
     "minVersion": "0.8",
+    "required": true,
     "package": "org.polyfrost.overflowparticles.mixin",
     "refmap": "mixins.overflowparticles.refmap.json",
     "verbose": true,
+    "injectors": {
+        "defaultRequire": 1
+    },
     "client": [
         "client.event.Mixin_AttackEntityEvent",
 

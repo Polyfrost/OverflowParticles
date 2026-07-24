@@ -90,6 +90,9 @@ dependencies {
     implementation("org.polyfrost.oneconfig:internal:$oneconfigVersion")
     implementation("org.polyfrost.oneconfig:ui:$oneconfigVersion")
     implementation("org.polyfrost.oneconfig:utils:$oneconfigVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.2")
+    testImplementation("net.fabricmc:fabric-loader-junit:$loaderversion")
 }
 
 sourceSets {
@@ -121,6 +124,10 @@ tasks.processResources {
     filesMatching(listOf("fabric.mod.json", "mixins.overflowparticles.json")) {
         expand(props)
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<JavaCompile>().configureEach {
