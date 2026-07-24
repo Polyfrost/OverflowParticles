@@ -1,2 +1,2 @@
-## 1.1.0
-- Initial release for 1.21.1–26.2
+## 1.1.1
+- Static particle color is now off by default, matching vanilla
