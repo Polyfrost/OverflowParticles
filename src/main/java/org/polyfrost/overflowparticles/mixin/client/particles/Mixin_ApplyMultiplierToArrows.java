@@ -38,7 +38,7 @@ public class Mixin_ApplyMultiplierToArrows {
         return (int) (constant * config.getMultiplier());
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V", ordinal = 0))
     private void cancel(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }

@@ -47,11 +47,9 @@ public abstract class Mixin_ApplyCustomParticleColors {
             *///?}
             at = @At(
                     value = "FIELD",
-                        //? if >=1.21.10 {
+                        //? if >=1.20.1 {
                         target = "Lnet/minecraft/client/particle/SingleQuadParticle;rCol:F"
-                        //?} elif >=1.20.1 {
-                        /*target = "Lnet/minecraft/client/particle/Particle;rCol:F"
-                        *///?} else {
+                        //?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorRed:F"
                         *///?}
             )
@@ -70,11 +68,9 @@ public abstract class Mixin_ApplyCustomParticleColors {
             *///?}
             at = @At(
                     value = "FIELD",
-                        //? if >=1.21.10 {
+                        //? if >=1.20.1 {
                         target = "Lnet/minecraft/client/particle/SingleQuadParticle;gCol:F"
-                        //?} elif >=1.20.1 {
-                        /*target = "Lnet/minecraft/client/particle/Particle;gCol:F"
-                        *///?} else {
+                        //?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorGreen:F"
                         *///?}
             )
@@ -93,11 +89,9 @@ public abstract class Mixin_ApplyCustomParticleColors {
             *///?}
             at = @At(
                     value = "FIELD",
-                        //? if >=1.21.10 {
+                        //? if >=1.20.1 {
                         target = "Lnet/minecraft/client/particle/SingleQuadParticle;bCol:F"
-                        //?} elif >=1.20.1 {
-                        /*target = "Lnet/minecraft/client/particle/Particle;bCol:F"
-                        *///?} else {
+                        //?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorBlue:F"
                         *///?}
             )
@@ -116,11 +110,9 @@ public abstract class Mixin_ApplyCustomParticleColors {
             *///?}
             at = @At(
                     value = "FIELD",
-                        //? if >=1.21.10 {
+                        //? if >=1.20.1 {
                         target = "Lnet/minecraft/client/particle/SingleQuadParticle;alpha:F"
-                        //?} elif >=1.20.1 {
-                        /*target = "Lnet/minecraft/client/particle/Particle;alpha:F"
-                        *///?} else {
+                        //?} else {
                         /*target = "Lnet/minecraft/client/particle/SingleQuadParticle;colorAlpha:F"
                         *///?}
             )

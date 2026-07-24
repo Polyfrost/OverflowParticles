@@ -35,7 +35,17 @@ public class Mixin_ApplyMultiplierToEmitters {
         return (int) (constant * config.getMultiplier());
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    @Inject(
+            method = "tick",
+            at = @At(
+                    value = "INVOKE",
+                    //? if >=1.21.4 {
+                    target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+                    //?} else {
+                    /*target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V"
+                    *///?}
+            )
+    )
     private void cancel(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }

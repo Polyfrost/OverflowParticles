@@ -39,14 +39,18 @@ public abstract class Mixin_ParticleFading {
             //? if <1.21.4 {
             /^method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
             ^///?} else {
-            method = "render(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/MultiBufferSource$BufferSource;)V",
+            method = "renderParticleType",
             //?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"
             )
     )
-    private void overflowparticle$fade(
+    //? if <1.21.4 {
+    /^private void overflowparticle$fade(
+    ^///?} else {
+    private static void overflowparticle$fade(
+    //?}
             Particle instance,
             VertexConsumer vertexConsumer,
             Camera camera,

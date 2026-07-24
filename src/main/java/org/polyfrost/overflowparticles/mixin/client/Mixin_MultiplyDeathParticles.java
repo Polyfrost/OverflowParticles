@@ -21,7 +21,7 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
         super(arg, arg2);
     }
 
-    @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 20, ordinal = 1))
+    @ModifyConstant(method = "makePoofParticles", constant = @Constant(intValue = 20))
     private int overflowparticles$applyMultiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
         if (config.getMultiplier() == 1) {
@@ -31,7 +31,7 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
         return (int) (constant * config.getMultiplier());
     }
 
-    @Inject(method = "tickDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    @Inject(method = "makePoofParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
     private void overflowparticles$updateMultiplyState(CallbackInfo ci) {
         ParticleSpawner.setMultiplied(true);
     }
