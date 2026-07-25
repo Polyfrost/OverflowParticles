@@ -27,7 +27,6 @@
         "client.Mixin_CustomParticleSpawner",
         "client.Mixin_DealWithBlockParticles",
         "client.Mixin_FallStateParticles",
-        "client.Mixin_ModifyParticleLimit",
         "client.Mixin_MultiplyDeathParticles",
         "client.Mixin_ParticleFading",
         "client.Mixin_ParticleIdentifier",

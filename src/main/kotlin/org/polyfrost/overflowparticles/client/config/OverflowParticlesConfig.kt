@@ -5,7 +5,6 @@ import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.polyfrost.oneconfig.api.config.v1.Config
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
-import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
@@ -15,16 +14,6 @@ import net.minecraft.core.particles.ParticleTypes
 //?}
 
 object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overflowparticles/overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
-    @JvmStatic
-    val maxParticleLimit: Int
-        get() {
-            //? if >=1.12.2 {
-            return modernMaxParticleLimit
-            //?} else {
-            /*return legacyMaxParticleLimit
-            *///?}
-        }
-
     @Switch(
         title = "Clean View",
         description = "Stop rendering your own potion effect particles.",
@@ -40,22 +29,6 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
     )
     @JvmStatic
     var isStaticParticleColor = false
-
-    @Slider(
-        title = "Max Particle Limit",
-        description = "The maximum number of particles that can be rendered at once. Set to 0 to disable.",
-        subcategory = "Features",
-        min = 1f, max = 10_000f
-    )
-    var legacyMaxParticleLimit = 4000
-
-    @Slider(
-        title = "Max Particle Limit",
-        description = "The maximum number of particles that can be rendered at once. Set to 0 to disable.",
-        subcategory = "Features",
-        min = 0f, max = 20_000f
-    )
-    var modernMaxParticleLimit = 16_384
 
     @Switch(
         title = "Particles No-Clip",
@@ -129,12 +102,6 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
                 throw RuntimeException(e)
             }
         }
-
-        //? if >=1.12.2 {
-        hideIf("legacyMaxParticleLimit") { true }
-        //?} else {
-        /*hideIf("modernMaxParticleLimit") { true }
-        *///?}
     }
 
 }
