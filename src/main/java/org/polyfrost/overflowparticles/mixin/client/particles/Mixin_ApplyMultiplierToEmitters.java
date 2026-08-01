@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class Mixin_ApplyMultiplierToEmitters {
     @Shadow @Final private ParticleOptions particleType;
 
-    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "16"))
+    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "intValue=16"))
     private int multiplier(int constant) {
         ParticleInfo type = ParticleRegistry.of(this.particleType.getType());
         if (type == null) {
