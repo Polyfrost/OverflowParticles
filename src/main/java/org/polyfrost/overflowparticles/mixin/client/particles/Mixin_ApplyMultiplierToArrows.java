@@ -1,6 +1,7 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
 //? if >=1.21.11 {
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 //?} else {
 /*import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -11,14 +12,12 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractArrow.class)
 public class Mixin_ApplyMultiplierToArrows {
-    @ModifyConstant(method = "tick", constant = @Constant(intValue = 4, ordinal = 0))
+    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "intValue=4", ordinal = 0))
     private int multiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.CRITICAL);
         if (config.getMultiplier() == 1) {
@@ -28,7 +27,7 @@ public class Mixin_ApplyMultiplierToArrows {
         return (int) (constant * config.getMultiplier());
     }
 
-    @ModifyConstant(method = "tick", constant = @Constant(doubleValue = 4.0D))
+    @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "doubleValue=4.0D"))
     private double multiplier1(double constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.CRITICAL);
         if (config.getMultiplier() == 1) {

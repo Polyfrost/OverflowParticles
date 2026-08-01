@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,9 +11,7 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
@@ -21,7 +20,7 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
         super(arg, arg2);
     }
 
-    @ModifyConstant(method = "makePoofParticles", constant = @Constant(intValue = 20))
+    @ModifyExpressionValue(method = "makePoofParticles", at = @At(value = "CONSTANT", args = "intValue=20"))
     private int overflowparticles$applyMultiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
         if (config.getMultiplier() == 1) {
