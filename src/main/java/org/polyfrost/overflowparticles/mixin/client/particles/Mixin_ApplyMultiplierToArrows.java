@@ -1,11 +1,11 @@
 package org.polyfrost.overflowparticles.mixin.client.particles;
 
 //? if >=1.21.11 {
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 //?} else {
 /*import net.minecraft.world.entity.projectile.AbstractArrow;
 *///?}
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
