@@ -1,2 +1,2 @@
-## 1.1.4
-- Fix config not saving
+## 1.1.5
+- Automatically turn off static particle color for old configs
