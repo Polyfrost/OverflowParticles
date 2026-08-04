@@ -55,8 +55,8 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
     )
     var checkInvulnerable = false
 
-    override fun initialize(byConfigManager: Boolean) {
-        super.initialize(byConfigManager)
+    override fun makeTree(): Tree {
+        val tree = super.makeTree()
         PerParticleConfigManager.fillConfigs()
 
         val collector = OneConfigCollector()
@@ -102,6 +102,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
                 throw RuntimeException(e)
             }
         }
+        return tree
     }
 
 }
