@@ -2,6 +2,7 @@ package org.polyfrost.overflowparticles.client.config
 
 import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
+import org.apache.logging.log4j.LogManager
 import org.polyfrost.oneconfig.api.config.v1.Config
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
@@ -14,6 +15,10 @@ import net.minecraft.core.particles.ParticleTypes
 //?}
 
 object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overflowparticles/overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
+    private val LOGGER = LogManager.getLogger("OverflowParticles / Config")
+
+    private const val CONFIG_VERSION = 1
+
     @Switch(
         title = "Clean View",
         description = "Stop rendering your own potion effect particles.",
@@ -54,6 +59,29 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         subcategory = "Hit Particle"
     )
     var checkInvulnerable = false
+
+    @Include
+    var configVersion = 0
+
+    override fun initialize(byConfigManager: Boolean) {
+        super.initialize(byConfigManager)
+        try {
+            migrate()
+        } catch (e: Throwable) {
+            LOGGER.error("Failed to migrate config to version {}", CONFIG_VERSION, e)
+        }
+    }
+
+    private fun migrate() {
+        if (tree == null || configVersion >= CONFIG_VERSION) return
+
+        if (configVersion < 1) {
+            isStaticParticleColor = false
+        }
+
+        configVersion = CONFIG_VERSION
+        save()
+    }
 
     override fun makeTree(): Tree {
         val tree = super.makeTree()
