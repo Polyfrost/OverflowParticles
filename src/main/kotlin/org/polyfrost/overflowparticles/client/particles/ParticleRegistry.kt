@@ -21,7 +21,7 @@ object ParticleRegistry {
     private val _registry = mutableMapOf<ParticleType<*>, ParticleInfo>()
 
     /**
-     * View-only instance of the particle type registry.
+     * Read only view of the particle type registry
      */
     val registry: Map<ParticleType<*>, ParticleInfo>
         get() = _registry.toMap()

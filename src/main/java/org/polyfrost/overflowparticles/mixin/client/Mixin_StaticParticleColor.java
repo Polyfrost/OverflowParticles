@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(SingleQuadParticle.class)
 public class Mixin_StaticParticleColor {
-    // Full-bright packed lightmap value, used to skip per-frame particle lighting lookups.
+    // Full bright packed lightmap so lighting is not looked up every frame
     @Unique private static final int STATIC_PARTICLE_COLOR = 15728880;
 
     @WrapOperation(

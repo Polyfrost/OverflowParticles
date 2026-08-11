@@ -11,7 +11,7 @@ object VanillaParticles {
     private val _registry = mutableMapOf<ParticleType<*>, ParticleInfo>()
 
     /**
-     * View-only instance of the particle type registry.
+     * Read only view of the particle type registry
      */
     val registry: Map<ParticleType<*>, ParticleInfo>
         get() = _registry.toMap()
@@ -144,8 +144,7 @@ object VanillaParticles {
     val fireworkTriggered = setOf(EXPLOSION_NORMAL, EXPLOSION_LARGE, EXPLOSION_HUGE, FIREWORK_SPARK)
 
     fun preload() {
-        // Intentionally left blank.
-        // This method is just to ensure the class is loaded and the static initializers run.
+        // Empty on purpose calling it loads the class and runs the static initializers
     }
 
     private fun create(

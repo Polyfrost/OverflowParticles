@@ -50,8 +50,7 @@ object PerParticleConfigManager {
             return null
         }
 
-        // Check if the particle type is redirected to another for whatever reason,
-        // and if so, use the redirected type to get the config. Otherwise, just use the type we were given.
+        // Some types redirect to another so resolve the redirect before looking up the config
         val redirectedType = ParticleRegistry.of(particleType)?.id ?: particleType
         return configs[ParticleRegistry.location(redirectedType)]
     }
