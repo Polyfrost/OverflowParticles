@@ -31,6 +31,20 @@ val requiredJava: JavaVersion = when {
 val compatibleVersions: List<String> = sc.properties.rawOrNull("mod", "mc_releases")
     ?.asList().orEmpty().map { it.toString() }
 
+stonecutter {
+    constants["fabric"] = true
+    constants["forge"] = false
+    constants["neoforge"] = false
+    constants["forge_like"] = false
+}
+
+sourceSets {
+    main {
+        java.srcDir(rootProject.file("src/ducks/java"))
+        kotlin.srcDir(rootProject.file("src/ducks/kotlin"))
+    }
+}
+
 repositories {
     fun strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
         forRepository { maven(url) { name = alias } }
@@ -142,6 +156,10 @@ tasks {
 
     jar {
         inputs.property("archivesName", base.archivesName)
+
+        // duck interfaces for other mods' classes, compile-time only
+        exclude("club/sk1er/patcher/**")
+        exclude("dev/isxander/particlesenhanced/**")
 
         from(rootProject.file("LICENSE")) {
             rename { "${it}_${inputs.properties["archivesName"]}" }
