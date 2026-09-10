@@ -1,2 +1,2 @@
-## 1.1.5
-- Automatically turn off static particle color for old configs
+## 1.1.6
+- Fixed custom size not working on certain particles such as Critical and Sharpness
