@@ -16,9 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 *///?}
 public class Mixin_CancelDiggingParticles {
     @Inject(
-            //? if >=1.21.10 {
-            method = "addBreakingBlockEffect",
-            //?} else {
+            // 26.3 merged the hit sound into addBreakingBlockEffects, so only the particle helper is cancelled
+            //? if >=26.3 {
+            method = "addBreakingParticles",
+            //?} elif >=1.21.10 {
+            /*method = "addBreakingBlockEffect",
+            *///?} else {
             /*method = "crack",
             *///?}
             at = @At("HEAD"),
