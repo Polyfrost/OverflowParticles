@@ -1,7 +1,7 @@
 mod.id = "overflowparticles"
 mod.name = "OverflowParticles"
 mod.group = "org.polyfrost"
-mod.version = "1.1.6"
+mod.version = "1.2.0"
 
 deps.fabric_loader = "0.19.3"
 deps.oneconfig = "1.2.0"

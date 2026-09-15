@@ -1,2 +1,2 @@
-## 1.1.6
-- Fixed custom size not working on certain particles such as Critical and Sharpness
+## 1.2.0
+- Added support for Minecraft 26.3
