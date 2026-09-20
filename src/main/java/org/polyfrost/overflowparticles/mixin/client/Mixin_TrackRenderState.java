@@ -1,5 +1,6 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//? if >1.8.9
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.Particle;
 import org.polyfrost.overflowparticles.client.OverflowParticlesClient;
@@ -15,7 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //?} else {
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+//? if >1.8.9 {
 import com.mojang.blaze3d.vertex.VertexConsumer;
+//?} else {
+/^import net.minecraft.client.render.vertex.BufferBuilder;
+import net.minecraft.world.entity.Entity;
+^///?}
 import net.minecraft.client.particle.ParticleEngine;
 *///?}
 
@@ -35,23 +41,23 @@ public class Mixin_TrackRenderState {
             ci.cancel();
         }
     }
-    //?} else {
+    //?} elif >1.8.9 {
     /*@WrapOperation(
             //? if <1.21.4 {
-            /^method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
-            ^///?} else {
-            method = "renderParticleType",
-            //?}
+            method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
+            //?} else {
+            /^method = "renderParticleType",
+            ^///?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"
             )
     )
     //? if <1.21.4 {
-    /^private void overflowparticles$updateRenderingEntityState(
-    ^///?} else {
-    private static void overflowparticles$updateRenderingEntityState(
-    //?}
+    private void overflowparticles$updateRenderingEntityState(
+    //?} else {
+    /^private static void overflowparticles$updateRenderingEntityState(
+    ^///?}
             Particle instance,
             VertexConsumer vertexConsumer,
             Camera camera,
@@ -72,6 +78,41 @@ public class Mixin_TrackRenderState {
         OverflowParticlesClient.setRendering(true);
         OverflowParticlesClient.setRenderingEntity(instance);
         original.call(instance, vertexConsumer, camera, tickDelta);
+        OverflowParticlesClient.setRendering(false);
+    }
+    *///?} else {
+    /*@WrapOperation(
+            method = {"render(Lnet/minecraft/entity/Entity;F)V", "renderLit(Lnet/minecraft/entity/Entity;F)V"},
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/entity/particle/Particle;render(Lnet/minecraft/client/render/vertex/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V"
+            )
+    )
+    private void overflowparticles$updateRenderingEntityState(
+            Particle instance,
+            BufferBuilder bufferBuilder,
+            Entity camera,
+            float tickDelta,
+            float dx,
+            float dy,
+            float dz,
+            float forwards,
+            float sideways,
+            Operation<Void> original
+    ) {
+        OverflowParticlesClient.setRenderingEntity(instance);
+        ParticleConfig config = PerParticleConfigManager.getConfig(instance);
+        if (config != null && !config.getEnabled() && config.getParticleType() != VanillaParticles.BLOCKS.getId()) {
+            return;
+        }
+
+        if (config == null || config.getParticleType() == VanillaParticles.BLOCKS.getId()) {
+            original.call(instance, bufferBuilder, camera, tickDelta, dx, dy, dz, forwards, sideways);
+            return;
+        }
+
+        OverflowParticlesClient.setRendering(true);
+        original.call(instance, bufferBuilder, camera, tickDelta, dx, dy, dz, forwards, sideways);
         OverflowParticlesClient.setRendering(false);
     }
     *///?}

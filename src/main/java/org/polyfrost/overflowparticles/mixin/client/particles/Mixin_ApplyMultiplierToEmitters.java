@@ -2,7 +2,10 @@ package org.polyfrost.overflowparticles.mixin.client.particles;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.particle.TrackingEmitter;
+//? if >1.8.9 {
 import net.minecraft.core.particles.ParticleOptions;
+//?} else
+//import net.minecraft.entity.particle.ParticleType;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
@@ -17,11 +20,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TrackingEmitter.class)
 public class Mixin_ApplyMultiplierToEmitters {
+    //? if >1.8.9 {
     @Shadow @Final private ParticleOptions particleType;
+    //?} else
+    //@Shadow private ParticleType type;
 
     @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "intValue=16"))
     private int multiplier(int constant) {
+        //? if >1.8.9 {
         ParticleInfo type = ParticleRegistry.of(this.particleType.getType());
+        //?} else
+        //ParticleInfo type = ParticleRegistry.of(this.type);
         if (type == null) {
             return constant;
         }
@@ -40,8 +49,10 @@ public class Mixin_ApplyMultiplierToEmitters {
                     value = "INVOKE",
                     //? if >=1.21.4 {
                     target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
-                    //?} else {
+                    //?} elif >1.8.9 {
                     /*target = "Lnet/minecraft/client/multiplayer/ClientLevel;addParticle(Lnet/minecraft/core/particles/ParticleOptions;ZDDDDDD)V"
+                    *///?} else {
+                    /*target = "Lnet/minecraft/world/World;addParticle(Lnet/minecraft/entity/particle/ParticleType;ZDDDDDD[I)V"
                     *///?}
             )
     )

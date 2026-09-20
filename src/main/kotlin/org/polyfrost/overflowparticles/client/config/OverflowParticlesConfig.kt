@@ -97,12 +97,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         for (particle in orderedConfigs) {
             i++
             try {
-                val name =
-                    //? if >=1.16.5 {
-                    particle.key.toString()
-                    //?} else {
-                    /*"Particle${particle.key}"
-                    *///?}
+                val name = particle.key.toString()
                 val t: Tree = Tree.tree(name)
                 t.addMetadata(mapOf(
                     "title" to particle.value.name,
@@ -117,7 +112,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
                 //? if >=1.16.5 {
                  if (particle.value.particleType == ParticleTypes.BLOCK) {
                 //?} else {
-                /*if (particle.value.id == 37) {
+                /*if (particle.value.particleType == VanillaParticles.BLOCKS.id) {
                 *///?}
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
