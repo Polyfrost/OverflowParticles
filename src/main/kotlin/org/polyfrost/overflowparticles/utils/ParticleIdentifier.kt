@@ -2,6 +2,7 @@ package org.polyfrost.overflowparticles.utils
 
 import net.minecraft.client.particle.Particle
 import net.minecraft.core.particles.ParticleType
+import org.polyfrost.overflowparticles.client.config.ParticleConfig
 
 @Suppress("FunctionName")
 interface ParticleIdentifier {
@@ -19,6 +20,7 @@ interface ParticleIdentifier {
 
     fun `overflowparticles$getId`(): ParticleType<*>
     fun `overflowparticles$setId`(id: ParticleType<*>)
+    fun `overflowparticles$getConfig`(): ParticleConfig?
 
     fun getId(): ParticleType<*> {
         return `overflowparticles$getId`()

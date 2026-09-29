@@ -31,12 +31,7 @@ object PerParticleConfigManager {
 
     @JvmStatic
     fun getConfig(entity: Particle?): ParticleConfig? {
-        if (entity !is ParticleIdentifier) {
-            return null
-        }
-
-        val particleType = entity.getId()
-        return getConfigByType(particleType)
+        return (entity as? ParticleIdentifier)?.`overflowparticles$getConfig`()
     }
 
     @JvmStatic
