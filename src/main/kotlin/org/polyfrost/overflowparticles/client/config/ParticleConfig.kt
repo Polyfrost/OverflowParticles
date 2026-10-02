@@ -11,6 +11,10 @@ import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 import org.polyfrost.compose.render.PolyColor
 
 class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
+    private val info = ParticleRegistry.of(particleType)
+    val isBlocks = info === VanillaParticles.BLOCKS
+    val isFireworkTriggered = info?.isFireworkTriggered == true
+
     @Include
     var enabled = true
 

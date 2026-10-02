@@ -125,7 +125,7 @@ public abstract class Mixin_ApplyCustomParticleColors {
     @Unique
     private static float overflowparticles$adjust(Particle particle, float original, ToIntFunction<PolyColor> pick) {
         ParticleConfig config = PerParticleConfigManager.getConfig(particle);
-        if (config == null || config.getParticleType() == VanillaParticles.FOOTSTEP.getId()) {
+        if (config == null || !config.getCustomColor() || config.getParticleType() == VanillaParticles.FOOTSTEP.getId()) {
             return original;
         }
 

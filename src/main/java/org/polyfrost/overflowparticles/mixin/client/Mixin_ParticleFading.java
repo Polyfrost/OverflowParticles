@@ -2,12 +2,9 @@ package org.polyfrost.overflowparticles.mixin.client;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.core.particles.ParticleType;
+import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
-import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
-import org.polyfrost.overflowparticles.client.particles.ParticleRegistry;
-import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -65,24 +62,19 @@ public abstract class Mixin_ParticleFading {
     @Unique
     private static void overflowparticles$applyFade(Particle instance) {
         ParticleConfig config = PerParticleConfigManager.getConfig(instance);
-        boolean fade = false;
-        float fadeStart = 0.0f;
+        if (config == null || config.isFireworkTriggered()) {
+            return;
+        }
 
-        if (config != null) {
-            ParticleType<?> typeId = config.getParticleType();
-            ParticleInfo info = ParticleRegistry.of(typeId);
-
+        boolean fade;
+        float fadeStart;
+        if (config.isBlocks()) {
+            BlockParticleEntry blockSetting = PerParticleConfigManager.getBlockSetting();
+            fade = blockSetting.getFade();
+            fadeStart = blockSetting.getFadeStart();
+        } else {
             fade = config.getFade();
             fadeStart = config.getFadeStart();
-
-            if (info == VanillaParticles.BLOCKS) {
-                fade = PerParticleConfigManager.getBlockSetting().getFade();
-                fadeStart = PerParticleConfigManager.getBlockSetting().getFadeStart();
-            }
-
-            if (info != null && info.isFireworkTriggered()) {
-                fade = false;
-            }
         }
 
         if (fade) {
