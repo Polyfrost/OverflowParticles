@@ -1,3 +1,2 @@
-## 1.2.1
-- Improve FPS via config caching
-- Bump OneConfig to 1.2.8
+## 1.2.2
+- Improve FPS by removing per-particle registry and config lookups from particle fading and custom colors
