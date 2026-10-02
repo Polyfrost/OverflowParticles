@@ -1,2 +1,3 @@
-## 1.2.0
-- Added support for Minecraft 26.3
+## 1.2.1
+- Improve FPS via config caching
+- Bump OneConfig to 1.2.8
