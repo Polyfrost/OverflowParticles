@@ -18,8 +18,10 @@ public class Mixin_CancelBreakingParticles {
     @Inject(
             //? if >=1.21.10 {
             method = "addDestroyBlockEffect",
-            //?} else {
+            //?} elif >1.8.9 {
             /*method = "destroy",
+            *///?} else {
+            /*method = "addBlockMiningParticles(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/BlockState;)V",
             *///?}
             at = @At("HEAD"),
             cancellable = true

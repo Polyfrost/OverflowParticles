@@ -1,10 +1,6 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
-//? if >=1.16.5 {
 import net.minecraft.client.Minecraft;
-//?} else {
-/*import dev.deftu.omnicore.api.client.OmniClient;
-*///?}
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.TrackingEmitter;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TrackingEmitter.class)
 public abstract class Mixin_CleanEmitterView extends Particle {
+    //? if >1.8.9 {
     @Shadow @Final private Entity entity;
+    //?} else
+    //@Shadow private Entity target;
 
     public Mixin_CleanEmitterView() {
         super(null, 0, 0, 0, 0, 0, 0);
@@ -26,17 +25,16 @@ public abstract class Mixin_CleanEmitterView extends Particle {
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void cleanView(CallbackInfo ci) {
+        //? if >1.8.9 {
         if (OverflowParticlesConfig.isCleanView() && this.entity == overflowparticles$getPlayer()) {
+        //?} else
+        //if (OverflowParticlesConfig.isCleanView() && this.target == overflowparticles$getPlayer()) {
             this.remove();
             ci.cancel();
         }
     }
 
     private static Entity overflowparticles$getPlayer() {
-        //? if >=1.16.5 {
         return Minecraft.getInstance().player;
-        //?} else {
-        /*return OmniClient.getPlayer();
-        *///?}
     }
 }

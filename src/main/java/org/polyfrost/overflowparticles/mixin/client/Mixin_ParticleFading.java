@@ -1,8 +1,12 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//? if >1.8.9
 import net.minecraft.client.Camera;
 import net.minecraft.client.particle.Particle;
+//? if >1.8.9 {
 import net.minecraft.core.particles.ParticleType;
+//?} else
+//import net.minecraft.entity.particle.ParticleType;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
@@ -18,7 +22,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //?} else {
 /*import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+//? if >1.8.9 {
 import com.mojang.blaze3d.vertex.VertexConsumer;
+//?} else {
+/^import net.minecraft.client.render.vertex.BufferBuilder;
+import net.minecraft.world.entity.Entity;
+^///?}
 import net.minecraft.client.particle.ParticleEngine;
 *///?}
 
@@ -34,23 +43,23 @@ public abstract class Mixin_ParticleFading {
         Particle instance = (Particle) (Object) this;
         overflowparticles$applyFade(instance);
     }
-    //?} else {
+    //?} elif >1.8.9 {
     /*@WrapOperation(
             //? if <1.21.4 {
-            /^method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
-            ^///?} else {
-            method = "renderParticleType",
-            //?}
+            method = "render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;F)V",
+            //?} else {
+            /^method = "renderParticleType",
+            ^///?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/particle/Particle;render(Lcom/mojang/blaze3d/vertex/VertexConsumer;Lnet/minecraft/client/Camera;F)V"
             )
     )
     //? if <1.21.4 {
-    /^private void overflowparticle$fade(
-    ^///?} else {
-    private static void overflowparticle$fade(
-    //?}
+    private void overflowparticle$fade(
+    //?} else {
+    /^private static void overflowparticle$fade(
+    ^///?}
             Particle instance,
             VertexConsumer vertexConsumer,
             Camera camera,
@@ -59,6 +68,29 @@ public abstract class Mixin_ParticleFading {
     ) {
         overflowparticles$applyFade(instance);
         original.call(instance, vertexConsumer, camera, tickDelta);
+    }
+    *///?} else {
+    /*@WrapOperation(
+            method = {"render(Lnet/minecraft/entity/Entity;F)V", "renderLit(Lnet/minecraft/entity/Entity;F)V"},
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/entity/particle/Particle;render(Lnet/minecraft/client/render/vertex/BufferBuilder;Lnet/minecraft/entity/Entity;FFFFFF)V"
+            )
+    )
+    private void overflowparticle$fade(
+            Particle instance,
+            BufferBuilder bufferBuilder,
+            Entity camera,
+            float tickDelta,
+            float dx,
+            float dy,
+            float dz,
+            float forwards,
+            float sideways,
+            Operation<Void> original
+    ) {
+        overflowparticles$applyFade(instance);
+        original.call(instance, bufferBuilder, camera, tickDelta, dx, dy, dz, forwards, sideways);
     }
     *///?}
 
@@ -69,7 +101,10 @@ public abstract class Mixin_ParticleFading {
         float fadeStart = 0.0f;
 
         if (config != null) {
+            //? if >1.8.9 {
             ParticleType<?> typeId = config.getParticleType();
+            //?} else
+            //ParticleType typeId = config.getParticleType();
             ParticleInfo info = ParticleRegistry.of(typeId);
 
             fade = config.getFade();
@@ -90,7 +125,10 @@ public abstract class Mixin_ParticleFading {
                 fadeStart = 0.0f;
             }
 
+            //? if >1.8.9 {
             int lifetime = instance.getLifetime();
+            //?} else
+            //int lifetime = ((Mixin_AccessParticleData) instance).getLifetime();
             int age = ((Mixin_AccessParticleData) instance).getAge();
             if (lifetime > 0 && age >= 0) {
                 float particleAge = (float) age / (float) lifetime;

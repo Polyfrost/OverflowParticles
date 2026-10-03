@@ -21,8 +21,10 @@ public class Mixin_CancelDiggingParticles {
             method = "addBreakingParticles",
             //?} elif >=1.21.10 {
             /*method = "addBreakingBlockEffect",
-            *///?} else {
+            *///?} elif >1.8.9 {
             /*method = "crack",
+            *///?} else {
+            /*method = "addBlockMiningParticles(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/Direction;)V",
             *///?}
             at = @At("HEAD"),
             cancellable = true

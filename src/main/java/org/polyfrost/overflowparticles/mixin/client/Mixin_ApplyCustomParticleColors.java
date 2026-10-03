@@ -1,7 +1,15 @@
 package org.polyfrost.overflowparticles.mixin.client;
 
+//? if >1.8.9 {
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.particle.SingleQuadParticle;
+//?} else {
+/*import net.minecraft.client.render.vertex.BufferBuilder;
+import org.polyfrost.overflowparticles.client.OverflowParticlesClient;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+*///?}
 import net.minecraft.client.particle.Particle;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
@@ -14,9 +22,30 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.function.ToIntFunction;
 
+//? if >1.8.9 {
 @Mixin(SingleQuadParticle.class)
+//?} else {
+/*@Mixin(BufferBuilder.class)
+*///?}
 public abstract class Mixin_ApplyCustomParticleColors {
-    //? if forge_like {
+    //? if =1.8.9 {
+    /*@Inject(method = "color(FFFF)Lnet/minecraft/client/render/vertex/BufferBuilder;", at = @At("HEAD"), cancellable = true)
+    private void overflowparticles$color(float red, float green, float blue, float alpha, CallbackInfoReturnable<BufferBuilder> cir) {
+        if (!OverflowParticlesClient.isRendering()) {
+            return;
+        }
+
+        Particle particle = OverflowParticlesClient.getRenderingEntity();
+        cir.setReturnValue(this.color(
+                (int) (overflowparticles$adjust(particle, red, PolyColor::getRed) * 255f),
+                (int) (overflowparticles$adjust(particle, green, PolyColor::getGreen) * 255f),
+                (int) (overflowparticles$adjust(particle, blue, PolyColor::getBlue) * 255f),
+                (int) (overflowparticles$adjust(particle, alpha, PolyColor::getAlpha) * 255f)
+        ));
+    }
+
+    @Shadow public abstract BufferBuilder color(int red, int green, int blue, int alpha);
+    *///?} elif forge_like {
     /*@ModifyExpressionValue(method = "renderVertex", at = @At(value = "FIELD", target = "Lnet/minecraft/client/particle/SingleQuadParticle;rCol:F"))
     private float overflowparticles$redirectRCol(float original) {
         return overflowparticles$adjust((Particle) (Object) this, original, PolyColor::getRed);
