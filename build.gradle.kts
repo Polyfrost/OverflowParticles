@@ -256,6 +256,7 @@ publishMods {
 
             requires("oneconfig")
             requires("fabric-language-kotlin")
+            if (!isOrnithe) requires("fabric-api")
         }
     }
 }
