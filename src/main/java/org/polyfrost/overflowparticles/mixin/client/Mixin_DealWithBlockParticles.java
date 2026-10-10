@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 *///?}
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
@@ -22,13 +23,13 @@ public class Mixin_DealWithBlockParticles {
     @Inject(method = "handleParticleEvent", at = @At("HEAD"), cancellable = true)
     private void overflowparticles$onServerFell(ClientboundLevelParticlesPacket packetIn, CallbackInfo ci) {
         //~ if < 26.3 'particle()' -> 'getParticle()'
-        if (packetIn.particle().getType() != VanillaParticles.BLOCK_DUST.getId()) {
+        if (!OverflowParticlesConfig.getModEnabled() || packetIn.particle().getType() != VanillaParticles.BLOCK_DUST.getId()) {
 //?} else {
 /*@Mixin(ClientPlayNetworkHandler.class)
 public class Mixin_DealWithBlockParticles {
     @Inject(method = "handleParticle", at = @At("HEAD"), cancellable = true)
     private void overflowparticles$onServerFell(ParticleS2CPacket packetIn, CallbackInfo ci) {
-        if (packetIn.getType() != VanillaParticles.BLOCK_DUST.getId()) {
+        if (!OverflowParticlesConfig.getModEnabled() || packetIn.getType() != VanillaParticles.BLOCK_DUST.getId()) {
 *///?}
             return;
         }

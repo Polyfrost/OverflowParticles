@@ -2,6 +2,7 @@ package org.polyfrost.overflowparticles.mixin.client;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,7 +31,7 @@ public class Mixin_CancelDiggingParticles {
             cancellable = true
     )
     private void overflowparticles$cancelBlockHit(CallbackInfo ci) {
-        if (!PerParticleConfigManager.getConfigByType(VanillaParticles.BLOCKS).getEnabled() || PerParticleConfigManager.getBlockSetting().getHideDigging()) {
+        if (OverflowParticlesConfig.getModEnabled() && (!PerParticleConfigManager.getConfigByType(VanillaParticles.BLOCKS).getEnabled() || PerParticleConfigManager.getBlockSetting().getHideDigging())) {
             ci.cancel();
         }
     }

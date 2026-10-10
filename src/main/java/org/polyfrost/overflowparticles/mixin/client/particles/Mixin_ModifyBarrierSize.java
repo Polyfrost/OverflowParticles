@@ -3,6 +3,7 @@ package org.polyfrost.overflowparticles.mixin.client.particles;
 //? if =1.8.9 {
 /*import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.entity.particle.BarrierParticle;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class Mixin_ModifyBarrierSize {
     @ModifyExpressionValue(method = "render", at = @At(value = "CONSTANT", args = "floatValue=0.5F"))
     private float overflowparticles$scale(float constant) {
-        return constant * PerParticleConfigManager.getConfigByType(VanillaParticles.BARRIER).getSize();
+        return OverflowParticlesConfig.getModEnabled() ? constant * PerParticleConfigManager.getConfigByType(VanillaParticles.BARRIER).getSize() : constant;
     }
 }
 *///?} else {

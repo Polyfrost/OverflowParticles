@@ -26,9 +26,9 @@ public abstract class Mixin_CleanEmitterView extends Particle {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     public void cleanView(CallbackInfo ci) {
         //? if >1.8.9 {
-        if (OverflowParticlesConfig.isCleanView() && this.entity == overflowparticles$getPlayer()) {
+        if (OverflowParticlesConfig.getModEnabled() && OverflowParticlesConfig.isCleanView() && this.entity == overflowparticles$getPlayer()) {
         //?} else
-        //if (OverflowParticlesConfig.isCleanView() && this.target == overflowparticles$getPlayer()) {
+        //if (OverflowParticlesConfig.getModEnabled() && OverflowParticlesConfig.isCleanView() && this.target == overflowparticles$getPlayer()) {
             this.remove();
             ci.cancel();
         }

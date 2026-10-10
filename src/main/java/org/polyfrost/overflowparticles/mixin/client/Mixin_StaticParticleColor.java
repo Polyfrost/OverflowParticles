@@ -44,7 +44,7 @@ public class Mixin_StaticParticleColor {
     private int overflowparticles$staticParticleColor(SingleQuadParticle instance, float partialTicks, Operation<Integer> original) {
     //?} else
     //private int overflowparticles$staticParticleColor(Particle instance, float partialTicks, Operation<Integer> original) {
-        return OverflowParticlesConfig.isStaticParticleColor()
+        return OverflowParticlesConfig.getModEnabled() && OverflowParticlesConfig.isStaticParticleColor()
                 ? STATIC_PARTICLE_COLOR
                 : original.call(instance, partialTicks);
     }

@@ -48,7 +48,7 @@ public abstract class Mixin_ParticleNoClip {
         }
         *///?}
 
-        if (OverflowParticlesConfig.INSTANCE.getParticleNoClip()) {
+        if (OverflowParticlesConfig.getModEnabled() && OverflowParticlesConfig.INSTANCE.getParticleNoClip()) {
             //? if >=1.16.5 {
             this.setBoundingBox(this.getBoundingBox().move(x, y, z));
             this.setLocationFromBoundingbox();

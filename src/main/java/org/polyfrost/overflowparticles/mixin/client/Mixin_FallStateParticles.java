@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 *///?}
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +40,7 @@ public abstract class Mixin_FallStateParticles extends Entity {
     )
     private boolean fall(boolean original) {
         Level world = overflowparticles$getWorld();
-        if (world != null && !overflowparticles$isClient(world)) {
+        if (!OverflowParticlesConfig.getModEnabled() || (world != null && !overflowparticles$isClient(world))) {
            return original;
         }
 
@@ -80,7 +81,7 @@ public abstract class Mixin_FallStateParticles extends Entity {
             )
     )
     private Material fall(Material original) {
-        if (this.world != null && !this.world.isClient) {
+        if (!OverflowParticlesConfig.getModEnabled() || (this.world != null && !this.world.isClient)) {
             return original;
         }
 

@@ -5,6 +5,7 @@ package org.polyfrost.overflowparticles.mixin.client;
 import net.minecraft.world.World;
 import org.polyfrost.overflowparticles.client.config.BlockParticleEntry;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +20,7 @@ public class Mixin_CancelFootstepsIfNeeded {
 
     @Inject(method = "doSprintingEffect", at = @At("HEAD"), cancellable = true)
     private void runningParticle(CallbackInfo ci) {
-        if (this.world != null && !this.world.isClient) {
+        if (!OverflowParticlesConfig.getModEnabled() || (this.world != null && !this.world.isClient)) {
             return;
         }
 

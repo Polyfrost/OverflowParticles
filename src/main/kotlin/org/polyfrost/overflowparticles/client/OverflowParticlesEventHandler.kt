@@ -34,7 +34,7 @@ object OverflowParticlesEventHandler {
 
     fun initialize() {
         eventHandler { event: PacketEvent.Receive ->
-            if (!OverflowParticlesConfig.checkInvulnerable) {
+            if (!OverflowParticlesConfig.modEnabled || !OverflowParticlesConfig.checkInvulnerable) {
                 return@eventHandler
             }
 
@@ -68,7 +68,7 @@ object OverflowParticlesEventHandler {
             /*val isClientWorld = event.target.world.isClient
             *///?}
 
-            if (!isClientWorld) {
+            if (!OverflowParticlesConfig.modEnabled || !isClientWorld) {
                 return@eventHandler
             }
 
