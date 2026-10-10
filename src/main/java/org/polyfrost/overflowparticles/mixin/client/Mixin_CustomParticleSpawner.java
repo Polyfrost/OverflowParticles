@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Shadow;
 *///?}
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
 import org.spongepowered.asm.mixin.Mixin;
@@ -82,7 +83,7 @@ public class Mixin_CustomParticleSpawner {
 
         ParticleType<?> type = options.getType();
         ParticleConfig config = PerParticleConfigManager.getConfigByType(type);
-        if (config == null) {
+        if (!OverflowParticlesConfig.getModEnabled() || config == null) {
             return;
         }
 
@@ -128,7 +129,7 @@ public class Mixin_CustomParticleSpawner {
 
         ParticleType type = ParticleType.byId(particleId);
         ParticleConfig config = PerParticleConfigManager.getConfigByType(type);
-        if (config == null) {
+        if (!OverflowParticlesConfig.getModEnabled() || config == null) {
             return;
         }
 

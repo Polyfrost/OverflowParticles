@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 //?} else {
 /*import net.minecraft.world.World;
 *///?}
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
@@ -36,7 +37,7 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
     *///?}
     private int overflowparticles$applyMultiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
-        if (config.getMultiplier() == 1) {
+        if (!OverflowParticlesConfig.getModEnabled() || config.getMultiplier() == 1) {
             return constant;
         }
 

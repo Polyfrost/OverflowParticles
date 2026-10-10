@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleOptions;
 //?} else
 //import net.minecraft.entity.particle.ParticleType;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.ParticleInfo;
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry;
@@ -36,7 +37,7 @@ public class Mixin_ApplyMultiplierToEmitters {
         }
 
         ParticleConfig config = PerParticleConfigManager.getConfigByType(type);
-        if (config.getMultiplier() == 1) {
+        if (!OverflowParticlesConfig.getModEnabled() || config.getMultiplier() == 1) {
             return constant;
         }
 

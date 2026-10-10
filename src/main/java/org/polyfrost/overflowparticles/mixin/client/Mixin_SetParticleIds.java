@@ -10,6 +10,7 @@ import net.minecraft.core.particles.ParticleType;
 /*import net.minecraft.entity.particle.ParticleType;
 *///?}
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.utils.ParticleIdentifier;
@@ -100,7 +101,7 @@ public class Mixin_SetParticleIds {
     private boolean overflowparticles$shouldSpawn(ParticleType<?> type) {
     //?} else
     //private boolean overflowparticles$shouldSpawn(ParticleType type) {
-        if (type == null) {
+        if (!OverflowParticlesConfig.getModEnabled() || type == null) {
             return true;
         }
 

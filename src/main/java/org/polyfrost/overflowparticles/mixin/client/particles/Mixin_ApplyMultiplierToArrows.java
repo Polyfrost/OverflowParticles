@@ -9,6 +9,7 @@ import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 *///?}
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.polyfrost.overflowparticles.client.utils.ParticleSpawner;
@@ -25,7 +26,7 @@ public class Mixin_ApplyMultiplierToArrows {
     @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "intValue=4", ordinal = 0))
     private int multiplier(int constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.CRITICAL);
-        if (config.getMultiplier() == 1) {
+        if (!OverflowParticlesConfig.getModEnabled() || config.getMultiplier() == 1) {
             return constant;
         }
 
@@ -35,7 +36,7 @@ public class Mixin_ApplyMultiplierToArrows {
     @ModifyExpressionValue(method = "tick", at = @At(value = "CONSTANT", args = "doubleValue=4.0D"))
     private double multiplier1(double constant) {
         ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.CRITICAL);
-        if (config.getMultiplier() == 1) {
+        if (!OverflowParticlesConfig.getModEnabled() || config.getMultiplier() == 1) {
             return constant;
         }
 

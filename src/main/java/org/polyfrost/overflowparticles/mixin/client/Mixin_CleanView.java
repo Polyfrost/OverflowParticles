@@ -38,7 +38,7 @@ public class Mixin_CleanView {
 
     @Unique
     private boolean shouldBlock(ParticleOptions particle) {
-        if (!OverflowParticlesConfig.isCleanView() || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+        if (!OverflowParticlesConfig.getModEnabled() || !OverflowParticlesConfig.isCleanView() || !Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
             return false;
         }
 
@@ -70,7 +70,7 @@ public class Mixin_CleanView {
 
     @Unique
     private boolean shouldBlock(ParticleType particle) {
-        if (!OverflowParticlesConfig.isCleanView() || Minecraft.getInstance().options.perspective != 0) {
+        if (!OverflowParticlesConfig.getModEnabled() || !OverflowParticlesConfig.isCleanView() || Minecraft.getInstance().options.perspective != 0) {
             return false;
         }
 
