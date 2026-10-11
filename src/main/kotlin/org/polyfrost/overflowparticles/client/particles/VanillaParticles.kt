@@ -16,6 +16,7 @@ object VanillaParticles {
     val registry: Map<ParticleType<*>, ParticleInfo>
         get() = _registry.toMap()
 
+    //? if >1.8.9 {
     // 1.8.9 - 1.12.2
     @JvmField val EXPLOSION_NORMAL = create("Explosion", ParticleTypes.EXPLOSION)
     @JvmField val EXPLOSION_LARGE = create("Large Explosion", ParticleTypes.EXPLOSION_EMITTER)
@@ -140,6 +141,50 @@ object VanillaParticles {
     @JvmField val BLOCK_MARKER = create("Block Marker", ParticleTypes.BLOCK_MARKER)
     @JvmField val BLOCK_CRUMBLE = create("Block Crumble", ParticleTypes.BLOCK_CRUMBLE)
     //?}
+    //?} else {
+    /*@JvmField val EXPLOSION_NORMAL = create("Explosion", ParticleTypes.EXPLOSION_NORMAL)
+    @JvmField val EXPLOSION_LARGE = create("Large Explosion", ParticleTypes.EXPLOSION_LARGE)
+    @JvmField val EXPLOSION_HUGE = create("Huge Explosion", ParticleTypes.EXPLOSION_HUGE, redirectsTo = EXPLOSION_NORMAL, isIgnored = true)
+    @JvmField val FIREWORK_SPARK = create("Firework Spark", ParticleTypes.FIREWORKS_SPARK)
+    @JvmField val WATER_BUBBLE = create("Water Bubble", ParticleTypes.WATER_BUBBLE)
+    @JvmField val WATER_SPLASH = create("Water Splash", ParticleTypes.WATER_SPLASH)
+    @JvmField val WATER_WAKE = create("Water Wake", ParticleTypes.WATER_WAKE)
+    @JvmField val SUSPENDED = create("Suspended", ParticleTypes.SUSPENDED)
+    @JvmField val SUSPENDED_DEPTH = create("Suspended Depth", ParticleTypes.SUSPENDED_DEPTH)
+    @JvmField val CRITICAL = create("Critical", ParticleTypes.CRIT)
+    @JvmField val CRITICAL_MAGIC = create("Magic Critical (Sharpness)", ParticleTypes.CRIT_MAGIC)
+    @JvmField val SMOKE_NORMAL = create("Smoke", ParticleTypes.SMOKE_NORMAL)
+    @JvmField val SMOKE_LARGE = create("Large Smoke", ParticleTypes.SMOKE_LARGE)
+    @JvmField val SPLASH_POTION = create("Splash Potion", ParticleTypes.SPELL)
+    @JvmField val INSTANT_POTION = create("Instant Potion", ParticleTypes.SPELL_INSTANT)
+    @JvmField val MOB_POTION = create("Potion", ParticleTypes.SPELL_MOB)
+    @JvmField val BEACON_EFFECT = create("Beacon Effect", ParticleTypes.SPELL_MOB_AMBIENT)
+    @JvmField val WITCH_SPELL = create("Witch Spell", ParticleTypes.SPELL_WITCH)
+    @JvmField val WATER_DRIP = create("Water Drip", ParticleTypes.DRIP_WATER)
+    @JvmField val LAVA_DRIP = create("Lava Drip", ParticleTypes.DRIP_LAVA)
+    @JvmField val ANGRY_VILLAGER = create("Angry Villager", ParticleTypes.VILLAGER_ANGRY)
+    @JvmField val HAPPY_VILLAGER = create("Happy Villager", ParticleTypes.VILLAGER_HAPPY)
+    @JvmField val MYCELIUM = create("Mycelium", ParticleTypes.TOWN_AURA)
+    @JvmField val NOTE = create("Note", ParticleTypes.NOTE)
+    @JvmField val PORTAL = create("Portal", ParticleTypes.PORTAL)
+    @JvmField val ENCHANTMENT_RUNE = create("Enchantment Rune", ParticleTypes.ENCHANTMENT_TABLE)
+    @JvmField val FLAME = create("Flame", ParticleTypes.FLAME)
+    @JvmField val LAVA = create("Lava", ParticleTypes.LAVA)
+    @JvmField val FOOTSTEP = create("Footstep", ParticleTypes.FOOTSTEP, isIgnored = true, isUnfair = true)
+    @JvmField val CLOUD = create("Cloud", ParticleTypes.CLOUD)
+    @JvmField val REDSTONE = create("Redstone", ParticleTypes.REDSTONE)
+    @JvmField val SNOWBALL = create("Snowball", ParticleTypes.SNOWBALL)
+    @JvmField val SHOVEL_SNOW = create("Shovel Snow", ParticleTypes.SNOW_SHOVEL, isIgnored = true)
+    @JvmField val SLIME = create("Slime", ParticleTypes.SLIME)
+    @JvmField val HEART = create("Heart", ParticleTypes.HEART)
+    @JvmField val BARRIER = create("Barrier", ParticleTypes.BARRIER)
+    @JvmField val ITEM_EAT_BREAK = create("Item Eat / Break", ParticleTypes.ITEM_CRACK)
+    @JvmField val BLOCKS = create("Blocks", ParticleTypes.BLOCK_CRACK, isUnfair = true)
+    @JvmField val BLOCK_DUST = create("Block Dust", ParticleTypes.BLOCK_DUST, redirectsTo = BLOCKS, isIgnored = true)
+    @JvmField val RAIN_DROP = create("Rain Drop", ParticleTypes.WATER_DROP)
+    @JvmField val ITEM_PICKUP = create("Item Pickup", ParticleTypes.ITEM_TAKE, isIgnored = true)
+    @JvmField val MOB_APPEARANCE = create("Mob Appearance", ParticleTypes.MOB_APPEARANCE, isIgnored = true)
+    *///?}
 
     val fireworkTriggered = setOf(EXPLOSION_NORMAL, EXPLOSION_LARGE, EXPLOSION_HUGE, FIREWORK_SPARK)
 

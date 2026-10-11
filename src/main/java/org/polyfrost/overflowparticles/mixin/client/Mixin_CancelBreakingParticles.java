@@ -2,6 +2,7 @@ package org.polyfrost.overflowparticles.mixin.client;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
+import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
 import org.polyfrost.overflowparticles.client.config.PerParticleConfigManager;
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,14 +19,16 @@ public class Mixin_CancelBreakingParticles {
     @Inject(
             //? if >=1.21.10 {
             method = "addDestroyBlockEffect",
-            //?} else {
+            //?} elif >1.8.9 {
             /*method = "destroy",
+            *///?} else {
+            /*method = "addBlockMiningParticles(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/state/BlockState;)V",
             *///?}
             at = @At("HEAD"),
             cancellable = true
     )
     private void overflowparticles$cancelBlockDestroy(CallbackInfo ci) {
-        if (!PerParticleConfigManager.getConfigByType(VanillaParticles.BLOCKS).getEnabled() || PerParticleConfigManager.getBlockSetting().getHideDigging()) {
+        if (OverflowParticlesConfig.getModEnabled() && (!PerParticleConfigManager.getConfigByType(VanillaParticles.BLOCKS).getEnabled() || PerParticleConfigManager.getBlockSetting().getHideDigging())) {
             ci.cancel();
         }
     }

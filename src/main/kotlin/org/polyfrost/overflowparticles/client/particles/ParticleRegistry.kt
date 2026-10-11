@@ -10,9 +10,7 @@ import org.apache.logging.log4j.LogManager
 
 //? if >=1.20.1 {
 import net.minecraft.core.registries.BuiltInRegistries
-//?} else {
-/*import net.minecraft.util.registry.Registry
-*///?}
+//?}
 
 object ParticleRegistry {
     private val LOGGER = LogManager.getLogger("OverflowParticles / Particle Registry")
@@ -60,7 +58,7 @@ object ParticleRegistry {
             //? if >=1.20.1 {
             BuiltInRegistries.PARTICLE_TYPE.getKey(id) ?: ResourceLocation.tryParse("unknown")!!
             //?} else {
-            /*Registry.PARTICLE_TYPE.getId(id) ?: ResourceLocation("unknown")
+            /*ResourceLocation(id.name.lowercase())
             *///?}
         }
     }

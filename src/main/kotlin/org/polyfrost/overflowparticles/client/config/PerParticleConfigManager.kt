@@ -31,6 +31,10 @@ object PerParticleConfigManager {
 
     @JvmStatic
     fun getConfig(entity: Particle?): ParticleConfig? {
+        if (!OverflowParticlesConfig.modEnabled) {
+            return null
+        }
+
         return (entity as? ParticleIdentifier)?.`overflowparticles$getConfig`()
     }
 

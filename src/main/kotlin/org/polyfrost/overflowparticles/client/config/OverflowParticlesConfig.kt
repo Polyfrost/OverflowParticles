@@ -4,6 +4,7 @@ import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.apache.logging.log4j.LogManager
 import org.polyfrost.oneconfig.api.config.v1.Config
+import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
@@ -18,6 +19,10 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
     private val LOGGER = LogManager.getLogger("OverflowParticles / Config")
 
     private const val CONFIG_VERSION = 1
+
+    @Switch(title = "Global Mod Toggle", description = "Toggle all mod features on or off.")
+    @JvmStatic
+    var modEnabled = true
 
     @Switch(
         title = "Clean View",
@@ -65,6 +70,10 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
 
     override fun initialize(byConfigManager: Boolean) {
         super.initialize(byConfigManager)
+        tree?.let { tree ->
+            val toggle = Property.recast<Boolean>(getProperty("modEnabled"))
+            tree.onAllProps { _, option -> if (option !== toggle) option.addDisplayCondition(toggle, false) }
+        }
         try {
             migrate()
         } catch (e: Throwable) {
@@ -97,12 +106,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         for (particle in orderedConfigs) {
             i++
             try {
-                val name =
-                    //? if >=1.16.5 {
-                    particle.key.toString()
-                    //?} else {
-                    /*"Particle${particle.key}"
-                    *///?}
+                val name = particle.key.toString()
                 val t: Tree = Tree.tree(name)
                 t.addMetadata(mapOf(
                     "title" to particle.value.name,
@@ -117,7 +121,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
                 //? if >=1.16.5 {
                  if (particle.value.particleType == ParticleTypes.BLOCK) {
                 //?} else {
-                /*if (particle.value.id == 37) {
+                /*if (particle.value.particleType == VanillaParticles.BLOCKS.id) {
                 *///?}
                     collector.handle(t, PerParticleConfigManager.blockSetting, 0)
                     //todo t.addDependency("hideMode", "hideRunning")
