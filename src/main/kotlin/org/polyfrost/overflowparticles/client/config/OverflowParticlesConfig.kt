@@ -4,7 +4,6 @@ import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.apache.logging.log4j.LogManager
 import org.polyfrost.oneconfig.api.config.v1.Config
-import org.polyfrost.oneconfig.api.config.v1.Property
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
@@ -70,10 +69,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
 
     override fun initialize(byConfigManager: Boolean) {
         super.initialize(byConfigManager)
-        tree?.let { tree ->
-            val toggle = Property.recast<Boolean>(getProperty("modEnabled"))
-            tree.onAllProps { _, option -> if (option !== toggle) option.addDisplayCondition(toggle, false) }
-        }
+        if (tree != null) disableAllUnless("modEnabled")
         try {
             migrate()
         } catch (e: Throwable) {
