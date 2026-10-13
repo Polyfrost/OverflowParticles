@@ -5,6 +5,8 @@
 
 OverflowParticles gives every particle type its own settings. It only changes what you see.
 
+![Recolored crit particles](.github/images/particles.gif)
+
 For each particle you can:
 
 - Hide it completely
@@ -12,6 +14,10 @@ For each particle you can:
 - Make it up to 5x bigger, or shrink it to half size
 - Spawn up to 10x as many
 - Fade it out towards the end of its life
+
+![Picking a color](.github/images/color.gif)
+
+![Particle list](.github/images/settings.gif)
 
 Block particles have their own options. You can hide the ones from mining and breaking blocks, and the ones from entities landing.
 
