@@ -17,7 +17,7 @@ import net.minecraft.core.particles.ParticleTypes
 object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overflowparticles/overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
     private val LOGGER = LogManager.getLogger("OverflowParticles / Config")
 
-    private const val CONFIG_VERSION = 1
+    private const val CONFIG_VERSION = 2
 
     @Switch(title = "Global Mod Toggle", description = "Toggle all mod features on or off.")
     @JvmStatic
@@ -29,7 +29,7 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         subcategory = "Features"
     )
     @JvmStatic
-    var isCleanView = false
+    var isCleanView = true
 
     @Switch(
         title = "Static Particle Color",
@@ -82,6 +82,10 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
 
         if (configVersion < 1) {
             isStaticParticleColor = false
+        }
+
+        if (configVersion < 2) {
+            isCleanView = true
         }
 
         configVersion = CONFIG_VERSION
