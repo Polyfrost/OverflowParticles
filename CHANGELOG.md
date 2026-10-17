@@ -1,2 +1,2 @@
-## 1.2.3
-- Add support for mod toggles
+## 1.2.4
+- Turn on clean view by default
