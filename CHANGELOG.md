@@ -1,2 +1,3 @@
-## 1.2.4
-- Turn on clean view by default
+## 1.2.5
+- Add Particle Shield
+  - Removes particles near your eyes

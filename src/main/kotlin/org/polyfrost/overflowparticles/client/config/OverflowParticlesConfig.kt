@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager
 import org.polyfrost.oneconfig.api.config.v1.Config
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
+import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
 import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
@@ -45,6 +46,23 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         subcategory = "Features"
     )
     var particleNoClip = false
+
+    @Switch(
+        title = "Particle Shield",
+        description = "Remove particles that get too close to your eyes.",
+        subcategory = "Particle Shield"
+    )
+    @JvmStatic
+    var particleShield = false
+
+    @Slider(
+        title = "Shield Size",
+        description = "Minimum distance in blocks between your eyes and any visible particle.",
+        subcategory = "Particle Shield",
+        min = 0f, max = 5f, step = 0.1f
+    )
+    @JvmStatic
+    var shieldSize = 1.4f
 
     @Switch(
         title = "Always Show Critical",
