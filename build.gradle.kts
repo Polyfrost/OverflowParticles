@@ -201,6 +201,7 @@ tasks {
             "mod_id" to modid,
             "mod_name" to modname,
             "mod_version" to modversion,
+            "oneconfig_version" to oneconfigversion,
             "mc_version" to versionrange,
             "minecraft_version_range" to versionrange,
             "loader_version" to loaderversion,

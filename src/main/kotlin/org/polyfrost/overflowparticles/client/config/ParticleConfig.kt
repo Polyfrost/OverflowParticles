@@ -1,14 +1,21 @@
+@file:OptIn(ExperimentalOneConfigUiApi::class)
+
 package org.polyfrost.overflowparticles.client.config
 
+import com.google.gson.JsonParser
 import net.minecraft.core.particles.ParticleType
-import org.polyfrost.oneconfig.api.config.v1.Node
-import org.polyfrost.oneconfig.api.config.v1.Property
+import org.polyfrost.oneconfig.api.config.v1.MetaKeys
 import org.polyfrost.oneconfig.api.config.v1.Tree
+import org.polyfrost.oneconfig.api.config.v1.addDependency
 import org.polyfrost.oneconfig.api.config.v1.annotations.*
-import org.polyfrost.oneconfig.utils.v1.MHUtils.setAccessible
+import org.polyfrost.oneconfig.api.config.v1.set
+import org.polyfrost.oneconfig.api.ui.v1.ExperimentalOneConfigUiApi
+import org.polyfrost.oneconfig.api.ui.v1.IconSpec
 import org.polyfrost.overflowparticles.client.particles.ParticleRegistry
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
+import org.polyfrost.overflowparticles.client.utils.IconIndex
 import org.polyfrost.compose.render.PolyColor
+import java.io.InputStreamReader
 
 class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
     private val info = ParticleRegistry.of(particleType)
@@ -40,54 +47,47 @@ class ParticleConfig(val name: String, val particleType: ParticleType<*>) {
     @Slider(title = "Multiplier", min = 0f, max = 10f, step = 0.1f)
     var multiplier = 1f
 
-    @Suppress("UNCHECKED_CAST")
     fun handle(t: Tree) {
-        val theMap = Tree::class.java.getDeclaredField("theMap")
-        theMap.setAccessible()
-        val map = theMap.get(t) as LinkedHashMap<String, Node>
-
 //        val particle = ParticleRegistry.of(particleType) ?: throw IllegalArgumentException("Invalid particle type: ${ParticleRegistry.location(particleType)}")
         val particle = ParticleRegistry.of(particleType) ?: return
         if (particle.isUnfair) {
-            map.remove("multiplier")
-            t.getProp("size").metadata?.set("max", 1.0f)
+            t.remove("multiplier")
+            t.getProp("size")[MetaKeys.MAX] = 1.0f
         }
 
         if (particle == VanillaParticles.FOOTSTEP) {
-            map.remove("customColor")
-            map.remove("colorMode")
-            map.remove("color")
+            t.remove("customColor")
+            t.remove("colorMode")
+            t.remove("color")
         }
 
         if (particle.isFireworkTriggered) {
-            map.remove("fade")
-            map.remove("fadeStart")
+            t.remove("fade")
+            t.remove("fadeStart")
         }
 
         //t.addDependency("General.color", "General.customColor")
         //t.addDependency("General.colorMode", "General.customColor")
+        if (t.get("customColor") != null) {
+            t.addDependency("colorMode", "customColor")
+            t.addDependency("color", "customColor")
+        }
     }
 
-    private val dotRegex = "\\.".toRegex()
-
-    /**
-     * Mirror of [Config.addDependency]
-     */
-    private fun Tree.addDependency(option: String, condition: String) {
-        val cond = getProperty(condition)
-        require(cond.type == Boolean::class.javaPrimitiveType) { "Condition property must be boolean" }
-        val opt = getProperty(option).addDisplayCondition((cond as Property<Boolean?>)!!, false)
-        val dependencyNames = opt.getMetadata<ArrayList<String>>("dependencyNames")
-            ?: ArrayList<String>(3).also { opt.addMetadata("dependencyNames", it) }
-        dependencyNames.add(cond.title.toString())
+    fun icon(): Any? {
+        //? if >1.8.9 {
+        val location = ParticleRegistry.location(particleType)
+        val texture = ParticleConfig::class.java.getResourceAsStream("/assets/${location.namespace}/particles/${location.path}.json")?.use { stream ->
+            runCatching {
+                JsonParser.parseReader(InputStreamReader(stream, Charsets.UTF_8)).asJsonObject.getAsJsonArray("textures")?.firstOrNull()?.asString
+            }.getOrNull()
+        } ?: return null
+        val namespace = texture.substringBefore(':', "minecraft")
+        val path = texture.substringAfter(':')
+        return IconSpec("/assets/$namespace/textures/particle/$path.png", 0, 0, 1, 1, 1)
+        //?} else {
+        /*val cell = IconIndex.getFromID(particleType.ordinal) ?: return null
+        return IconSpec("/assets/minecraft/textures/particle/particles.png", cell.x.toInt(), cell.y.toInt(), 8, 8, 128)
+        *///?}
     }
-
-    /**
-     * Mirror of [Config.getProperty]
-     */
-    private fun Tree.getProperty(option: String): Property<*> {
-        return if (option.indexOf('.') >= 0) getProp(*option.split(dotRegex).dropLastWhile { it.isEmpty() }
-            .toTypedArray<String>()) else getProp(option)
-    }
-
 }

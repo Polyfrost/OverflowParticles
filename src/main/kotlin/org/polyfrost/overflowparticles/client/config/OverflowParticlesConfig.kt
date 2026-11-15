@@ -4,11 +4,15 @@ import club.sk1er.patcher.config.OldPatcherConfig
 import dev.isxander.particlesenhanced.config.ParticlesEnhancedConfig
 import org.apache.logging.log4j.LogManager
 import org.polyfrost.oneconfig.api.config.v1.Config
+import org.polyfrost.oneconfig.api.config.v1.ENABLE_TOGGLE_KEY
+import org.polyfrost.oneconfig.api.config.v1.MetaKeys
 import org.polyfrost.oneconfig.api.config.v1.Tree
+import org.polyfrost.oneconfig.api.config.v1.Trees
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
-import org.polyfrost.oneconfig.api.config.v1.collect.impl.OneConfigCollector
+import org.polyfrost.oneconfig.api.config.v1.disableAllUnless
+import org.polyfrost.oneconfig.api.config.v1.set
 import org.polyfrost.overflowparticles.client.particles.VanillaParticles
 
 //? if >=1.16.5 {
@@ -114,7 +118,6 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         val tree = super.makeTree()
         PerParticleConfigManager.fillConfigs()
 
-        val collector = OneConfigCollector()
         val priorityTypes = listOf(VanillaParticles.CRITICAL.id, VanillaParticles.CRITICAL_MAGIC.id)
         val orderedConfigs = PerParticleConfigManager.configs.entries.sortedBy {
             val index = priorityTypes.indexOf(it.value.particleType)
@@ -125,27 +128,27 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
             i++
             try {
                 val name = particle.key.toString()
-                val t: Tree = Tree.tree(name)
-                t.addMetadata(mapOf(
-                    "title" to particle.value.name,
-                    "description" to "Settings for the ${particle.value.name} particle.",
-                    "icon" to "",
-                    "category" to "General",
-                    "subcategory" to "Particles",
-                    "canBeEnabled" to true,
-                    "index" to i,
-                    "collapsed" to (particle.value.particleType !in priorityTypes)
-                ))
                 //? if >=1.16.5 {
-                 if (particle.value.particleType == ParticleTypes.BLOCK) {
+                 val t: Tree = if (particle.value.particleType == ParticleTypes.BLOCK) {
                 //?} else {
-                /*if (particle.value.particleType == VanillaParticles.BLOCKS.id) {
+                /*val t: Tree = if (particle.value.particleType == VanillaParticles.BLOCKS.id) {
                 *///?}
-                    collector.handle(t, PerParticleConfigManager.blockSetting, 0)
+                    Trees.fromObject(PerParticleConfigManager.blockSetting, name)
                     //todo t.addDependency("hideMode", "hideRunning")
                 } else {
-                    collector.handle(t, particle.value, 0)
-                    particle.value.handle(t)
+                    Trees.fromObject(particle.value, name).also(particle.value::handle)
+                }
+                t[MetaKeys.TITLE] = particle.value.name
+                t[MetaKeys.DESCRIPTION] = "Settings for the ${particle.value.name} particle."
+                t[MetaKeys.ICON] = particle.value.icon()
+                t[MetaKeys.CATEGORY] = "General"
+                t[MetaKeys.SUBCATEGORY] = "Particles"
+                t[MetaKeys.ORDER] = i
+                t[MetaKeys.COLLAPSED] = particle.value.particleType !in priorityTypes
+                t.getProp("enabled")?.let { toggle ->
+                    toggle[MetaKeys.TITLE] = particle.value.name
+                    t.addMetadata(ENABLE_TOGGLE_KEY, toggle)
+                    t.disableAllUnless("enabled")
                 }
                 tree.put(t)
             } catch (e: Exception) {
