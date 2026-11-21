@@ -7,7 +7,8 @@ import net.minecraft.client.particle.BreakingItemParticle;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 //?} else {
-/*import net.minecraft.entity.particle.ParticleType;
+/*import net.minecraft.client.entity.particle.FireworksParticles;
+import net.minecraft.entity.particle.ParticleType;
 *///?}
 import org.polyfrost.overflowparticles.client.config.ParticleConfig;
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig;
@@ -90,6 +91,10 @@ public class Mixin_SetParticleIds {
 
     @Inject(method = "add(Lnet/minecraft/client/entity/particle/Particle;)V", at = @At("HEAD"), cancellable = true)
     private void overflowparticles$handleRawParticle(Particle effect, CallbackInfo ci) {
+        if (effect instanceof FireworksParticles.Spark || effect instanceof FireworksParticles.Overlay) {
+            ParticleIdentifier.set(effect, VanillaParticles.FIREWORK_SPARK.getId());
+        }
+
         if (!overflowparticles$shouldSpawn(ParticleIdentifier.get(effect))) {
             ci.cancel();
         }
