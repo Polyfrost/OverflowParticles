@@ -30,14 +30,10 @@ public class Mixin_SetParticleIds {
 
     @Inject(
             method = "createParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)Lnet/minecraft/client/particle/Particle;",
-            at = @At("HEAD"),
-            cancellable = true
+            at = @At("HEAD")
     )
     private void overflowparticles$captureTypeA(ParticleOptions options, double d, double e, double f, double g, double h, double i, CallbackInfoReturnable<Particle> cir) {
         overflowparticles$currentType = options.getType();
-        if (!overflowparticles$shouldSpawn(overflowparticles$currentType)) {
-            cir.setReturnValue(null);
-        }
     }
 
     @ModifyArg(
