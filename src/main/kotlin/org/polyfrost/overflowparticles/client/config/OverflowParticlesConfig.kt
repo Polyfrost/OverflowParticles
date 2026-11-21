@@ -8,6 +8,7 @@ import org.polyfrost.oneconfig.api.config.v1.ENABLE_TOGGLE_KEY
 import org.polyfrost.oneconfig.api.config.v1.MetaKeys
 import org.polyfrost.oneconfig.api.config.v1.Tree
 import org.polyfrost.oneconfig.api.config.v1.Trees
+import org.polyfrost.oneconfig.api.config.v1.annotations.Dropdown
 import org.polyfrost.oneconfig.api.config.v1.annotations.Include
 import org.polyfrost.oneconfig.api.config.v1.annotations.Slider
 import org.polyfrost.oneconfig.api.config.v1.annotations.Switch
@@ -22,7 +23,11 @@ import net.minecraft.core.particles.ParticleTypes
 object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overflowparticles/overflowparticles.svg", "OverflowParticles", Category.COMBAT) {
     private val LOGGER = LogManager.getLogger("OverflowParticles / Config")
 
-    private const val CONFIG_VERSION = 2
+    private const val CONFIG_VERSION = 3
+
+    const val INVULNERABILITY_OFF = 0
+    const val INVULNERABILITY_DAMAGEABLE = 1
+    const val INVULNERABILITY_DAMAGED = 2
 
     @Switch(title = "Global Mod Toggle", description = "Toggle all mod features on or off.")
     @JvmStatic
@@ -80,10 +85,15 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
     )
     var alwaysSharp = false
 
-    @Switch(
+    @Dropdown(
         title = "Check Invulnerability",
-        subcategory = "Hit Particle"
+        description = "Off: particles on every hit. Skip Undamageable: no particles on entities that have never taken damage, like holograms. Only When Damaged: particles only on hits that deal damage.",
+        subcategory = "Hit Particle",
+        options = ["Off", "Skip Undamageable", "Only When Damaged"]
     )
+    var invulnerabilityCheck = INVULNERABILITY_OFF
+
+    @Include
     var checkInvulnerable = false
 
     @Include
@@ -99,6 +109,17 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
         }
     }
 
+    // The config file is shared between game versions, and OneConfig re-adds saved keys this version doesn't
+    // register. Hide those keys from search but keep them, so the other version's settings survive a save.
+    override fun onInitialized(tree: Tree) {
+        val known = PerParticleConfigManager.configs.keys.mapTo(HashSet()) { it.toString() }
+        for ((key, node) in tree.map) {
+            if (node is Tree && ':' in key && !key.startsWith("reserved:") && key !in known) {
+                node[MetaKeys.HIDDEN] = true
+            }
+        }
+    }
+
     private fun migrate() {
         if (tree == null || configVersion >= CONFIG_VERSION) return
 
@@ -108,6 +129,10 @@ object OverflowParticlesConfig : Config("overflowparticles.json", "/assets/overf
 
         if (configVersion < 2) {
             isCleanView = true
+        }
+
+        if (configVersion < 3 && checkInvulnerable) {
+            invulnerabilityCheck = INVULNERABILITY_DAMAGED
         }
 
         configVersion = CONFIG_VERSION
