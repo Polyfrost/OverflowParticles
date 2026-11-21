@@ -47,6 +47,7 @@ object VanillaParticles {
     @JvmField val LAVA = create("Lava", ParticleTypes.LAVA)
     @JvmField val FOOTSTEP = create("Footstep", ParticleTypes.CLOUD, isIgnored = true, isUnfair = true)
     @JvmField val CLOUD = create("Cloud", ParticleTypes.CLOUD)
+    @JvmField val POOF = create("Poof", ParticleTypes.POOF)
     @JvmField val REDSTONE = create("Redstone", ParticleTypes.DUST)
     @JvmField val SNOWBALL = create("Snowball", ParticleTypes.ITEM_SNOWBALL)
     @JvmField val SLIME = create("Slime", ParticleTypes.ITEM_SLIME)

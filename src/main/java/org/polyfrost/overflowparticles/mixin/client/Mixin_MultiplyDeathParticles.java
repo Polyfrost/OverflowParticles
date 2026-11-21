@@ -36,7 +36,10 @@ public abstract class Mixin_MultiplyDeathParticles extends Entity {
     @ModifyExpressionValue(method = "tickPostDeath", at = @At(value = "CONSTANT", args = "intValue=20", ordinal = 1))
     *///?}
     private int overflowparticles$applyMultiplier(int constant) {
-        ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
+        //? if >1.8.9 {
+        ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.POOF);
+        //?} else
+        //ParticleConfig config = PerParticleConfigManager.getConfigByType(VanillaParticles.EXPLOSION_NORMAL);
         if (!OverflowParticlesConfig.getModEnabled() || config.getMultiplier() == 1) {
             return constant;
         }
