@@ -10,12 +10,16 @@ import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.player.Player
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket
+//? if >1.8.9
+import net.minecraft.network.protocol.game.ClientboundDamageEventPacket
 import net.minecraft.core.particles.ParticleTypes
 import org.polyfrost.oneconfig.api.event.v1.eventHandler
 import org.polyfrost.oneconfig.api.event.v1.events.PacketEvent
 import org.polyfrost.oneconfig.utils.v1.dsl.mc
 import org.polyfrost.overflowparticles.client.config.OverflowParticlesConfig
 import org.polyfrost.overflowparticles.client.event.AttackEntityEvent
+import java.util.Collections
+import java.util.WeakHashMap
 
 object OverflowParticlesEventHandler {
 
@@ -32,30 +36,37 @@ object OverflowParticlesEventHandler {
 
     private var targetId = -1
 
+    private val damagedEntities: MutableSet<Entity> = Collections.synchronizedSet(Collections.newSetFromMap(WeakHashMap()))
+
     fun initialize() {
         eventHandler { event: PacketEvent.Receive ->
-            if (!OverflowParticlesConfig.modEnabled || !OverflowParticlesConfig.checkInvulnerable) {
+            if (!OverflowParticlesConfig.modEnabled || OverflowParticlesConfig.invulnerabilityCheck == OverflowParticlesConfig.INVULNERABILITY_OFF) {
                 return@eventHandler
             }
 
             //? if >1.8.9 {
             val world = mc.level ?: return@eventHandler
+            val packet = event.getPacket<Packet<*>>() as? ClientboundDamageEventPacket ?: return@eventHandler
+            val target = world.getEntity(packet.entityId()) ?: return@eventHandler
             //?} else {
             /*val world = mc.world ?: return@eventHandler
+            val packet = event.getPacket<Packet<*>>() as? ClientboundEntityEventPacket ?: return@eventHandler
+            if (packet.event != 2.toByte()) return@eventHandler
+            val target = packet.getEntity(world) ?: return@eventHandler
             *///?}
-            val packet: Packet<*> = event.getPacket()
-            if (packet is ClientboundEntityEventPacket) {
-                val target = packet.getEntity(world) ?: return@eventHandler
-                //? if >1.8.9 {
-                if (lastAttacker != null && targetId == target.id) {
-                //?} else {
-                /*if (lastAttacker != null && targetId == target.networkId) {
-                *///?}
-                    doCritical(lastAttacker!!, target)
-                    doSharpness(lastAttacker!!, target)
-                    lastAttacker = null
-                    targetId = -1
-                }
+
+            damagedEntities.add(target)
+
+            val attacker = lastAttacker
+            //? if >1.8.9 {
+            if (attacker != null && targetId == target.id) {
+            //?} else {
+            /*if (attacker != null && targetId == target.networkId) {
+            *///?}
+                doCritical(attacker, target)
+                doSharpness(attacker, target)
+                lastAttacker = null
+                targetId = -1
             }
         }.register()
 
@@ -72,22 +83,26 @@ object OverflowParticlesEventHandler {
                 return@eventHandler
             }
 
-            if (OverflowParticlesConfig.checkInvulnerable) {
-                //? if >1.8.9 {
-                if (event.player.id == mc.player?.id) {
-                    lastAttacker = event.player
-                    targetId = event.target.id
-                }
-                //?} else {
-                /*if (event.player.networkId == mc.player?.networkId) {
-                    lastAttacker = event.player
-                    targetId = event.target.networkId
-                }
-                *///?}
-            } else {
+            val mode = OverflowParticlesConfig.invulnerabilityCheck
+            if (mode == OverflowParticlesConfig.INVULNERABILITY_OFF
+                || (mode == OverflowParticlesConfig.INVULNERABILITY_DAMAGEABLE && event.target in damagedEntities)
+            ) {
                 doSharpness(event.player, event.target)
                 doCritical(event.player, event.target)
+                return@eventHandler
             }
+
+            //? if >1.8.9 {
+            if (event.player.id == mc.player?.id) {
+                lastAttacker = event.player
+                targetId = event.target.id
+            }
+            //?} else {
+            /*if (event.player.networkId == mc.player?.networkId) {
+                lastAttacker = event.player
+                targetId = event.target.networkId
+            }
+            *///?}
         }.register()
     }
 
